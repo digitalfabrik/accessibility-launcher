@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- to let the device vibrate, e.g. when scrolling through the app list -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- for showing the uninstall dialog since Android 9/P -->
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+
+    <!-- Needed since Android R/11 to query all installed apps -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
+    <!-- Miscellaneous -->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".LauncherApplication"
+        android:allowBackup="true"
+        android:clearTaskOnLaunch="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:excludeFromRecents="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:launchMode="singleTask"
+        android:resumeWhilePausing="true"
+        android:screenOrientation="nosensor"
+        android:stateNotNeeded="true"
+        android:supportsRtl="false"
+        android:taskAffinity=""
+        android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:theme="@style/BaseHomeTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MONKEY" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Launcher" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="BaseHomeTheme" parent="@style/Theme.Launcher">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:colorEdgeEffect">#FF757575</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <!-- Legacy Material Style - so the icon doesn't get tinted by the fab -->
+        <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
+    </style>
+</resources>
