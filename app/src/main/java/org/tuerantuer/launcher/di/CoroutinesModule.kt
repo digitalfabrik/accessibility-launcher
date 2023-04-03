@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import javax.inject.Qualifier
 
 /**
- * This module provides the dispatchers that are used in the app. You can inject them with the annotations
+ * This module provides the Coroutine dispatchers that are used in the app. You can inject them with the annotations
  * [DefaultDispatcher], [IoDispatcher] and [MainDispatcher].
  *
  * @author Peter Huber
