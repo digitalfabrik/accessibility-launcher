@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import org.tuerantuer.launcher.data.FavoriteDao
 import org.tuerantuer.launcher.itemInfo.AppActivityRepository
 import org.tuerantuer.launcher.itemInfo.AppActivityRepositoryImpl
 import org.tuerantuer.launcher.itemInfo.AppLauncher
@@ -61,8 +62,9 @@ class AppModule {
         userManager: UserManager,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
         coroutineScope: CoroutineScope,
+        favoriteDao: FavoriteDao,
     ): AppActivityRepository =
-        AppActivityRepositoryImpl(customLauncherApps, context, userManager, coroutineScope, ioDispatcher)
+        AppActivityRepositoryImpl(customLauncherApps, userManager, coroutineScope, ioDispatcher, favoriteDao)
 
     @Singleton
     @Provides

@@ -1,6 +1,7 @@
 package org.tuerantuer.launcher.ui.motion
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import org.tuerantuer.launcher.ui.ScreenState
 import org.tuerantuer.launcher.ui.UiState
 
 private const val ANIMATION_SCALE_START = 0.92f
@@ -11,8 +12,8 @@ private const val ANIMATION_ALPHA_END = 1f
 
 /**
  * This class handles all screen transitions and in-screen transitions. Because each screen has its
- * own [UiState], we determine the transition animation by looking at the last and current
- * [UiState].
+ * own [ScreenState], we determine the transition animation by looking at the last and current
+ * [ScreenState].
  *
  * @author Peter Huber
  */
@@ -44,10 +45,13 @@ class ScreenTransitionManager {
     //    TODO
     @OptIn(ExperimentalAnimationApi::class)
     fun loadAnimationForUiStateTransition(oldState: UiState, newState: UiState): MotionSpec? {
+        if (oldState.javaClass == newState.javaClass) {
+            return null
+        }
 //        if (oldState.javaClass == newState.javaClass) {
 //            // only animate transitions within the same screen for the answer question screen.
-//            return if (newState is UiState.AnswerQuestions) {
-//                oldState as UiState.AnswerQuestions
+//            return if (newState is ScreenState.AnswerQuestions) {
+//                oldState as ScreenState.AnswerQuestions
 //                if (newState.roundQuestionIndex != oldState.roundQuestionIndex) {
 //                    sharedXMotionSpec
 //                } else {
@@ -76,16 +80,16 @@ class ScreenTransitionManager {
 //     * of each other. On the other hand, screens with the same depth level get a horizontal
 //     * translation animation.
 //     */
-//    private fun getDepthLevelForState(uiState: UiState): Int = when (uiState) {
-//        is UiState.Onboarding -> 0
-//        is UiState.SetPlayer.Grade -> 0
-//        is UiState.SetPlayer.Name -> 0
-//        is UiState.LoadHomeScreen -> 0
-//        is UiState.SetPlayer.Subjects -> 0
-//        is UiState.MainMenu -> 1
-//        is UiState.MatchOverview -> 2
-//        is UiState.SelectRoundSubject -> 3
-//        is UiState.AnswerQuestions -> 4
-//        is UiState.Settings -> 2
+//    private fun getDepthLevelForState(uiState: ScreenState): Int = when (uiState) {
+//        is ScreenState.Onboarding -> 0
+//        is ScreenState.SetPlayer.Grade -> 0
+//        is ScreenState.SetPlayer.Name -> 0
+//        is ScreenState.LoadHomeScreen -> 0
+//        is ScreenState.SetPlayer.Subjects -> 0
+//        is ScreenState.MainMenu -> 1
+//        is ScreenState.MatchOverview -> 2
+//        is ScreenState.SelectRoundSubject -> 3
+//        is ScreenState.AnswerQuestions -> 4
+//        is ScreenState.Settings -> 2
 //    }
 }

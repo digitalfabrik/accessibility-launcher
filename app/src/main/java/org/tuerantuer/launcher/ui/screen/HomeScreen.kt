@@ -25,20 +25,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
+import org.tuerantuer.launcher.ui.ScreenState
 import org.tuerantuer.launcher.ui.UiState
 import org.tuerantuer.launcher.ui.components.AppItem
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
 import java.util.*
 
 /**
- * TODO: add description
+ * The main screen of the launcher. Here, the user can see the clock, the favorites and can access other screens.
  *
  * @author Peter Huber
  * Created on 06/03/2023
  */
 @Composable
 fun HomeScreen(
-    uiState: UiState.HomeScreen,
+    uiState: UiState,
     onShowAllApps: () -> Unit,
     onOpenSettings: () -> Unit,
     onEditFavorites: () -> Unit,
@@ -122,7 +123,7 @@ fun getClockFormat(): String {
 fun HomeScreenPreview() {
     LauncherTheme {
         HomeScreen(
-            uiState = UiState.HomeScreen(favorites = emptyList()),
+            uiState = UiState(ScreenState.HomeScreen),
             onShowAllApps = { },
             onOpenSettings = { },
             onEditFavorites = { },

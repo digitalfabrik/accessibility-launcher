@@ -11,15 +11,15 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.tuerantuer.launcher.ui.motion.CustomMaterialMotion
 import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
 import org.tuerantuer.launcher.ui.screen.AllAppsScreen
@@ -75,10 +75,8 @@ fun LauncherApp(
     screenTransitionManager: ScreenTransitionManager,
 ) {
     val coroutinesScope = rememberCoroutineScope()
-    val openDialog = remember { mutableStateOf(false) }
-
-    mainViewModel.uiStateLiveData.observeAsState().value?.let { uiState ->
-
+//    val openDialog = remember { mutableStateOf(false) }
+    val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
 //        // Error Dialog
 //        val error = (uiState as? ErrorProneState)?.error
 //        if (error != null) {
@@ -93,25 +91,24 @@ fun LauncherApp(
 //            )
 //        }
 
-        CustomMaterialMotion(
-            targetState = uiState,
-            animationForStateTransition = { old: UiState, new: UiState ->
-                screenTransitionManager.loadAnimationForUiStateTransition(old, new)
-            },
-        ) { animatedUiState ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
+    CustomMaterialMotion(
+        targetState = uiState,
+        animationForStateTransition = { old, new ->
+            screenTransitionManager.loadAnimationForUiStateTransition(old, new)
+        },
+    ) { animatedUiState ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
 //                    .background(MaterialTheme.colorScheme.background),
-                horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Box(
+                modifier = Modifier
+                    .widthIn(max = 550.dp),
             ) {
-                Box(
-                    modifier = Modifier
-                        .widthIn(max = 550.dp),
-                ) {
-                    Screens(animatedUiState, mainViewModel, coroutinesScope)
-                }
+                Screens(animatedUiState, mainViewModel, coroutinesScope)
             }
         }
     }
@@ -123,9 +120,9 @@ fun Screens(
     mainViewModel: MainViewModel,
     coroutinesScope: CoroutineScope,
 ) {
-    when (uiState) {
-        is UiState.LoadHomeScreen -> {}
-        is UiState.HomeScreen -> HomeScreen(
+    when (uiState.screenState) {
+        is ScreenState.LoadHomeScreen -> {}
+        is ScreenState.HomeScreen -> HomeScreen(
             uiState = uiState,
             onShowAllApps = { mainViewModel.onShowAllApps() },
             onOpenSettings = { mainViewModel.onOpenSettings() },
@@ -133,21 +130,21 @@ fun Screens(
             onShowOnboarding = { mainViewModel.onOpenOnboarding() },
             onOpenApp = { mainViewModel.openApp(it) },
         )
-        is UiState.AllAppsScreen -> AllAppsScreen(
+        is ScreenState.AllAppsScreen -> AllAppsScreen(
             uiState = uiState,
             onOpenApp = { mainViewModel.openApp(it) },
         )
-        is UiState.Onboarding -> OnboardingScreen(
+        is ScreenState.Onboarding -> OnboardingScreen(
             uiState = uiState,
         )
-        is UiState.Settings -> SettingsScreen(
+        is ScreenState.Settings -> SettingsScreen(
             uiState = uiState,
             onSetDefaultLauncher = { mainViewModel.onSetDefaultLauncher() },
         )
-        is UiState.EditFavoritesScreen -> EditFavoritesScreen(
+        is ScreenState.EditFavoritesScreen -> EditFavoritesScreen(
             uiState = uiState,
             onCancelEdits = { /*TODO*/ },
-            onApplyEdits = { /*TODO*/ },
+            onApplyEdits = { newFavorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(newFavorites) } },
         )
     }
 }

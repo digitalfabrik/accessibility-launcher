@@ -1,6 +1,7 @@
 package org.tuerantuer.launcher.itemInfo
 
-import kotlinx.coroutines.flow.StateFlow
+import android.database.sqlite.SQLiteException
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Here you can query the users favorites and all apps.
@@ -12,15 +13,16 @@ interface AppActivityRepository {
     /**
      * The favorites of the user.
      */
-    val favorites: StateFlow<List<AppItemInfo>>
+    val favorites: Flow<List<AppItemInfo>>
 
     /**
      * All installed apps of the user.
      */
-    val allApps: StateFlow<List<AppItemInfo>>
+    val allApps: Flow<List<AppItemInfo>>
 
     /**
      * Sets the favorites of the user.
      */
+    @Throws(SQLiteException::class)
     suspend fun setFavorites(newFavorites: List<AppItemInfo>)
 }

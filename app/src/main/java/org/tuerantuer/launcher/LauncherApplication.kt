@@ -7,7 +7,7 @@ import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 /**
- * TODO: add description
+ * The application class of the launcher app that is used to initialize the app.
  *
  * @author Peter Huber
  * Created on 06/03/2023

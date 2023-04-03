@@ -18,7 +18,7 @@ import org.tuerantuer.launcher.ui.UiState
  * Created on 07/03/2023
  */
 @Composable
-fun OnboardingScreen(uiState: UiState.Onboarding) {
+fun OnboardingScreen(uiState: UiState) {
     Text(
         text = stringResource(R.string.setup_assistant),
         Modifier

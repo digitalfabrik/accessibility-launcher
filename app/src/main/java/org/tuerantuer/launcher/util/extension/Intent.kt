@@ -1,4 +1,5 @@
 package org.tuerantuer.launcher.util.extension
+
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +10,7 @@ import org.tuerantuer.launcher.util.AnimationUtil
 /**
  * Hints the intent receiver that the launch animation should start from the [view]'s bounds.
  */
-inline fun Intent.setSourceBoundsWithView(view: View?): Intent {
+fun Intent.setSourceBoundsWithView(view: View?): Intent {
     sourceBounds = view?.screenBounds
     return this
 }

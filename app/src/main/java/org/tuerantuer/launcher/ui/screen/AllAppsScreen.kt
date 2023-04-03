@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
+import org.tuerantuer.launcher.ui.ScreenState
 import org.tuerantuer.launcher.ui.UiState
 import org.tuerantuer.launcher.ui.components.AppItem
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
@@ -28,7 +29,7 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
  */
 @Composable
 fun AllAppsScreen(
-    uiState: UiState.AllAppsScreen,
+    uiState: UiState,
     onOpenApp: (appItemInfo: AppItemInfo) -> Unit,
 ) {
     Text(
@@ -59,7 +60,7 @@ fun AllAppsScreen(
 fun AllAppsScreenPreview() {
     LauncherTheme {
         AllAppsScreen(
-            uiState = UiState.AllAppsScreen(allApps = emptyList()),
+            uiState = UiState(ScreenState.AllAppsScreen),
             onOpenApp = {},
         )
     }

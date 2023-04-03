@@ -1,14 +1,18 @@
 package org.tuerantuer.launcher.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import org.tuerantuer.launcher.itemInfo.AppActivityRepository
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
 import org.tuerantuer.launcher.itemInfo.AppLauncher
 import org.tuerantuer.launcher.util.DefaultLauncherChooser
+import org.tuerantuer.launcher.util.WhileUiSubscribed
 import javax.inject.Inject
 
 /**
@@ -20,34 +24,29 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val appActivityRepository: AppActivityRepository,
     private val appLauncher: AppLauncher,
-    private val coroutineScope: CoroutineScope,
     private val defaultLauncherChooser: DefaultLauncherChooser,
 ) : ViewModel() {
 
+    private val screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.HomeScreen)
+
     /**
-     * Determines the current state ui. Each subclass of [UiState] represents a different screen in
-     * the app. You can subscribe to this [LiveData] to be notified when the underlying [UiState]
+     * Determines the current state ui. Each subclass of [ScreenState] represents a different screen in
+     * the app. You can subscribe to this [Flow] to be notified when the underlying [ScreenState]
      * changes.
      */
-    val uiStateLiveData: LiveData<UiState>
-        get() = internalUiState
-
-    private var uiState: UiState
-        // we unfortunately need the !! operator, because LiveData is a Java class and doesn't
-        // provide null-safety
-        get() = internalUiState.value!!
-        set(value) {
-            internalUiState.value = value
-        }
-
-    private val internalUiState: MutableLiveData<UiState> =
-        MutableLiveData(UiState.LoadHomeScreen)
+    val uiState: StateFlow<UiState> = combine(
+        appActivityRepository.allApps,
+        appActivityRepository.favorites,
+        screenState,
+    ) { allApps, favorites, screenState ->
+        UiState(screenState = screenState, favorites = favorites, allApps = allApps)
+    }.stateIn(
+        scope = viewModelScope,
+        started = WhileUiSubscribed,
+        initialValue = UiState(screenState = screenState.value, allApps = emptyList(), favorites = emptyList()),
+    )
 
     private var isActivityInForeground: Boolean = true
-
-    init {
-        loadHomeScreen()
-    }
 
     fun onActivityStart() {
         isActivityInForeground = true
@@ -57,43 +56,32 @@ class MainViewModel @Inject constructor(
         isActivityInForeground = false
     }
 
-    //    /**
-//     * @return true if pressing back event was handled and should not be propagated further.
-//     */
+    /**
+     * @return true if pressing back event was handled and should not be propagated further.
+     */
     fun goBack(): Boolean {
-        when (uiState) {
-            is UiState.LoadHomeScreen -> return true
-            is UiState.HomeScreen -> return true
-            is UiState.Onboarding -> loadHomeScreen()
-            is UiState.AllAppsScreen -> loadHomeScreen()
-            is UiState.Settings -> loadHomeScreen()
-            is UiState.EditFavoritesScreen -> loadHomeScreen()
-//            is UiState.LoadHomeScreen, is UiState.MainMenu, UiState.Onboarding -> return false
-//            is UiState.MatchOverview, is UiState.Settings -> loadMainMenu()
-//            is UiState.AnswerQuestions -> this.uiState = UiState.MatchOverview(uiState.match)
-//            is UiState.SelectRoundSubject -> this.uiState = UiState.MatchOverview(uiState.match)
-//            is UiState.SetPlayer -> onCancelSetPlayerChange(uiState)
+        when (screenState.value) {
+            is ScreenState.LoadHomeScreen -> return true
+            is ScreenState.HomeScreen -> return true
+            is ScreenState.Onboarding -> loadHomeScreen()
+            is ScreenState.AllAppsScreen -> loadHomeScreen()
+            is ScreenState.Settings -> loadHomeScreen()
+            is ScreenState.EditFavoritesScreen -> loadHomeScreen()
+            // is ScreenState.LoadHomeScreen, is ScreenState.MainMenu, ScreenState.Onboarding -> return false
+            // is ScreenState.MatchOverview, is ScreenState.Settings -> loadMainMenu()
+            // is ScreenState.AnswerQuestions -> this.uiState = ScreenState.MatchOverview(uiState.match)
+            // is ScreenState.SelectRoundSubject -> this.uiState = ScreenState.MatchOverview(uiState.match)
+            // is ScreenState.SetPlayer -> onCancelSetPlayerChange(uiState)
         }
         return true
     }
-
-//    fun openSettings(uiState: UiState.MainMenu) {
-//        this.uiState = UiState.Settings(uiState.player)
-//    }
 
     fun onSetDefaultLauncher() {
         defaultLauncherChooser.openSetDefaultLauncherChooser(view = null)
     }
 
     private fun loadHomeScreen() {
-        uiState = UiState.HomeScreen(favorites = appActivityRepository.favorites.value)
-    }
-
-    /**
-     * Returns the MainMenu if the player is created, else returns the Onboarding UI State.
-     */
-    private suspend fun getMainUiState(onlyLoadFromCache: Boolean = false): UiState {
-        return UiState.Onboarding
+        screenState.value = ScreenState.HomeScreen
     }
 
     fun openApp(appItemInfo: AppItemInfo) {
@@ -101,18 +89,23 @@ class MainViewModel @Inject constructor(
     }
 
     fun onEditFavorites() {
-        uiState = UiState.EditFavoritesScreen(favorites = appActivityRepository.favorites.value)
+        screenState.value = ScreenState.EditFavoritesScreen
     }
 
     fun onShowAllApps() {
-        uiState = UiState.AllAppsScreen(allApps = appActivityRepository.allApps.value)
+        screenState.value = ScreenState.AllAppsScreen
     }
 
     fun onOpenSettings() {
-        uiState = UiState.Settings
+        screenState.value = ScreenState.Settings
     }
 
     fun onOpenOnboarding() {
-        uiState = UiState.Onboarding
+        screenState.value = ScreenState.Onboarding
+    }
+
+    suspend fun onSetFavorites(newFavorites: List<AppItemInfo>) {
+        appActivityRepository.setFavorites(newFavorites)
+        screenState.value = ScreenState.HomeScreen
     }
 }
