@@ -3,9 +3,8 @@ package org.tuerantuer.launcher.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import org.tuerantuer.launcher.data.AppIconSize
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
 
 /**
@@ -33,6 +33,7 @@ fun AppItem(
     appItemInfo: AppItemInfo,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    appIconSize: AppIconSize,
 ) {
     Card(
         onClick = onClick,
@@ -46,7 +47,7 @@ fun AppItem(
             modifier = Modifier.padding(4.dp).fillMaxWidth(),
         ) {
             Image(
-                modifier = Modifier.width(48.dp).height(48.dp).padding(top = 8.dp),
+                modifier = Modifier.size(appIconSize.sizeDp.dp).padding(top = 8.dp),
                 painter = rememberDrawablePainter(appItemInfo.icon),
                 contentDescription = null,
             )

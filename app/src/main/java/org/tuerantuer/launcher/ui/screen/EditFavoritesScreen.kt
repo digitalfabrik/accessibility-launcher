@@ -26,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
@@ -72,7 +71,7 @@ fun EditFavoritesScreen(
         Button(onClick = { onApplyEdits.invoke(selectedFavorites.value) }) {
             Text(text = stringResource(id = R.string.save_favorites))
         }
-        AppList(
+        EditFavoritesList(
             items = uiState.allApps,
             initiallySelectedItems = selectedFavorites.value,
             onAppChecked = { appItemInfo, isChecked ->
@@ -91,21 +90,19 @@ fun EditFavoritesScreen(
 }
 
 @Composable
-fun AppList(
+fun EditFavoritesList(
+    modifier: Modifier = Modifier,
     items: List<AppItemInfo>,
     initiallySelectedItems: List<AppItemInfo>,
     onAppMoved: (Int, Int) -> Unit,
     onAppChecked: (appItemInfo: AppItemInfo, isChecked: Boolean) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
-    val scope = rememberCoroutineScope()
-
-    var overscrollJob by remember { mutableStateOf<Job?>(null) }
-
+//    val scope = rememberCoroutineScope()
+//    var overscrollJob by remember { mutableStateOf<Job?>(null) }
     val dragDropListState = rememberDragDropListState(onMove = onAppMoved)
 
     LazyColumn(
-//        modifier = modifier
+        modifier = modifier,
 //            .pointerInput(Unit) {
 //                detectDragGesturesAfterLongPress(
 //                    onDrag = { change, offset ->

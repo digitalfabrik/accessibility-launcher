@@ -11,7 +11,7 @@ import javax.annotation.concurrent.Immutable
  */
 @Immutable
 sealed class ScreenState {
-    object Onboarding : ScreenState()
+    class Onboarding(val onboardingPage: OnboardingPage) : ScreenState()
 
     object LoadHomeScreen : ScreenState()
 

@@ -136,6 +136,12 @@ fun Screens(
         )
         is ScreenState.Onboarding -> OnboardingScreen(
             uiState = uiState,
+            onGoToPreviousStep = { mainViewModel.goBack() },
+            onGoToNextStep = { mainViewModel.onGoToNextOnboardingStep() },
+            onSetDefaultLauncher = { mainViewModel.onSetDefaultLauncher() },
+            onCancelOnboarding = { mainViewModel.cancelOnboarding() },
+            onSetIconSize = { appIconSize -> mainViewModel.onSetIconSize(appIconSize) },
+            onSetFavorites = { favorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(favorites) } },
         )
         is ScreenState.Settings -> SettingsScreen(
             uiState = uiState,

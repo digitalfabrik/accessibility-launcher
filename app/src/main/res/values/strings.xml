@@ -8,4 +8,48 @@
     <string name="save_favorites">Favoriten speichern</string>
     <string name="select_favorites">Favoriten auswählen</string>
     <string name="opening_set_default_launcher_screen_failed">Startbildschirm kann nicht geändert werden</string>
+
+    <string name="welcome">Hallo</string>
+    <string name="welcome_1">Willkommen bei Carikom, deinem neuen Launcher</string>
+    <string name="welcome_2">Mach mit Carikom deinen ersten Schritt zu einem leichteren digitalen Leben.</string>
+    <string name="welcome_3">Carikom führt dich durch die Einrichtung und hilft dir, loszulegen.</string>
+    <string name="welcome_4">Nimm dir einen Moment Zeit, um deinen Launcher einzustellen.</string>
+    <string name="setup_1">In der Anzeige oben kannst du sehen, wie weit du schon gekommen bist.</string>
+    <string name="setup_2">Oben links kommst du zum vorherigen Schritt zurück.</string>
+    <string name="setup_3">Oben rechts kannst du die Einrichtung verlassen.</string>
+    <string name="setup_4">Als Erstes kannst du Carikom als Standart einstellen.</string>
+    <string name="setup_5">Das ist wichtig, um den Launcher bestmöglich benutzen zu können.</string>
+    <string name="setup_6">Möchtest du Carikom als Standart einstellen?</string>
+    <string name="setup_7">Bitte stimme der Datenschutzerklärung zu</string>
+    <string name="setup_8">Bitte stimme den Nutzungsbedingungen zu</string>
+    <string name="setup_9">Du kannst jetzt die Größe der Elemente auf deinem Bildschirm wählen.</string>
+    <string name="setup_10">Als nächstes kannst du deine Favoriten festlegen.</string>
+    <string name="setup_11">Diese werden dann ganz oben in deinem Homescreen angezeigt.</string>
+    <string name="setup_12">Wähle dafür die Apps aus, die du am meisten und liebsten benutzt.</string>
+    <string name="setup_13">Du kannst alle diese Einstellungen später noch ändern.</string>
+    <string name="setup_14">Im Assistenten findest du außerdem noch Tipps zu weiteren Einstellungen.</string>
+    <string name="setup_15">Du kannst Carikom jetzt benutzen.</string>
+
+    <string name="next_step">Nächster Schritt</string>
+    <string name="go_back">Zurück</string>
+    <string name="start">Starten</string>
+    <string name="cancel_setup_assistant">Einrichtung verlassen</string>
+    <string name="button_yes">Ja</string>
+    <string name="button_skip">Überspringen</string>
+    <string name="button_accept">Zustimmen</string>
+    <string name="button_set_size">Diese Größe einstellen</string>
+    <string name="button_increase_size">Größer</string>
+    <string name="button_decrease_size">Kleiner</string>
+    <string name="button_save_favorites">Favoriten speichern</string>
+    <string name="button_start">Starten</string>
+
+    <string name="privacy_policy_title">Datenschutz</string>
+    <string name="privacy_policy_text">Zusammenfassung der wichtigsten Punkt + Button zu ganzem Dokument in leichter Sprache
+
+Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+    </string>
+    <string name="terms_of_service_title">Nutzungsbedingungen</string>
+    <string name="terms_of_service_text">Zusammenfassung der wichtigsten Punkt + Button zu ganzem Dokument in leichter Sprache
+Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+
 </resources>

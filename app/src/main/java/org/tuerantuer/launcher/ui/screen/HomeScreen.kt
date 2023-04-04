@@ -68,7 +68,11 @@ fun HomeScreen(
                 items = uiState.favorites,
                 key = { appItemInfo -> appItemInfo.key },
             ) { appItemInfo ->
-                AppItem(appItemInfo, onClick = { onOpenApp(appItemInfo) })
+                AppItem(
+                    appItemInfo = appItemInfo,
+                    onClick = { onOpenApp(appItemInfo) },
+                    appIconSize = uiState.settings.appIconSize,
+                )
             }
         }
     }

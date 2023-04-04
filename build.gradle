@@ -4,6 +4,7 @@ buildscript {
         lifecycle_version = '2.6.1'
         room_version = '2.5.1'
         hilt_version = '2.44.2'
+        timber_version = '5.0.1'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
