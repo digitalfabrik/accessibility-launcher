@@ -16,9 +16,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -158,17 +159,23 @@ fun OnboardingScreen(
                         val smallerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex - 1)
                         val largerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex + 1)
                         if (smallerIconSize != null) {
-                            FloatingActionButton(onClick = { onSetIconSize(smallerIconSize) }) {
+                            FloatingActionButton(
+                                modifier = Modifier.padding(16.dp),
+                                onClick = { onSetIconSize(smallerIconSize) },
+                            ) {
                                 Icon(
-                                    Icons.Filled.ArrowBack,
+                                    Icons.Filled.KeyboardArrowLeft,
                                     contentDescription = stringResource(id = R.string.button_decrease_size),
                                 )
                             }
                         }
                         if (largerIconSize != null) {
-                            FloatingActionButton(onClick = { onSetIconSize(largerIconSize) }) {
+                            FloatingActionButton(
+                                modifier = Modifier.padding(16.dp),
+                                onClick = { onSetIconSize(largerIconSize) },
+                            ) {
                                 Icon(
-                                    Icons.Filled.ArrowForward,
+                                    Icons.Filled.KeyboardArrowRight,
                                     contentDescription = stringResource(id = R.string.button_increase_size),
                                 )
                             }
@@ -177,12 +184,14 @@ fun OnboardingScreen(
                 }
             } else if (page == SCREEN_SET_FAVORITES_MAIN) {
                 val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
+                val appIconSize = uiState.settings.appIconSize.sizeDp.dp
                 EditFavoritesList(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
                     items = uiState.allApps,
                     initiallySelectedItems = selectedFavorites.value,
+                    appIconSize = appIconSize,
                     onAppChecked = { appItemInfo, isChecked ->
                         if (isChecked) {
                             selectedFavorites.value = selectedFavorites.value
@@ -215,7 +224,6 @@ fun OnboardingScreen(
                     .fillMaxWidth()
                     .wrapContentHeight(),
                 shadowElevation = 8.dp,
-                tonalElevation = 8.dp,
                 // only round top corners
                 shape = MaterialTheme.shapes.medium.copy(
                     bottomEnd = CornerSize(0f),
@@ -353,7 +361,7 @@ fun Toolbar(
                 .size(48.dp),
         ) {
             Icon(
-                Icons.Filled.ArrowBack,
+                Icons.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(id = R.string.go_back),
             )
         }

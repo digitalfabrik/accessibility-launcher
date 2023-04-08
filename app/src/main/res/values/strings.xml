@@ -42,6 +42,7 @@
     <string name="button_decrease_size">Kleiner</string>
     <string name="button_save_favorites">Favoriten speichern</string>
     <string name="button_start">Starten</string>
+    <string name="edit_favorites_info">Für mehr Informationen zu dieser Einstellung besuche die Carikom-Wiki-Website.</string>
 
     <string name="privacy_policy_title">Datenschutz</string>
     <string name="privacy_policy_text">Zusammenfassung der wichtigsten Punkt + Button zu ganzem Dokument in leichter Sprache

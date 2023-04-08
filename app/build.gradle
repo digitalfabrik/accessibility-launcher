@@ -72,6 +72,7 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation "com.google.accompanist:accompanist-drawablepainter:0.28.0"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
     // Timber - More painless console logging
     implementation "com.jakewharton.timber:timber:$timber_version"

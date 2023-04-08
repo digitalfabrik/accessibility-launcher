@@ -15,10 +15,12 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -87,6 +89,7 @@ fun Clock() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
         Spacer(modifier = Modifier.height(24.dp))
         AndroidView(
             factory = { context ->
@@ -95,7 +98,7 @@ fun Clock() {
                     format12Hour = format
                     format24Hour = format
                     textSize = 30f
-                    setTextColor(android.graphics.Color.WHITE)
+                    setTextColor(textColor)
                 }
             },
             modifier = Modifier.padding(5.dp),

@@ -2,6 +2,8 @@ package org.tuerantuer.launcher.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,17 +12,23 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Interests
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,12 +40,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.Job
 import org.tuerantuer.launcher.R
@@ -58,22 +66,37 @@ fun EditFavoritesScreen(
     onCancelEdits: () -> Unit,
     onApplyEdits: (newFavorites: List<AppItemInfo>) -> Unit,
 ) {
-    Column(Modifier.fillMaxSize()) {
-        Text(
-            text = stringResource(R.string.select_favorites),
-            Modifier
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 24.sp,
-        )
-        val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
-        Button(onClick = { onApplyEdits.invoke(selectedFavorites.value) }) {
-            Text(text = stringResource(id = R.string.save_favorites))
+    val appIconSize = uiState.settings.appIconSize.sizeDp.dp
+    Column(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            shadowElevation = 8.dp,
+            // only round bottom corners
+            shape = MaterialTheme.shapes.medium.copy(
+                topStart = CornerSize(0f),
+                topEnd = CornerSize(0f),
+            ),
+        ) {
+            Text(
+                text = stringResource(R.string.select_favorites),
+                Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.headlineMedium,
+            )
         }
+        val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
         EditFavoritesList(
+            modifier = Modifier.weight(1f),
             items = uiState.allApps,
             initiallySelectedItems = selectedFavorites.value,
+            appIconSize = appIconSize,
             onAppChecked = { appItemInfo, isChecked ->
                 if (isChecked) {
                     selectedFavorites.value = selectedFavorites.value
@@ -86,6 +109,51 @@ fun EditFavoritesScreen(
             onAppMoved = { posA, posB ->
             },
         )
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            shadowElevation = 8.dp,
+            // only round top corners
+            shape = MaterialTheme.shapes.medium.copy(
+                bottomEnd = CornerSize(0f),
+                bottomStart = CornerSize(0f),
+            ),
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(
+                        top = 32.dp,
+                        bottom = 32.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                    ),
+            ) {
+                ExtendedFloatingActionButton(
+                    modifier = Modifier
+                        .wrapContentSize(),
+                    onClick = { onApplyEdits.invoke(selectedFavorites.value) },
+                    text = {
+                        Text(text = stringResource(R.string.button_save_favorites))
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Interests,
+                            contentDescription = null,
+                        )
+                    },
+                )
+                Text(
+                    modifier = Modifier.padding(top = 32.dp),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(R.string.edit_favorites_info),
+                )
+            }
+        }
     }
 }
 
@@ -94,13 +162,13 @@ fun EditFavoritesList(
     modifier: Modifier = Modifier,
     items: List<AppItemInfo>,
     initiallySelectedItems: List<AppItemInfo>,
+    appIconSize: Dp,
     onAppMoved: (Int, Int) -> Unit,
     onAppChecked: (appItemInfo: AppItemInfo, isChecked: Boolean) -> Unit,
 ) {
 //    val scope = rememberCoroutineScope()
 //    var overscrollJob by remember { mutableStateOf<Job?>(null) }
     val dragDropListState = rememberDragDropListState(onMove = onAppMoved)
-
     LazyColumn(
         modifier = modifier,
 //            .pointerInput(Unit) {
@@ -139,9 +207,8 @@ fun EditFavoritesList(
                                 translationY = offsetOrNull ?: 0f
                             }
                     }
-                    .background(Color.White, shape = RoundedCornerShape(4.dp))
                     .fillMaxWidth(),
-            ) { AppListItem(item, isInitiallyChecked = item in initiallySelectedItems, onAppChecked) }
+            ) { AppListItem(item, isInitiallyChecked = item in initiallySelectedItems, appIconSize, onAppChecked) }
         }
     }
 }
@@ -151,6 +218,7 @@ fun EditFavoritesList(
 fun AppListItem(
     appItemInfo: AppItemInfo,
     isInitiallyChecked: Boolean,
+    appIconSize: Dp,
     onAppChecked: (AppItemInfo, Boolean) -> Unit,
 ) {
     var isChecked by remember { mutableStateOf(isInitiallyChecked) }
@@ -158,12 +226,21 @@ fun AppListItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .background(if (isChecked) Color.LightGray else Color.White)
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .run {
+                if (isChecked) {
+                    border(3.dp, MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(8.dp))
+                } else {
+                    this
+                }
+            },
         shape = RoundedCornerShape(8.dp),
         onClick = { isChecked = !isChecked; onAppChecked(appItemInfo, isChecked) },
     ) {
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Checkbox(
@@ -171,11 +248,12 @@ fun AppListItem(
                 onCheckedChange = { isChecked = it; onAppChecked(appItemInfo, isChecked) },
             )
             Image(
-                modifier = Modifier.width(48.dp).height(48.dp).padding(vertical = 8.dp),
+                modifier = Modifier.width(appIconSize).height(appIconSize).padding(vertical = 8.dp),
                 painter = rememberDrawablePainter(appItemInfo.icon),
                 contentDescription = null,
             )
             Text(
+                modifier = Modifier.padding(start = 8.dp),
                 text = appItemInfo.name,
                 style = MaterialTheme.typography.bodyLarge,
             )
