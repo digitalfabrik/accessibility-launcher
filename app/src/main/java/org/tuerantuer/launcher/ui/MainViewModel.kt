@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import org.tuerantuer.launcher.data.AppIconSize
-import org.tuerantuer.launcher.data.Settings
+import org.tuerantuer.launcher.data.SettingsManager
 import org.tuerantuer.launcher.itemInfo.AppActivityRepository
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
 import org.tuerantuer.launcher.itemInfo.AppLauncher
@@ -27,6 +27,7 @@ class MainViewModel @Inject constructor(
     private val appActivityRepository: AppActivityRepository,
     private val appLauncher: AppLauncher,
     private val defaultLauncherChooser: DefaultLauncherChooser,
+    private val settingsManager: SettingsManager,
 ) : ViewModel() {
 
     private val _screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.HomeScreenState)
@@ -34,13 +35,6 @@ class MainViewModel @Inject constructor(
         get() = _screenState.value
         set(value) {
             _screenState.value = value
-        }
-
-    private val _settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
-    private var settings: Settings
-        get() = _settings.value
-        set(value) {
-            _settings.value = value
         }
 
     /**
@@ -51,7 +45,7 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = combine(
         appActivityRepository.apps,
         _screenState,
-        _settings,
+        settingsManager.settings,
     ) { apps, screenState, settings ->
         UiState(screenState = screenState, favorites = apps.favorites, allApps = apps.allApps, settings = settings)
     }.stateIn(
@@ -118,8 +112,8 @@ class MainViewModel @Inject constructor(
         screenState = ScreenState.OnboardingState(OnboardingPage.SCREEN_1)
     }
 
-    fun onSetIconSize(appIconSize: AppIconSize) {
-        settings = settings.copy(appIconSize = appIconSize)
+    suspend fun onSetIconSize(appIconSize: AppIconSize) {
+        settingsManager.setAppIconSize(appIconSize)
     }
 
     fun onGoToNextOnboardingStep() {

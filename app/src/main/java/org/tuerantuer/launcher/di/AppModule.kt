@@ -11,6 +11,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.tuerantuer.launcher.data.FavoriteDao
+import org.tuerantuer.launcher.data.SettingsManager
+import org.tuerantuer.launcher.data.SettingsManagerImpl
 import org.tuerantuer.launcher.itemInfo.AppActivityRepository
 import org.tuerantuer.launcher.itemInfo.AppActivityRepositoryImpl
 import org.tuerantuer.launcher.itemInfo.AppLauncher
@@ -20,6 +22,7 @@ import org.tuerantuer.launcher.itemInfo.UserManager
 import org.tuerantuer.launcher.itemInfo.UserManagerImpl
 import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
 import org.tuerantuer.launcher.util.DefaultLauncherChooser
+import org.tuerantuer.launcher.util.extension.dataStore
 import javax.inject.Singleton
 
 /**
@@ -71,6 +74,12 @@ class AppModule {
     fun provideAppLauncher(
         @ApplicationContext context: Context,
     ): AppLauncher = AppLauncher(context)
+
+    @Singleton
+    @Provides
+    fun provideSettingsManager(
+        @ApplicationContext context: Context,
+    ): SettingsManager = SettingsManagerImpl(context.dataStore)
 
     @Singleton
     @Provides
