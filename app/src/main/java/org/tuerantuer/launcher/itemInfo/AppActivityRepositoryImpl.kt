@@ -36,10 +36,11 @@ class AppActivityRepositoryImpl(
     private val favoriteDao: FavoriteDao,
 ) : AppActivityRepository, CustomLauncherApps.AppChangeListener {
 
-    override val allApps: MutableSharedFlow<List<AppItemInfo>> = MutableSharedFlow()
-    override val favorites: Flow<List<AppItemInfo>> =
+    private val allApps: MutableSharedFlow<List<AppItemInfo>> = MutableSharedFlow()
+
+    override val apps: Flow<Apps> =
         combine(allApps, favoriteDao.observeAll()) { allApps, favoriteEntities ->
-            buildFavorites(allApps, favoriteEntities)
+            Apps(allApps, buildFavorites(allApps, favoriteEntities))
         }
 
     private var updateAppsJob: Job? = null

@@ -49,12 +49,11 @@ class MainViewModel @Inject constructor(
      * changes.
      */
     val uiState: StateFlow<UiState> = combine(
-        appActivityRepository.allApps,
-        appActivityRepository.favorites,
+        appActivityRepository.apps,
         _screenState,
         _settings,
-    ) { allApps, favorites, screenState, settings ->
-        UiState(screenState = screenState, favorites = favorites, allApps = allApps, settings = settings)
+    ) { apps, screenState, settings ->
+        UiState(screenState = screenState, favorites = apps.favorites, allApps = apps.allApps, settings = settings)
     }.stateIn(
         scope = viewModelScope,
         started = WhileUiSubscribed,

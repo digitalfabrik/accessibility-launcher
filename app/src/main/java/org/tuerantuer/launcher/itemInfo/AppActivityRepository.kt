@@ -11,14 +11,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface AppActivityRepository {
     /**
-     * The favorites of the user.
+     * Lets you query and observe all installed apps of the user along with their favorites.
      */
-    val favorites: Flow<List<AppItemInfo>>
-
-    /**
-     * All installed apps of the user.
-     */
-    val allApps: Flow<List<AppItemInfo>>
+    val apps: Flow<Apps>
 
     /**
      * Sets the favorites of the user.
