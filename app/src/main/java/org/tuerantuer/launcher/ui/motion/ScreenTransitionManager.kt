@@ -81,15 +81,15 @@ class ScreenTransitionManager {
 //     * translation animation.
 //     */
 //    private fun getDepthLevelForState(uiState: ScreenState): Int = when (uiState) {
-//        is ScreenState.Onboarding -> 0
+//        is ScreenState.OnboardingState -> 0
 //        is ScreenState.SetPlayer.Grade -> 0
 //        is ScreenState.SetPlayer.Name -> 0
-//        is ScreenState.LoadHomeScreen -> 0
+//        is ScreenState.LoadHomeScreenState -> 0
 //        is ScreenState.SetPlayer.Subjects -> 0
 //        is ScreenState.MainMenu -> 1
 //        is ScreenState.MatchOverview -> 2
 //        is ScreenState.SelectRoundSubject -> 3
 //        is ScreenState.AnswerQuestions -> 4
-//        is ScreenState.Settings -> 2
+//        is ScreenState.SettingsState -> 2
 //    }
 }

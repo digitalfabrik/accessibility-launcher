@@ -29,7 +29,7 @@ class MainViewModel @Inject constructor(
     private val defaultLauncherChooser: DefaultLauncherChooser,
 ) : ViewModel() {
 
-    private val _screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.HomeScreen)
+    private val _screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.HomeScreenState)
     private var screenState: ScreenState
         get() = _screenState.value
         set(value) {
@@ -76,14 +76,14 @@ class MainViewModel @Inject constructor(
      */
     fun goBack(): Boolean {
         when (screenState) {
-            is ScreenState.LoadHomeScreen -> return true
-            is ScreenState.HomeScreen -> return true
-            is ScreenState.Onboarding -> onGoToPreviousOnboardingStep()
-            is ScreenState.AllAppsScreen -> loadHomeScreen()
-            is ScreenState.Settings -> loadHomeScreen()
-            is ScreenState.EditFavoritesScreen -> loadHomeScreen()
-            // is ScreenState.LoadHomeScreen, is ScreenState.MainMenu, ScreenState.Onboarding -> return false
-            // is ScreenState.MatchOverview, is ScreenState.Settings -> loadMainMenu()
+            is ScreenState.LoadHomeScreenState -> return true
+            is ScreenState.HomeScreenState -> return true
+            is ScreenState.OnboardingState -> onGoToPreviousOnboardingStep()
+            is ScreenState.AllAppsScreenState -> loadHomeScreen()
+            is ScreenState.SettingsState -> loadHomeScreen()
+            is ScreenState.EditFavoritesScreenState -> loadHomeScreen()
+            // is ScreenState.LoadHomeScreenState, is ScreenState.MainMenu, ScreenState.OnboardingState -> return false
+            // is ScreenState.MatchOverview, is ScreenState.SettingsState -> loadMainMenu()
             // is ScreenState.AnswerQuestions -> this.uiState = ScreenState.MatchOverview(uiState.match)
             // is ScreenState.SelectRoundSubject -> this.uiState = ScreenState.MatchOverview(uiState.match)
             // is ScreenState.SetPlayer -> onCancelSetPlayerChange(uiState)
@@ -96,7 +96,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun loadHomeScreen() {
-        screenState = ScreenState.HomeScreen
+        screenState = ScreenState.HomeScreenState
     }
 
     fun openApp(appItemInfo: AppItemInfo) {
@@ -104,19 +104,19 @@ class MainViewModel @Inject constructor(
     }
 
     fun onEditFavorites() {
-        screenState = ScreenState.EditFavoritesScreen
+        screenState = ScreenState.EditFavoritesScreenState
     }
 
     fun onShowAllApps() {
-        screenState = ScreenState.AllAppsScreen
+        screenState = ScreenState.AllAppsScreenState
     }
 
     fun onOpenSettings() {
-        screenState = ScreenState.Settings
+        screenState = ScreenState.SettingsState
     }
 
     fun onOpenOnboarding() {
-        screenState = ScreenState.Onboarding(OnboardingPage.SCREEN_1)
+        screenState = ScreenState.OnboardingState(OnboardingPage.SCREEN_1)
     }
 
     fun onSetIconSize(appIconSize: AppIconSize) {
@@ -133,12 +133,12 @@ class MainViewModel @Inject constructor(
 
     private fun takeOnboardingStep(stepSize: Int) {
         val screenState = screenState
-        require(screenState is ScreenState.Onboarding)
+        require(screenState is ScreenState.OnboardingState)
         val nextStep = screenState.onboardingPage.pageNumber + stepSize
         if (nextStep < OnboardingPage.SCREEN_1.pageNumber || nextStep > OnboardingPage.LAST_PAGE.pageNumber) {
             cancelOnboarding()
         } else {
-            this.screenState = ScreenState.Onboarding(OnboardingPage.values().first { it.pageNumber == nextStep })
+            this.screenState = ScreenState.OnboardingState(OnboardingPage.values().first { it.pageNumber == nextStep })
         }
     }
 
@@ -148,6 +148,6 @@ class MainViewModel @Inject constructor(
 
     suspend fun onSetFavorites(newFavorites: List<AppItemInfo>) {
         appActivityRepository.setFavorites(newFavorites)
-        screenState = ScreenState.HomeScreen
+        screenState = ScreenState.HomeScreenState
     }
 }

@@ -50,7 +50,7 @@ fun SettingsScreen(
 fun SettingsScreenPreview() {
     LauncherTheme {
         SettingsScreen(
-            uiState = UiState(ScreenState.Settings),
+            uiState = UiState(ScreenState.SettingsState),
             onSetDefaultLauncher = { },
         )
     }

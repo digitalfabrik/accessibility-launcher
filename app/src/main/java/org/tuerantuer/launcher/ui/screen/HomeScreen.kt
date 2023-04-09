@@ -172,7 +172,7 @@ fun getTimeFormat(locale: Locale): String {
 fun HomeScreenPreview() {
     LauncherTheme {
         HomeScreen(
-            uiState = UiState(ScreenState.HomeScreen),
+            uiState = UiState(ScreenState.HomeScreenState),
             onShowAllApps = { },
             onOpenSettings = { },
             onEditFavorites = { },

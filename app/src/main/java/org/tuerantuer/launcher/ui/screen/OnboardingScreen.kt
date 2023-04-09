@@ -74,7 +74,7 @@ fun OnboardingScreen(
     onSetFavorites: (newFavorites: List<AppItemInfo>) -> Unit,
 ) {
     val screenState = uiState.screenState
-    require(screenState is ScreenState.Onboarding)
+    require(screenState is ScreenState.OnboardingState)
     val page = screenState.onboardingPage
     val textRes = when (page) {
         OnboardingPage.SCREEN_1 -> R.string.welcome_1
@@ -391,7 +391,7 @@ fun Toolbar(
 @Composable
 fun OnoboardingPreview() {
     LauncherTheme {
-        val screenState = ScreenState.Onboarding(SCREEN_1)
+        val screenState = ScreenState.OnboardingState(SCREEN_1)
         OnboardingScreen(
             uiState = UiState(screenState),
             onGoToNextStep = {},

@@ -361,7 +361,7 @@ class DragDropListState(
 fun EditFavoritesScreenPreview() {
     LauncherTheme {
         EditFavoritesScreen(
-            uiState = UiState(ScreenState.EditFavoritesScreen),
+            uiState = UiState(ScreenState.EditFavoritesScreenState),
             onCancelEdits = { },
             onApplyEdits = { },
         )

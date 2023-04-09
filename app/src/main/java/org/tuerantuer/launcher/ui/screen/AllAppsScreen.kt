@@ -80,7 +80,7 @@ fun AllAppsScreen(
 fun AllAppsScreenPreview() {
     LauncherTheme {
         AllAppsScreen(
-            uiState = UiState(ScreenState.AllAppsScreen),
+            uiState = UiState(ScreenState.AllAppsScreenState),
             onOpenApp = {},
         )
     }

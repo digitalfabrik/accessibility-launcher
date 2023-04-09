@@ -121,8 +121,8 @@ fun Screens(
     coroutinesScope: CoroutineScope,
 ) {
     when (uiState.screenState) {
-        is ScreenState.LoadHomeScreen -> {}
-        is ScreenState.HomeScreen -> HomeScreen(
+        is ScreenState.LoadHomeScreenState -> {}
+        is ScreenState.HomeScreenState -> HomeScreen(
             uiState = uiState,
             onShowAllApps = { mainViewModel.onShowAllApps() },
             onOpenSettings = { mainViewModel.onOpenSettings() },
@@ -130,11 +130,11 @@ fun Screens(
             onShowOnboarding = { mainViewModel.onOpenOnboarding() },
             onOpenApp = { mainViewModel.openApp(it) },
         )
-        is ScreenState.AllAppsScreen -> AllAppsScreen(
+        is ScreenState.AllAppsScreenState -> AllAppsScreen(
             uiState = uiState,
             onOpenApp = { mainViewModel.openApp(it) },
         )
-        is ScreenState.Onboarding -> OnboardingScreen(
+        is ScreenState.OnboardingState -> OnboardingScreen(
             uiState = uiState,
             onGoToPreviousStep = { mainViewModel.goBack() },
             onGoToNextStep = { mainViewModel.onGoToNextOnboardingStep() },
@@ -143,11 +143,11 @@ fun Screens(
             onSetIconSize = { appIconSize -> mainViewModel.onSetIconSize(appIconSize) },
             onSetFavorites = { favorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(favorites) } },
         )
-        is ScreenState.Settings -> SettingsScreen(
+        is ScreenState.SettingsState -> SettingsScreen(
             uiState = uiState,
             onSetDefaultLauncher = { mainViewModel.onSetDefaultLauncher() },
         )
-        is ScreenState.EditFavoritesScreen -> EditFavoritesScreen(
+        is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(
             uiState = uiState,
             onCancelEdits = { /*TODO*/ },
             onApplyEdits = { newFavorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(newFavorites) } },
