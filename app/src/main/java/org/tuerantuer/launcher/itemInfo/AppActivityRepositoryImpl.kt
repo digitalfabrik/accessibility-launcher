@@ -18,6 +18,7 @@ import org.tuerantuer.launcher.data.FavoriteDao
 import org.tuerantuer.launcher.data.FavoriteEntity
 import org.tuerantuer.launcher.di.IoDispatcher
 import org.tuerantuer.launcher.itemInfo.appIdentifier.ComponentKey
+import org.tuerantuer.launcher.itemInfo.appIdentifier.ComponentKeySer
 import org.tuerantuer.launcher.itemInfo.appIdentifier.PackageUserSer
 import org.tuerantuer.launcher.util.CustomInsetDrawable
 
@@ -95,12 +96,9 @@ class AppActivityRepositoryImpl(
                 val name = activityInfo.label?.toString().orEmpty()
                 val icon = getActivityInfoIcon(activityInfo, appIconDpi = 0)
                 val componentKey = ComponentKey.fromLauncherActivityInfo(activityInfo)
-                val key = Key(
-                    componentKey.packageName,
-                    componentKey.className,
-                    userManager.serializeUser(componentKey.userHandle),
-                )
-                AppItemInfo(name, icon, componentKey, key)
+                val userSerialized = userManager.serializeUser(componentKey.userHandle)
+                val componentKeySer = ComponentKeySer(componentKey.componentName, userSerialized)
+                AppItemInfo(name, icon, componentKey, componentKeySer)
             }
             result.sortBy { it.name }
             result

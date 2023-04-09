@@ -12,7 +12,7 @@ import org.tuerantuer.launcher.itemInfo.UserManager
  * @author Peter Huber
  * Created on 05/10/2018
  */
-data class ComponentKeySer constructor(val componentName: ComponentName, val userHandleSer: Long) {
+data class ComponentKeySer(val componentName: ComponentName, val userHandleSer: Long) {
     val packageUserSer: PackageUserSer
         get() = PackageUserSer(componentName.packageName, userHandleSer)
 }

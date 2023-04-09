@@ -16,10 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import org.tuerantuer.launcher.data.AppIconSize
-import org.tuerantuer.launcher.itemInfo.AppItemInfo
+import org.tuerantuer.launcher.ui.HomeScreenItem
 
 /**
  * TODO: add description
@@ -29,34 +28,31 @@ import org.tuerantuer.launcher.itemInfo.AppItemInfo
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppItem(
-    appItemInfo: AppItemInfo,
+fun HomeScreenItemComponent(
+    homeScreenItem: HomeScreenItem,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    appIconSize: AppIconSize,
+    iconSize: AppIconSize,
 ) {
     Card(
-        onClick = onClick,
+        onClick = homeScreenItem.onClick,
         modifier = modifier.padding(4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent,
-        ),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(4.dp).fillMaxWidth(),
         ) {
             Image(
-                modifier = Modifier.size(appIconSize.sizeDp.dp).padding(top = 8.dp),
-                painter = rememberDrawablePainter(appItemInfo.icon),
+                modifier = Modifier.size(iconSize.sizeDp.dp).padding(top = 8.dp),
+                painter = rememberDrawablePainter(homeScreenItem.icon),
                 contentDescription = null,
             )
             Text(
-                text = appItemInfo.name,
-                fontSize = 16.sp,
+                text = homeScreenItem.loadName(),
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(vertical = 8.dp),
-                maxLines = 1,
+                maxLines = 2,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }

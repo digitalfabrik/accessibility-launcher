@@ -1,9 +1,14 @@
 package org.tuerantuer.launcher.ui.screen
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
@@ -11,14 +16,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
+import org.tuerantuer.launcher.ui.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.ScreenState
 import org.tuerantuer.launcher.ui.UiState
-import org.tuerantuer.launcher.ui.components.AppItem
+import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
@@ -32,27 +38,37 @@ fun AllAppsScreen(
     uiState: UiState,
     onOpenApp: (appItemInfo: AppItemInfo) -> Unit,
 ) {
-    Text(
-        text = stringResource(R.string.all_apps),
-        Modifier
-            .wrapContentHeight()
-            .fillMaxWidth(),
-        color = MaterialTheme.colorScheme.onBackground,
-        fontSize = 24.sp,
-    )
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 86.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
     ) {
-        items(
-            items = uiState.allApps,
-            key = { appItemInfo -> appItemInfo.key },
-        ) { appItemInfo ->
-            AppItem(
-                appItemInfo = appItemInfo,
-                onClick = { onOpenApp(appItemInfo) },
-                appIconSize = uiState.settings.appIconSize,
-            )
+        val homeScreenItems =
+            uiState.allApps.map { appItemInfo -> AppHomeScreenItem(appItemInfo, onClick = { onOpenApp(appItemInfo) }) }
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 86.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        ) {
+            item(span = { GridItemSpan(Int.MAX_VALUE) }) {
+                Text(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                        .padding(top = 64.dp, bottom = 32.dp),
+                    text = stringResource(R.string.all_apps),
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center,
+                )
+            }
+            items(
+                items = homeScreenItems,
+                key = { homeScreenItems -> homeScreenItems.key },
+            ) { homeScreenItem ->
+                HomeScreenItemComponent(
+                    homeScreenItem = homeScreenItem,
+                    iconSize = uiState.settings.appIconSize,
+                )
+            }
         }
     }
 }
