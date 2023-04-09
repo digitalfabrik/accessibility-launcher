@@ -146,6 +146,9 @@ fun Screens(
         is ScreenState.SettingsState -> SettingsScreen(
             uiState = uiState,
             onSetDefaultLauncher = { mainViewModel.onSetDefaultLauncher() },
+            onShareLauncher = { mainViewModel.onShareLauncher() },
+            onOpenSystemSettings = { mainViewModel.onOpenSystemSettings() },
+            onUninstallLauncher = { mainViewModel.onUninstallLauncher() },
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(
             uiState = uiState,

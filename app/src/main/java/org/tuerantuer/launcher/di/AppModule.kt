@@ -21,7 +21,7 @@ import org.tuerantuer.launcher.itemInfo.CustomLauncherAppsImpl
 import org.tuerantuer.launcher.itemInfo.UserManager
 import org.tuerantuer.launcher.itemInfo.UserManagerImpl
 import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
-import org.tuerantuer.launcher.util.DefaultLauncherChooser
+import org.tuerantuer.launcher.util.FrameworkActionsManager
 import org.tuerantuer.launcher.util.extension.dataStore
 import javax.inject.Singleton
 
@@ -85,5 +85,5 @@ class AppModule {
     @Provides
     fun provideDefaultLauncherChooser(
         @ApplicationContext context: Context,
-    ): DefaultLauncherChooser = DefaultLauncherChooser(context)
+    ): FrameworkActionsManager = FrameworkActionsManager(context)
 }

@@ -1,5 +1,6 @@
 package org.tuerantuer.launcher.ui
 
+import android.os.Process
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,13 +10,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.tuerantuer.launcher.BuildConfig
 import org.tuerantuer.launcher.data.AppIconSize
 import org.tuerantuer.launcher.data.SettingsManager
 import org.tuerantuer.launcher.itemInfo.AppActivityRepository
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
 import org.tuerantuer.launcher.itemInfo.AppLauncher
 import org.tuerantuer.launcher.itemInfo.Apps
-import org.tuerantuer.launcher.util.DefaultLauncherChooser
+import org.tuerantuer.launcher.itemInfo.appIdentifier.ComponentKey
+import org.tuerantuer.launcher.util.FrameworkActionsManager
 import org.tuerantuer.launcher.util.WhileUiSubscribed
 import javax.inject.Inject
 
@@ -28,7 +31,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val appActivityRepository: AppActivityRepository,
     private val appLauncher: AppLauncher,
-    private val defaultLauncherChooser: DefaultLauncherChooser,
+    private val frameworkActionsManager: FrameworkActionsManager,
     private val settingsManager: SettingsManager,
 ) : ViewModel() {
 
@@ -90,7 +93,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun onSetDefaultLauncher() {
-        defaultLauncherChooser.openSetDefaultLauncherChooser(view = null)
+        frameworkActionsManager.openSetDefaultLauncherChooser()
     }
 
     private fun loadHomeScreen() {
@@ -146,6 +149,23 @@ class MainViewModel @Inject constructor(
                     ScreenState.OnboardingState(OnboardingPage.values().first { it.pageNumber == nextStep })
             }
         }
+    }
+
+    fun onShareLauncher() {
+        frameworkActionsManager.shareLauncher()
+    }
+
+    fun onOpenSystemSettings() {
+        frameworkActionsManager.openSystemSettings()
+    }
+
+    fun onUninstallLauncher() {
+        val ownComponentKey = ComponentKey(
+            packageName = BuildConfig.APPLICATION_ID,
+            className = "${BuildConfig.APPLICATION_ID}.ui.MainActivity",
+            userHandle = Process.myUserHandle(),
+        )
+        frameworkActionsManager.openAppUninstallDialog(ownComponentKey)
     }
 
     fun cancelOnboarding() {
