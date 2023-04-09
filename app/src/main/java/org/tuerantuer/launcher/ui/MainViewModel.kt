@@ -8,11 +8,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import org.tuerantuer.launcher.data.AppIconSize
 import org.tuerantuer.launcher.data.SettingsManager
 import org.tuerantuer.launcher.itemInfo.AppActivityRepository
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
 import org.tuerantuer.launcher.itemInfo.AppLauncher
+import org.tuerantuer.launcher.itemInfo.Apps
 import org.tuerantuer.launcher.util.DefaultLauncherChooser
 import org.tuerantuer.launcher.util.WhileUiSubscribed
 import javax.inject.Inject
@@ -47,11 +49,14 @@ class MainViewModel @Inject constructor(
         _screenState,
         settingsManager.settings,
     ) { apps, screenState, settings ->
-        UiState(screenState = screenState, favorites = apps.favorites, allApps = apps.allApps, settings = settings)
+        if (!settings.isUserOnboarded && screenState !is ScreenState.OnboardingState) {
+            onOpenOnboarding()
+        }
+        UiState(screenState = screenState, apps = apps, settings = settings)
     }.stateIn(
         scope = viewModelScope,
         started = WhileUiSubscribed,
-        initialValue = UiState(screenState = screenState, allApps = emptyList(), favorites = emptyList()),
+        initialValue = UiState(screenState = ScreenState.LoadHomeScreenState, apps = Apps()),
     )
 
     private var isActivityInForeground: Boolean = true
@@ -128,10 +133,18 @@ class MainViewModel @Inject constructor(
         val screenState = screenState
         require(screenState is ScreenState.OnboardingState)
         val nextStep = screenState.onboardingPage.pageNumber + stepSize
-        if (nextStep < OnboardingPage.SCREEN_1.pageNumber || nextStep > OnboardingPage.LAST_PAGE.pageNumber) {
-            cancelOnboarding()
-        } else {
-            this.screenState = ScreenState.OnboardingState(OnboardingPage.values().first { it.pageNumber == nextStep })
+        when {
+            nextStep < OnboardingPage.SCREEN_1.pageNumber -> cancelOnboarding()
+            nextStep > OnboardingPage.LAST_PAGE.pageNumber -> {
+                viewModelScope.launch {
+                    settingsManager.setIsUserOnboarded(isOnboarded = true)
+                    loadHomeScreen()
+                }
+            }
+            else -> {
+                this.screenState =
+                    ScreenState.OnboardingState(OnboardingPage.values().first { it.pageNumber == nextStep })
+            }
         }
     }
 

@@ -66,12 +66,12 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
 @Composable
 fun OnboardingScreen(
     uiState: UiState,
-    onGoToNextStep: () -> Unit,
-    onGoToPreviousStep: () -> Unit,
-    onSetDefaultLauncher: () -> Unit,
-    onCancelOnboarding: () -> Unit,
-    onSetIconSize: (appIconSize: AppIconSize) -> Unit,
-    onSetFavorites: (newFavorites: List<AppItemInfo>) -> Unit,
+    onGoToNextStep: () -> Unit = {},
+    onGoToPreviousStep: () -> Unit = {},
+    onSetDefaultLauncher: () -> Unit = {},
+    onCancelOnboarding: () -> Unit = {},
+    onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
+    onSetFavorites: (newFavorites: List<AppItemInfo>) -> Unit = {},
 ) {
     val screenState = uiState.screenState
     require(screenState is ScreenState.OnboardingState)
@@ -392,14 +392,6 @@ fun Toolbar(
 fun OnoboardingPreview() {
     LauncherTheme {
         val screenState = ScreenState.OnboardingState(SCREEN_1)
-        OnboardingScreen(
-            uiState = UiState(screenState),
-            onGoToNextStep = {},
-            onGoToPreviousStep = {},
-            onSetDefaultLauncher = {},
-            onCancelOnboarding = {},
-            onSetIconSize = {},
-            onSetFavorites = {},
-        )
+        OnboardingScreen(uiState = UiState(screenState))
     }
 }

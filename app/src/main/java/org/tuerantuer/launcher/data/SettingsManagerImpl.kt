@@ -2,6 +2,7 @@ package org.tuerantuer.launcher.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -21,10 +22,12 @@ class SettingsManagerImpl(
 ) : SettingsManager {
     companion object {
         private val APP_ICON_SIZE_DP_KEY = intPreferencesKey("app_icon_size_dp")
+        private val IS_USER_ONBOARDED_KEY = booleanPreferencesKey("is_user_onboarded")
         private val DEFAULT_APP_ICON_SIZE = AppIconSize.Medium
+        private const val DEFAULT_IS_USER_ONBOARDED = false
     }
 
-    private val appIconSize: Flow<AppIconSize> = dataStore.data
+    override val settings: Flow<Settings> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
@@ -34,12 +37,16 @@ class SettingsManagerImpl(
         }
         .map { preferences ->
             val appIconSizeInt = preferences[APP_ICON_SIZE_DP_KEY] ?: DEFAULT_APP_ICON_SIZE.sizeDp
-            AppIconSize.values().firstOrNull { it.sizeDp == appIconSizeInt } ?: DEFAULT_APP_ICON_SIZE
+            val appIconSize = AppIconSize.values().firstOrNull { it.sizeDp == appIconSizeInt } ?: DEFAULT_APP_ICON_SIZE
+            val isUserOnboarded = preferences[IS_USER_ONBOARDED_KEY] ?: DEFAULT_IS_USER_ONBOARDED
+            Settings(appIconSize, isUserOnboarded)
         }
-
-    override val settings: Flow<Settings> = appIconSize.map { Settings(it) }
 
     override suspend fun setAppIconSize(size: AppIconSize) {
         dataStore.edit { preferences -> preferences[APP_ICON_SIZE_DP_KEY] = size.sizeDp }
+    }
+
+    override suspend fun setIsUserOnboarded(isOnboarded: Boolean) {
+        dataStore.edit { settings -> settings[IS_USER_ONBOARDED_KEY] = isOnboarded }
     }
 }

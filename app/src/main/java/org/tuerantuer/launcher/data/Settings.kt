@@ -8,5 +8,13 @@ package org.tuerantuer.launcher.data
  * Created on 04/04/2023
  */
 data class Settings(
+    /**
+     * @see AppIconSize
+     */
     val appIconSize: AppIconSize = AppIconSize.Medium,
+
+    /**
+     * Whether the user has tapped through all the onboarding screens and therefore accepted the terms and conditions.
+     */
+    val isUserOnboarded: Boolean = true,
 )

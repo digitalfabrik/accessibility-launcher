@@ -17,4 +17,6 @@ interface SettingsManager {
     val settings: Flow<Settings>
 
     suspend fun setAppIconSize(size: AppIconSize)
+
+    suspend fun setIsUserOnboarded(isOnboarded: Boolean)
 }

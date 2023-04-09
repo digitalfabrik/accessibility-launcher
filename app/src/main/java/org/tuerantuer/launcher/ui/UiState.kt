@@ -2,6 +2,7 @@ package org.tuerantuer.launcher.ui
 
 import org.tuerantuer.launcher.data.Settings
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
+import org.tuerantuer.launcher.itemInfo.Apps
 
 /**
  * Dictates what should be displayed to the user.
@@ -11,7 +12,11 @@ import org.tuerantuer.launcher.itemInfo.AppItemInfo
  */
 data class UiState(
     val screenState: ScreenState,
-    val favorites: List<AppItemInfo> = emptyList(),
-    val allApps: List<AppItemInfo> = emptyList(),
+    val apps: Apps = Apps(),
     val settings: Settings = Settings(),
-)
+) {
+    val favorites: List<AppItemInfo>
+        get() = apps.favorites
+    val allApps: List<AppItemInfo>
+        get() = apps.allApps
+}
