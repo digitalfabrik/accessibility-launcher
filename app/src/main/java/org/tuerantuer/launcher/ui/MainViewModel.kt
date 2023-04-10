@@ -29,14 +29,15 @@ interface MainViewModel {
     fun openApp(appItemInfo: AppItemInfo)
     fun onEditFavorites()
     fun onShowAllApps()
-    fun onOpenSettings()
     fun onOpenOnboarding()
+    fun openSettingsPage(settingsPage: SettingsPage)
 
     fun onSetDefaultLauncher()
     fun onGoToNextOnboardingStep()
     fun onShareLauncher()
     fun onOpenSystemSettings()
     fun onUninstallLauncher()
+    fun onWriteFeedbackMail()
     fun cancelOnboarding()
 
     suspend fun onSetFavorites(newFavorites: List<AppItemInfo>)

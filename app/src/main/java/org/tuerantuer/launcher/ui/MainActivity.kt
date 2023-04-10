@@ -115,7 +115,7 @@ fun Screens(
         is ScreenState.HomeScreenState -> HomeScreen(
             uiState = uiState,
             onShowAllApps = { mainViewModel.onShowAllApps() },
-            onOpenSettings = { mainViewModel.onOpenSettings() },
+            onOpenSettings = { mainViewModel.openSettingsPage(SettingsPage.Overview) },
             onEditFavorites = { mainViewModel.onEditFavorites() },
             onShowOnboarding = { mainViewModel.onOpenOnboarding() },
             onOpenApp = { mainViewModel.openApp(it) },
@@ -139,6 +139,9 @@ fun Screens(
             onShareLauncher = { mainViewModel.onShareLauncher() },
             onOpenSystemSettings = { mainViewModel.onOpenSystemSettings() },
             onUninstallLauncher = { mainViewModel.onUninstallLauncher() },
+            onWriteFeedbackMail = { mainViewModel.onWriteFeedbackMail() },
+            onOpenSettingsPage = { page -> mainViewModel.openSettingsPage(page) },
+            onGoBack = { mainViewModel.goBack() },
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(
             uiState = uiState,

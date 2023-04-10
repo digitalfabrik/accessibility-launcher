@@ -21,5 +21,5 @@ sealed class ScreenState {
 
     object AllAppsScreenState : ScreenState()
 
-    object SettingsState : ScreenState()
+    class SettingsState(val settingsPage: SettingsPage) : ScreenState()
 }

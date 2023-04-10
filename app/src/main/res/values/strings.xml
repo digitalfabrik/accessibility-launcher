@@ -30,15 +30,25 @@
     <string name="setup_14">Im Assistenten findest du außerdem noch Tipps zu weiteren Einstellungen.</string>
     <string name="setup_15">Du kannst Carikom jetzt benutzen.</string>
 
-    <string name="assistant">Assistent</string>
     <string name="change_default_launcher">Standard Startbildschirm ändern</string>
     <string name="set_this_launcher_as_default">Carikom als Standard festlegen</string>
+    <string name="set_this_launcher_as_default_description">Wenn Carikom als Standart eingestellt ist, siehst du alle deine Anwendungen wie Apps und Favoriten auf deinem Carikom Homescreen.</string>
     <string name="open_system_settings">Systemeinstellungen des Geräts</string>
+    <string name="open_system_settings_description">Du bist gerade dabei, Carikom zu verlassen und wirst zu den Systemeinstellungen deines Geräts weitergeleitet. Möchtest du fortfahren?</string>
     <string name="share_launcher">Carikom teilen</string>
+    <string name="share_launcher_description">Möchtest du Carikom deinen Freunden und Freundinnen, Kollegen und Kolleginnen, Familienmitgliedern oder jemand anderem zeigen oder weiterempfehlen? Wähle aus den angezeigten Möglichkeiten eine Option aus.</string>
     <string name="share_launcher_text">Carikom Launcher - [INSERT_TAGLINE]: %s</string>
     <string name="get_feedback_contact">Kontakt für Feedback</string>
+    <string name="get_feedback_contact_description">Hast du etwas, das dir besonders gut oder schlecht an Carikom aufgefallen ist? Schreib uns  und sag uns, was du denkst.</string>
     <string name="uninstall_apps">Apps deinstallieren</string>
+
     <string name="uninstall_launcher">Carikom deinstallieren</string>
+    <string name="uninstall_launcher_description">Hier kannst du Carikom deinstallieren. Achtung: Das bedeutet, dass deine Einstellungen und Favoriten gelöscht werden. \n Hier kannst du Carikom deinstallieren.</string>
+
+    <string name="assistant">Assistent</string>
+    <string name="assistant_visual">Sehen</string>
+    <string name="assistant_hearing">Hören</string>
+    <string name="assistant_speech">Sprache</string>
 
     <string name="next_step">Nächster Schritt</string>
     <string name="go_back">Zurück</string>
@@ -53,8 +63,12 @@
     <string name="button_save_favorites">Favoriten speichern</string>
     <string name="button_start">Starten</string>
     <string name="edit_favorites_info">Für mehr Informationen zu dieser Einstellung besuche die Carikom-Wiki-Website.</string>
+    <string name="settings_info">Um zu erfahren, warum es wichtig sein kann, diese Einstellungen anzupassen, besuche die Carikom-Wiki-Website. Hier erfährt du auch, welche Einstellung für dich geeignet ist.</string>
 
     <string name="privacy_policy_title">Datenschutz</string>
+    <string name="support_mail_address">example@example.org</string>
+    <string name="feedback_mail_subject">[SUBJECT_PLACEHOLDER]</string>
+    <string name="feedback_mail_body">[BODY_PLACEHOLDER]</string>
     <string name="privacy_policy_text">Zusammenfassung der wichtigsten Punkt + Button zu ganzem Dokument in leichter Sprache
 
 Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.

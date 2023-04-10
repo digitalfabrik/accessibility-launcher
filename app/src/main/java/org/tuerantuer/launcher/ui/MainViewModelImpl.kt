@@ -63,12 +63,19 @@ class MainViewModelImpl(
      * @return true if pressing back event was handled and should not be propagated further.
      */
     override fun goBack(): Boolean {
-        when (screenState) {
+        when (val screenState = screenState) {
             is ScreenState.LoadHomeScreenState -> return true
             is ScreenState.HomeScreenState -> return true
             is ScreenState.OnboardingState -> onGoToPreviousOnboardingStep()
             is ScreenState.AllAppsScreenState -> loadHomeScreen()
-            is ScreenState.SettingsState -> loadHomeScreen()
+            is ScreenState.SettingsState -> {
+                val parentPage = screenState.settingsPage.parentPage
+                if (parentPage != null) {
+                    openSettingsPage(parentPage)
+                } else {
+                    loadHomeScreen()
+                }
+            }
             is ScreenState.EditFavoritesScreenState -> loadHomeScreen()
             // is ScreenState.LoadHomeScreenState, is ScreenState.MainMenu, ScreenState.OnboardingState -> return false
             // is ScreenState.MatchOverview, is ScreenState.SettingsState -> loadMainMenu()
@@ -99,8 +106,8 @@ class MainViewModelImpl(
         screenState = ScreenState.AllAppsScreenState
     }
 
-    override fun onOpenSettings() {
-        screenState = ScreenState.SettingsState
+    override fun openSettingsPage(settingsPage: SettingsPage) {
+        screenState = ScreenState.SettingsState(settingsPage)
     }
 
     override fun onOpenOnboarding() {
@@ -153,6 +160,10 @@ class MainViewModelImpl(
             userHandle = Process.myUserHandle(),
         )
         frameworkActionsManager.openAppUninstallDialog(ownComponentKey)
+    }
+
+    override fun onWriteFeedbackMail() {
+        frameworkActionsManager.sendFeedbackMail()
     }
 
     override fun cancelOnboarding() {

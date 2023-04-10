@@ -86,9 +86,8 @@ fun EditFavoritesScreen(
                 Modifier
                     .wrapContentHeight()
                     .fillMaxWidth()
-                    .padding(16.dp),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.headlineMedium,
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                style = MaterialTheme.typography.titleMedium,
             )
         }
         val selectedFavorites = remember { mutableStateOf(uiState.favorites) }

@@ -52,6 +52,14 @@ class FrameworkActionsManager(private val context: Context) {
         }
     }
 
+    fun openAccessibilitySettings() {
+        try {
+            Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).launchAppActivityInNewState(context, view = null)
+        } catch (e: ActivityLaunchFailedException) {
+            showLongToast(R.string.action_not_supported)
+        }
+    }
+
     fun showLongToast(messageRes: Int) {
         Toast.makeText(context, messageRes, Toast.LENGTH_LONG).show()
     }
@@ -80,6 +88,36 @@ class FrameworkActionsManager(private val context: Context) {
             } catch (e2: ActivityNotFoundException) {
                 showLongToast(R.string.action_not_supported)
             }
+        }
+    }
+
+    fun sendFeedbackMail() {
+        sendMail(
+            subject = context.getString(R.string.feedback_mail_subject),
+            body = context.getString(R.string.feedback_mail_body),
+        )
+    }
+
+    /**
+     * Lets the user send a prewritten email to us.
+     *
+     * @param subject   the subject of the email.
+     * @param body      the body of the email.
+     */
+    private fun sendMail(subject: String, body: CharSequence) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            val supportEmailAddress = context.getString(R.string.support_mail_address)
+            // Data makes sure only email apps should handle this. For some reason the intent breaks for Gmail if we
+            // include our email address in the mailto URI.
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(supportEmailAddress))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, body)
+        }
+        try {
+            intent.launchAppActivityInNewState(context, view = null)
+        } catch (e: ActivityLaunchFailedException) {
+            showLongToast(R.string.action_not_supported)
         }
     }
 }
