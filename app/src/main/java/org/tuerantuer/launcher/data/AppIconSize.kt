@@ -7,7 +7,9 @@ package org.tuerantuer.launcher.data
  * Created on 04/04/2023
  */
 enum class AppIconSize(val sizeDp: Int) {
-    Small(48),
-    Medium(72),
-    Large(96),
+    S(64),
+    M(72),
+    L(84),
+    XL(96),
+    XXL(128),
 }

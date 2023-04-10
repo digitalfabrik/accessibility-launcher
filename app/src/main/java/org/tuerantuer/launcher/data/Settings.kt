@@ -11,7 +11,7 @@ data class Settings(
     /**
      * @see AppIconSize
      */
-    val appIconSize: AppIconSize = AppIconSize.Medium,
+    val appIconSize: AppIconSize = AppIconSize.M,
 
     /**
      * Whether the user has tapped through all the onboarding screens and therefore accepted the terms and conditions.

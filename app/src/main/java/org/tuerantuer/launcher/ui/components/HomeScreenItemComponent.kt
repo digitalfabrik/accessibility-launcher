@@ -43,15 +43,15 @@ fun HomeScreenItemComponent(
             modifier = Modifier.padding(4.dp).fillMaxWidth(),
         ) {
             Image(
-                modifier = Modifier.size(iconSize).padding(top = 8.dp),
+                modifier = Modifier.size(iconSize).padding(top = 16.dp),
                 painter = rememberDrawablePainter(homeScreenItem.icon),
                 contentDescription = null,
             )
             Text(
                 text = homeScreenItem.loadName(),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 8.dp),
+                modifier = Modifier.padding(vertical = 16.dp),
                 maxLines = 2,
                 color = MaterialTheme.colorScheme.onBackground,
             )

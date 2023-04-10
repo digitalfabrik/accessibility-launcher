@@ -23,7 +23,7 @@ class SettingsManagerImpl(
     companion object {
         private val APP_ICON_SIZE_DP_KEY = intPreferencesKey("app_icon_size_dp")
         private val IS_USER_ONBOARDED_KEY = booleanPreferencesKey("is_user_onboarded")
-        private val DEFAULT_APP_ICON_SIZE = AppIconSize.Medium
+        private val DEFAULT_APP_ICON_SIZE = AppIconSize.M
         private const val DEFAULT_IS_USER_ONBOARDED = false
     }
 

@@ -252,9 +252,9 @@ fun AppListItem(
                 contentDescription = null,
             )
             Text(
-                modifier = Modifier.padding(start = 8.dp),
+                modifier = Modifier.padding(start = 16.dp),
                 text = appItemInfo.name,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.labelLarge,
             )
         }
     }
