@@ -97,8 +97,9 @@ fun HomeScreen(
                 ),
             )
         }
+        val appIconSize = uiState.settings.appIconSize.sizeDp.dp
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 86.dp),
+            columns = GridCells.Adaptive(minSize = appIconSize),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         ) {
             item(span = { GridItemSpan(Int.MAX_VALUE) }) {
@@ -110,7 +111,7 @@ fun HomeScreen(
             ) { homeScreenItem ->
                 HomeScreenItemComponent(
                     homeScreenItem = homeScreenItem,
-                    iconSize = uiState.settings.appIconSize,
+                    iconSize = appIconSize,
                 )
             }
         }

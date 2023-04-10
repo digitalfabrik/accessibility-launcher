@@ -15,9 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import org.tuerantuer.launcher.data.AppIconSize
 import org.tuerantuer.launcher.ui.HomeScreenItem
 
 /**
@@ -31,7 +31,7 @@ import org.tuerantuer.launcher.ui.HomeScreenItem
 fun HomeScreenItemComponent(
     homeScreenItem: HomeScreenItem,
     modifier: Modifier = Modifier,
-    iconSize: AppIconSize,
+    iconSize: Dp,
 ) {
     Card(
         onClick = homeScreenItem.onClick,
@@ -43,7 +43,7 @@ fun HomeScreenItemComponent(
             modifier = Modifier.padding(4.dp).fillMaxWidth(),
         ) {
             Image(
-                modifier = Modifier.size(iconSize.sizeDp.dp).padding(top = 8.dp),
+                modifier = Modifier.size(iconSize).padding(top = 8.dp),
                 painter = rememberDrawablePainter(homeScreenItem.icon),
                 contentDescription = null,
             )
