@@ -34,7 +34,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-val DefaultSlideDistance: Dp = 30.dp
+val DefaultSlideDistance: Dp = 60.dp
+const val InitialSlideAlpha: Float = 0.8f
 
 private const val ProgressThreshold = 0.35f
 
@@ -106,6 +107,7 @@ fun materialSharedAxisXIn(
                 delayMillis = durationMillis.ForOutgoing,
                 easing = LinearOutSlowInEasing,
             ),
+            initialAlpha = InitialSlideAlpha,
         )
     },
 )

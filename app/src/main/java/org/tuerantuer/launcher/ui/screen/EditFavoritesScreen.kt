@@ -1,5 +1,8 @@
 package org.tuerantuer.launcher.ui.screen
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -221,18 +224,19 @@ fun AppListItem(
     onAppChecked: (AppItemInfo, Boolean) -> Unit,
 ) {
     var isChecked by remember { mutableStateOf(isInitiallyChecked) }
-
+    val borderSize by animateDpAsState(
+        targetValue = if (isChecked) 4.dp else 0.dp,
+        animationSpec = TweenSpec(durationMillis = 300),
+    )
+    val borderColor by animateColorAsState(
+        targetValue = if (isChecked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+        animationSpec = TweenSpec(durationMillis = 300),
+    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .run {
-                if (isChecked) {
-                    border(3.dp, MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(8.dp))
-                } else {
-                    this
-                }
-            },
+            .border(borderSize, borderColor, shape = RoundedCornerShape(8.dp)),
         shape = RoundedCornerShape(8.dp),
         onClick = { isChecked = !isChecked; onAppChecked(appItemInfo, isChecked) },
     ) {

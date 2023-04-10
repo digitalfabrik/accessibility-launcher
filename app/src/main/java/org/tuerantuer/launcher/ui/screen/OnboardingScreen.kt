@@ -1,10 +1,15 @@
 package org.tuerantuer.launcher.ui.screen
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,6 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.toMutableStateList
@@ -46,16 +52,21 @@ import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.data.AppIconSize
 import org.tuerantuer.launcher.itemInfo.AppItemInfo
 import org.tuerantuer.launcher.ui.OnboardingPage
-import org.tuerantuer.launcher.ui.OnboardingPage.SCREEN_1
-import org.tuerantuer.launcher.ui.OnboardingPage.SCREEN_PRIVACY_POLICY
-import org.tuerantuer.launcher.ui.OnboardingPage.SCREEN_SETUP_FINISHED_3
-import org.tuerantuer.launcher.ui.OnboardingPage.SCREEN_SET_DEFAULT_LAUNCHER
-import org.tuerantuer.launcher.ui.OnboardingPage.SCREEN_SET_FAVORITES_MAIN
-import org.tuerantuer.launcher.ui.OnboardingPage.SCREEN_SET_SIZE_MAIN
-import org.tuerantuer.launcher.ui.OnboardingPage.SCREEN_TERMS_OF_SERVICE
 import org.tuerantuer.launcher.ui.ScreenState
 import org.tuerantuer.launcher.ui.UiState
+import org.tuerantuer.launcher.ui.motion.CustomMaterialMotion
+import org.tuerantuer.launcher.ui.motion.DefaultSlideDistance
+import org.tuerantuer.launcher.ui.motion.materialSharedAxisXIn
+import org.tuerantuer.launcher.ui.motion.materialSharedAxisXOut
+import org.tuerantuer.launcher.ui.motion.with
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
+
+@ExperimentalAnimationApi
+val sharedXMotionSpec = materialSharedAxisXIn() with materialSharedAxisXOut()
+
+@ExperimentalAnimationApi
+val sharedXMotionSpecReverse =
+    materialSharedAxisXIn(-DefaultSlideDistance) with materialSharedAxisXOut(-DefaultSlideDistance)
 
 /**
  * The screen where the user can set up the launcher. The screen shows up the first time the launcher is started.
@@ -63,6 +74,7 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
  * @author Peter Huber
  * Created on 07/03/2023
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun OnboardingScreen(
     uiState: UiState,
@@ -115,109 +127,28 @@ fun OnboardingScreen(
                 onGoToPreviousStep = onGoToPreviousStep,
                 onCancelOnboarding = onCancelOnboarding,
             )
-            if (page in setOf(SCREEN_PRIVACY_POLICY, SCREEN_TERMS_OF_SERVICE)) {
-                val textRes = when (page) {
-                    SCREEN_PRIVACY_POLICY -> R.string.privacy_policy_text
-                    SCREEN_TERMS_OF_SERVICE -> R.string.terms_of_service_text
-                    else -> throw IllegalStateException()
-                }
-                ScrollableText(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .weight(1f),
-                    text = stringResource(textRes),
-                )
-            } else if (page == SCREEN_SET_SIZE_MAIN) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                    ) {
-                        val iconSizeDp = uiState.settings.appIconSize.sizeDp.dp
-                        Box(
-                            modifier = Modifier
-                                .width(iconSizeDp)
-                                .height(iconSizeDp)
-                                .background(Color.LightGray)
-                                .align(Alignment.Center),
-                        )
+            CustomMaterialMotion(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                targetState = uiState,
+                animationForStateTransition = { old, new ->
+                    val oldPage = (old.screenState as? ScreenState.OnboardingState)?.onboardingPage
+                        ?: return@CustomMaterialMotion null
+                    val newPage = (new.screenState as? ScreenState.OnboardingState)?.onboardingPage
+                        ?: return@CustomMaterialMotion null
+                    when {
+                        oldPage.pageNumber < newPage.pageNumber -> sharedXMotionSpec
+                        oldPage.pageNumber > newPage.pageNumber -> sharedXMotionSpecReverse
+                        old.settings.appIconSize < new.settings.appIconSize -> sharedXMotionSpec
+                        old.settings.appIconSize > new.settings.appIconSize -> sharedXMotionSpecReverse
+                        else -> sharedXMotionSpec
                     }
-                    Row(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        val allAppIconSizes = AppIconSize.values()
-                        val currentAppIconSize = uiState.settings.appIconSize
-                        val currentAppIconSizeIndex = allAppIconSizes.indexOf(currentAppIconSize)
-                        val smallerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex - 1)
-                        val largerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex + 1)
-                        if (smallerIconSize != null) {
-                            FloatingActionButton(
-                                modifier = Modifier.padding(16.dp),
-                                onClick = { onSetIconSize(smallerIconSize) },
-                            ) {
-                                Icon(
-                                    Icons.Filled.KeyboardArrowLeft,
-                                    contentDescription = stringResource(id = R.string.button_decrease_size),
-                                )
-                            }
-                        }
-                        if (largerIconSize != null) {
-                            FloatingActionButton(
-                                modifier = Modifier.padding(16.dp),
-                                onClick = { onSetIconSize(largerIconSize) },
-                            ) {
-                                Icon(
-                                    Icons.Filled.KeyboardArrowRight,
-                                    contentDescription = stringResource(id = R.string.button_increase_size),
-                                )
-                            }
-                        }
-                    }
-                }
-            } else if (page == SCREEN_SET_FAVORITES_MAIN) {
-                val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
-                val appIconSize = uiState.settings.appIconSize.sizeDp.dp
-                EditFavoritesList(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    items = uiState.allApps,
-                    initiallySelectedItems = selectedFavorites.value,
-                    appIconSize = appIconSize,
-                    onAppChecked = { appItemInfo, isChecked ->
-                        if (isChecked) {
-                            selectedFavorites.value = selectedFavorites.value
-                                .toMutableStateList().apply { add(appItemInfo) }
-                        } else {
-                            selectedFavorites.value = selectedFavorites.value
-                                .toMutableStateList().apply { remove(appItemInfo) }
-                        }
-                    },
-                    onAppMoved = { posA, posB ->
-                    },
+                },
+            ) { animatedUiState ->
+                MainContent(
+                    uiState = uiState,
+                    page = page,
+                    onSetIconSize = onSetIconSize,
                 )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .width(200.dp)
-                            .height(200.dp)
-                            .background(Color.LightGray)
-                            .align(Alignment.Center),
-                    )
-                }
             }
             Surface(
                 modifier = Modifier
@@ -249,7 +180,7 @@ fun OnboardingScreen(
                             .fillMaxWidth()
                             .padding(bottom = 16.dp),
                         color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
                     )
                     if (textRes != null) {
@@ -259,12 +190,13 @@ fun OnboardingScreen(
                                 .wrapContentHeight()
                                 .fillMaxWidth()
                                 .padding(bottom = 64.dp),
+                            minLines = 4,
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
                         )
                     }
                     when (page) {
-                        SCREEN_SET_DEFAULT_LAUNCHER -> {
+                        OnboardingPage.SCREEN_SET_DEFAULT_LAUNCHER -> {
                             Button(onClick = onSetDefaultLauncher) {
                                 Text(text = stringResource(R.string.button_yes))
                             }
@@ -272,12 +204,12 @@ fun OnboardingScreen(
                                 Text(text = stringResource(R.string.button_skip))
                             }
                         }
-                        SCREEN_PRIVACY_POLICY, SCREEN_TERMS_OF_SERVICE -> {
+                        OnboardingPage.SCREEN_PRIVACY_POLICY, OnboardingPage.SCREEN_TERMS_OF_SERVICE -> {
                             Button(onClick = onGoToNextStep) {
                                 Text(text = stringResource(R.string.button_accept))
                             }
                         }
-                        SCREEN_SET_SIZE_MAIN -> {
+                        OnboardingPage.SCREEN_SET_SIZE_MAIN -> {
                             ExtendedFloatingActionButton(
                                 onClick = onGoToNextStep,
                                 text = {
@@ -291,7 +223,7 @@ fun OnboardingScreen(
                                 },
                             )
                         }
-                        SCREEN_SET_FAVORITES_MAIN -> {
+                        OnboardingPage.SCREEN_SET_FAVORITES_MAIN -> {
                             ExtendedFloatingActionButton(
                                 onClick = onGoToNextStep,
                                 text = {
@@ -305,7 +237,7 @@ fun OnboardingScreen(
                                 },
                             )
                         }
-                        SCREEN_SETUP_FINISHED_3 -> {
+                        OnboardingPage.SCREEN_SETUP_FINISHED_3 -> {
                             Button(onClick = onGoToNextStep) {
                                 Text(text = stringResource(R.string.start))
                             }
@@ -320,6 +252,122 @@ fun OnboardingScreen(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ColumnScope.MainContent(
+    uiState: UiState,
+    page: OnboardingPage,
+    onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
+) {
+    when (page) {
+        in setOf(OnboardingPage.SCREEN_PRIVACY_POLICY, OnboardingPage.SCREEN_TERMS_OF_SERVICE) -> {
+            val textRes = when (page) {
+                OnboardingPage.SCREEN_PRIVACY_POLICY -> R.string.privacy_policy_text
+                OnboardingPage.SCREEN_TERMS_OF_SERVICE -> R.string.terms_of_service_text
+                else -> throw IllegalStateException()
+            }
+            ScrollableText(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .weight(1f),
+                text = stringResource(textRes),
+            )
+        }
+        OnboardingPage.SCREEN_SET_SIZE_MAIN -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                ) {
+                    val iconSizeDp = uiState.settings.appIconSize.sizeDp.dp
+                    Box(
+                        modifier = Modifier
+                            .width(iconSizeDp)
+                            .height(iconSizeDp)
+                            .background(Color.LightGray)
+                            .align(Alignment.Center),
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    val allAppIconSizes = AppIconSize.values()
+                    val currentAppIconSize = uiState.settings.appIconSize
+                    val currentAppIconSizeIndex = allAppIconSizes.indexOf(currentAppIconSize)
+                    val smallerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex - 1)
+                    val largerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex + 1)
+                    if (smallerIconSize != null) {
+                        FloatingActionButton(
+                            modifier = Modifier.padding(16.dp),
+                            onClick = { onSetIconSize(smallerIconSize) },
+                        ) {
+                            Icon(
+                                Icons.Filled.KeyboardArrowLeft,
+                                contentDescription = stringResource(id = R.string.button_decrease_size),
+                            )
+                        }
+                    }
+                    if (largerIconSize != null) {
+                        FloatingActionButton(
+                            modifier = Modifier.padding(16.dp),
+                            onClick = { onSetIconSize(largerIconSize) },
+                        ) {
+                            Icon(
+                                Icons.Filled.KeyboardArrowRight,
+                                contentDescription = stringResource(id = R.string.button_increase_size),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        OnboardingPage.SCREEN_SET_FAVORITES_MAIN -> {
+            val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
+            val appIconSize = uiState.settings.appIconSize.sizeDp.dp
+            EditFavoritesList(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                items = uiState.allApps,
+                initiallySelectedItems = selectedFavorites.value,
+                appIconSize = appIconSize,
+                onAppChecked = { appItemInfo, isChecked ->
+                    if (isChecked) {
+                        selectedFavorites.value = selectedFavorites.value
+                            .toMutableStateList().apply { add(appItemInfo) }
+                    } else {
+                        selectedFavorites.value = selectedFavorites.value
+                            .toMutableStateList().apply { remove(appItemInfo) }
+                    }
+                },
+                onAppMoved = { posA, posB ->
+                },
+            )
+        }
+        else -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(200.dp)
+                        .background(Color.LightGray)
+                        .align(Alignment.Center),
+                )
             }
         }
     }
@@ -365,8 +413,12 @@ fun Toolbar(
                 contentDescription = stringResource(id = R.string.go_back),
             )
         }
+        val animatedProgress by animateFloatAsState(
+            targetValue = progress,
+            animationSpec = TweenSpec(durationMillis = 300),
+        )
         LinearProgressIndicator(
-            progress = progress,
+            progress = animatedProgress,
             modifier = Modifier
                 .weight(1f)
                 .height(6.dp)
@@ -391,7 +443,7 @@ fun Toolbar(
 @Composable
 fun OnoboardingPreview() {
     LauncherTheme {
-        val screenState = ScreenState.OnboardingState(SCREEN_1)
+        val screenState = ScreenState.OnboardingState(OnboardingPage.SCREEN_1)
         OnboardingScreen(uiState = UiState(screenState))
     }
 }

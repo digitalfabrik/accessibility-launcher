@@ -7,7 +7,7 @@ import org.tuerantuer.launcher.ui.UiState
 private const val ANIMATION_SCALE_START = 0.92f
 private const val ANIMATION_SCALE_END = 1f / ANIMATION_SCALE_START
 
-private const val ANIMATION_ALPHA_START = 0.8f
+private const val ANIMATION_ALPHA_START = 0.9f
 private const val ANIMATION_ALPHA_END = 1f
 
 /**
@@ -21,6 +21,10 @@ class ScreenTransitionManager {
 
     @ExperimentalAnimationApi
     val sharedXMotionSpec = materialSharedAxisXIn() with materialSharedAxisXOut()
+
+    @ExperimentalAnimationApi
+    val sharedXMotionSpecReverse =
+        materialSharedAxisXIn(-DefaultSlideDistance) with materialSharedAxisXOut(-DefaultSlideDistance)
 
     @ExperimentalAnimationApi
     val fadeThroughMotionSpec =
@@ -45,51 +49,49 @@ class ScreenTransitionManager {
     //    TODO
     @OptIn(ExperimentalAnimationApi::class)
     fun loadAnimationForUiStateTransition(oldState: UiState, newState: UiState): MotionSpec? {
-        if (oldState.javaClass == newState.javaClass) {
+        if (oldState.screenState == newState.screenState) {
+            // Only settings or apps have Changed, will animate by itself
             return null
         }
-//        if (oldState.javaClass == newState.javaClass) {
-//            // only animate transitions within the same screen for the answer question screen.
-//            return if (newState is ScreenState.AnswerQuestions) {
-//                oldState as ScreenState.AnswerQuestions
-//                if (newState.roundQuestionIndex != oldState.roundQuestionIndex) {
-//                    sharedXMotionSpec
-//                } else {
-//                    null
-//                }
-//            } else {
-//                null
-//            }
-//        }
-//
-//        val depthComparison = getDepthLevelForState(newState)
-//            .compareTo(getDepthLevelForState(oldState))
-//
-//        return if (depthComparison != 0) {
-//            if (depthComparison >= 0) fadeThroughMotionSpec else fadeThroughMotionSpecReverse
-//        } else {
-//            sharedXMotionSpec
-//        }
-        return fadeThroughMotionSpec
+
+        if (oldState.screenState.javaClass == newState.screenState.javaClass) {
+            val oldScreenState = oldState.screenState
+            val newScreenState = newState.screenState
+            val comparison = when (oldScreenState) {
+                is ScreenState.SettingsState -> {
+                    require(newScreenState is ScreenState.SettingsState)
+                    oldScreenState.settingsPage.compareTo(newScreenState.settingsPage)
+                }
+                else -> 0
+            }
+            when {
+                comparison > 0 -> return sharedXMotionSpecReverse
+                comparison < 0 -> return sharedXMotionSpec
+            }
+        }
+
+        val depthComparison = getDepthLevelForState(newState)
+            .compareTo(getDepthLevelForState(oldState))
+
+        return if (depthComparison != 0) {
+            if (depthComparison >= 0) fadeThroughMotionSpec else fadeThroughMotionSpecReverse
+        } else {
+            null
+        }
     }
 
-//    TODO
-//    /**
-//     * Each screen has its own depth level. It decides how we animate between two screens. Screens
-//     * with different depth level get a scale transition so it looks like they are stacked on top
-//     * of each other. On the other hand, screens with the same depth level get a horizontal
-//     * translation animation.
-//     */
-//    private fun getDepthLevelForState(uiState: ScreenState): Int = when (uiState) {
-//        is ScreenState.OnboardingState -> 0
-//        is ScreenState.SetPlayer.Grade -> 0
-//        is ScreenState.SetPlayer.Name -> 0
-//        is ScreenState.LoadHomeScreenState -> 0
-//        is ScreenState.SetPlayer.Subjects -> 0
-//        is ScreenState.MainMenu -> 1
-//        is ScreenState.MatchOverview -> 2
-//        is ScreenState.SelectRoundSubject -> 3
-//        is ScreenState.AnswerQuestions -> 4
-//        is ScreenState.SettingsState -> 2
-//    }
+    /**
+     * Each screen has its own depth level. It decides how we animate between two screens. Screens
+     * with different depth level get a scale transition so it looks like they are stacked on top
+     * of each other. On the other hand, screens with the same depth level get a horizontal
+     * translation animation.
+     */
+    private fun getDepthLevelForState(uiState: UiState): Int = when (uiState.screenState) {
+        ScreenState.LoadHomeScreenState -> 0
+        ScreenState.HomeScreenState -> 1
+        is ScreenState.OnboardingState -> 2
+        ScreenState.AllAppsScreenState -> 2
+        ScreenState.EditFavoritesScreenState -> 2
+        is ScreenState.SettingsState -> 2
+    }
 }
