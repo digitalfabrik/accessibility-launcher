@@ -51,16 +51,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        mainViewModel.onActivityStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mainViewModel.onActivityStop()
-    }
-
     override fun onBackPressed() {
         if (!mainViewModel.goBack()) {
             super.onBackPressed()

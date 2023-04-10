@@ -21,6 +21,7 @@ import org.tuerantuer.launcher.itemInfo.CustomLauncherAppsImpl
 import org.tuerantuer.launcher.itemInfo.UserManager
 import org.tuerantuer.launcher.itemInfo.UserManagerImpl
 import org.tuerantuer.launcher.ui.MainViewModel
+import org.tuerantuer.launcher.ui.MainViewModelImpl
 import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
 import org.tuerantuer.launcher.util.FrameworkActionsManager
 import org.tuerantuer.launcher.util.extension.dataStore
@@ -96,7 +97,7 @@ class AppModule {
         frameworkActionsManager: FrameworkActionsManager,
         settingsManager: SettingsManager,
         coroutineScope: CoroutineScope,
-    ): MainViewModel = MainViewModel(
+    ): MainViewModel = MainViewModelImpl(
         appActivityRepository = appActivityRepository,
         appLauncher = appLauncher,
         frameworkActionsManager = frameworkActionsManager,
