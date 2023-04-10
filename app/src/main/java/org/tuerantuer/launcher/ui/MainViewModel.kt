@@ -2,8 +2,7 @@ package org.tuerantuer.launcher.ui
 
 import android.os.Process
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,20 +19,22 @@ import org.tuerantuer.launcher.itemInfo.Apps
 import org.tuerantuer.launcher.itemInfo.appIdentifier.ComponentKey
 import org.tuerantuer.launcher.util.FrameworkActionsManager
 import org.tuerantuer.launcher.util.WhileUiSubscribed
-import javax.inject.Inject
 
 /**
- * View Model of [MainActivity].
+ * View Model of [MainActivity]. This class is not an extension of [ViewModel] because the [ViewModel]s lifecycle is
+ * broken with launchers (doing the home gesture the first time recreates the view model). Since our [MainActivity]
+ * lives as long as the launcher is running if the launcher is set as default, it's okay that our [MainViewModel] lives
+ * as long as the launcher is running.
  *
  * @author Peter Huber
  */
-@HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val appActivityRepository: AppActivityRepository,
     private val appLauncher: AppLauncher,
     private val frameworkActionsManager: FrameworkActionsManager,
     private val settingsManager: SettingsManager,
-) : ViewModel() {
+    private val coroutineScope: CoroutineScope,
+) {
 
     private val _screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.HomeScreenState)
     private var screenState: ScreenState
@@ -57,7 +58,7 @@ class MainViewModel @Inject constructor(
         }
         UiState(screenState = screenState, apps = apps, settings = settings)
     }.stateIn(
-        scope = viewModelScope,
+        scope = coroutineScope,
         started = WhileUiSubscribed,
         initialValue = UiState(screenState = ScreenState.LoadHomeScreenState, apps = Apps()),
     )
@@ -139,7 +140,7 @@ class MainViewModel @Inject constructor(
         when {
             nextStep < OnboardingPage.SCREEN_1.pageNumber -> cancelOnboarding()
             nextStep > OnboardingPage.LAST_PAGE.pageNumber -> {
-                viewModelScope.launch {
+                coroutineScope.launch {
                     settingsManager.setIsUserOnboarded(isOnboarded = true)
                     loadHomeScreen()
                 }

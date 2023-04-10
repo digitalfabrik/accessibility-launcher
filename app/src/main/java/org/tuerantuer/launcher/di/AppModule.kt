@@ -20,6 +20,7 @@ import org.tuerantuer.launcher.itemInfo.CustomLauncherApps
 import org.tuerantuer.launcher.itemInfo.CustomLauncherAppsImpl
 import org.tuerantuer.launcher.itemInfo.UserManager
 import org.tuerantuer.launcher.itemInfo.UserManagerImpl
+import org.tuerantuer.launcher.ui.MainViewModel
 import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
 import org.tuerantuer.launcher.util.FrameworkActionsManager
 import org.tuerantuer.launcher.util.extension.dataStore
@@ -86,4 +87,20 @@ class AppModule {
     fun provideDefaultLauncherChooser(
         @ApplicationContext context: Context,
     ): FrameworkActionsManager = FrameworkActionsManager(context)
+
+    @Singleton
+    @Provides
+    fun provideMainViewModel(
+        appActivityRepository: AppActivityRepository,
+        appLauncher: AppLauncher,
+        frameworkActionsManager: FrameworkActionsManager,
+        settingsManager: SettingsManager,
+        coroutineScope: CoroutineScope,
+    ): MainViewModel = MainViewModel(
+        appActivityRepository = appActivityRepository,
+        appLauncher = appLauncher,
+        frameworkActionsManager = frameworkActionsManager,
+        settingsManager = settingsManager,
+        coroutineScope = coroutineScope,
+    )
 }
