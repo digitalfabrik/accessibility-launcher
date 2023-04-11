@@ -60,7 +60,7 @@ class MainViewModelImpl(
     }.stateIn(
         scope = coroutineScope,
         started = WhileUiSubscribed,
-        initialValue = UiState(screenState = ScreenState.LoadHomeScreenState, apps = Apps()),
+        initialValue = UiState(screenState = ScreenState.LoadingState, apps = Apps()),
     )
 
     /**
@@ -68,7 +68,7 @@ class MainViewModelImpl(
      */
     override fun goBack(): Boolean {
         when (val screenState = screenState) {
-            is ScreenState.LoadHomeScreenState -> return true
+            is ScreenState.LoadingState -> return true
             is ScreenState.HomeScreenState -> return true
             is ScreenState.OnboardingState -> onGoToPreviousOnboardingStep()
             is ScreenState.AllAppsScreenState -> loadHomeScreen()
@@ -81,7 +81,7 @@ class MainViewModelImpl(
                 }
             }
             is ScreenState.EditFavoritesScreenState -> loadHomeScreen()
-            // is ScreenState.LoadHomeScreenState, is ScreenState.MainMenu, ScreenState.OnboardingState -> return false
+            // is ScreenState.LoadingState, is ScreenState.MainMenu, ScreenState.OnboardingState -> return false
             // is ScreenState.MatchOverview, is ScreenState.SettingsState -> loadMainMenu()
             // is ScreenState.AnswerQuestions -> this.uiState = ScreenState.MatchOverview(uiState.match)
             // is ScreenState.SelectRoundSubject -> this.uiState = ScreenState.MatchOverview(uiState.match)

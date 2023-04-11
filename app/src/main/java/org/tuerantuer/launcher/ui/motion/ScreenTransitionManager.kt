@@ -86,7 +86,7 @@ class ScreenTransitionManager {
      * translation animation.
      */
     private fun getDepthLevelForState(uiState: UiState): Int = when (uiState.screenState) {
-        ScreenState.LoadHomeScreenState -> 0
+        ScreenState.LoadingState -> 0
         ScreenState.HomeScreenState -> 1
         is ScreenState.OnboardingState -> 2
         ScreenState.AllAppsScreenState -> 2

@@ -13,7 +13,7 @@ import javax.annotation.concurrent.Immutable
 sealed class ScreenState {
     class OnboardingState(val onboardingPage: OnboardingPage) : ScreenState()
 
-    object LoadHomeScreenState : ScreenState()
+    object LoadingState : ScreenState()
 
     object HomeScreenState : ScreenState()
 

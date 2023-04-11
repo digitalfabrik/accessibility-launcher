@@ -29,6 +29,7 @@ import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
 import org.tuerantuer.launcher.ui.screen.AllAppsScreen
 import org.tuerantuer.launcher.ui.screen.EditFavoritesScreen
 import org.tuerantuer.launcher.ui.screen.HomeScreen
+import org.tuerantuer.launcher.ui.screen.LoadingScreen
 import org.tuerantuer.launcher.ui.screen.OnboardingScreen
 import org.tuerantuer.launcher.ui.screen.SettingsScreen
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
@@ -118,7 +119,7 @@ fun Screens(
     coroutinesScope: CoroutineScope,
 ) {
     when (uiState.screenState) {
-        is ScreenState.LoadHomeScreenState -> {}
+        is ScreenState.LoadingState -> LoadingScreen()
         is ScreenState.HomeScreenState -> HomeScreen(
             uiState = uiState,
             onShowAllApps = { mainViewModel.onShowAllApps() },
