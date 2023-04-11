@@ -4,7 +4,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -20,7 +19,6 @@ import androidx.compose.material.icons.outlined.AppSettingsAlt
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Hearing
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Message
@@ -30,7 +28,6 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.ui.components.BottomSheetComponent
+import org.tuerantuer.launcher.ui.components.HeaderComponent
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
@@ -113,8 +111,8 @@ fun SettingsOverviewScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
+    SettingsHeader(R.string.settings, onGoBack)
     SettingsFrame {
-        SettingsHeader(R.string.settings, onGoBack)
         val settingsButtons = listOf(
             SettingsButtonData(R.string.assistant, icon = Icons.Outlined.SettingsSuggest) {
                 onOpenSettingsPage(
@@ -137,8 +135,8 @@ fun SettingsAssistantScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
+    SettingsHeader(R.string.settings, onGoBack)
     SettingsFrame {
-        SettingsHeader(R.string.settings, onGoBack)
         val settingsButtons = listOf(
             SettingsButtonData(R.string.assistant_visual, icon = Icons.Outlined.Visibility) {
                 onOpenSettingsPage(SettingsPage.VisualAssistant)
@@ -159,8 +157,8 @@ fun SetDefaultLauncherScreen(
     onSetDefaultLauncher: () -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
+    SettingsHeader(R.string.set_this_launcher_as_default, onGoBack)
     SettingsFrame {
-        SettingsHeader(R.string.set_this_launcher_as_default, onGoBack)
         SettingsBody(R.string.set_this_launcher_as_default_description)
         SettingsFab(R.string.set_this_launcher_as_default, Icons.Outlined.Home, onSetDefaultLauncher)
     }
@@ -171,10 +169,10 @@ fun FeedbackScreen(
     onGoBack: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
 ) {
+    SettingsHeader(R.string.get_feedback_contact, onGoBack)
     SettingsFrame {
-        SettingsHeader(R.string.get_feedback_contact, onGoBack)
         SettingsBody(R.string.get_feedback_contact_description)
-        SettingsFab(R.string.get_feedback_contact, Icons.Outlined.Mail, onWriteFeedbackMail)
+        SettingsFab(R.string.write_email, Icons.Outlined.Mail, onWriteFeedbackMail)
     }
 }
 
@@ -183,8 +181,8 @@ fun SystemSettingsScreen(
     onOpenSystemSettings: () -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
+    SettingsHeader(R.string.open_system_settings, onGoBack)
     SettingsFrame {
-        SettingsHeader(R.string.open_system_settings, onGoBack)
         SettingsBody(R.string.open_system_settings_description)
         SettingsFab(R.string.open_system_settings, Icons.Outlined.AppSettingsAlt, onOpenSystemSettings)
     }
@@ -195,8 +193,8 @@ fun ColumnScope.ShareLauncherScreen(
     onShareLauncher: () -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
+    SettingsHeader(R.string.share_launcher, onGoBack)
     SettingsFrame {
-        SettingsHeader(R.string.share_launcher, onGoBack)
         SettingsBody(R.string.share_launcher_description)
         SettingsFab(R.string.share_launcher, Icons.Outlined.Share, onShareLauncher)
     }
@@ -209,8 +207,8 @@ fun UninstallLauncherScreen(
     onUninstallLauncher: () -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
+    SettingsHeader(R.string.uninstall_launcher, onGoBack)
     SettingsFrame {
-        SettingsHeader(R.string.uninstall_launcher, onGoBack)
         SettingsBody(R.string.uninstall_launcher_description)
         SettingsFab(R.string.uninstall_launcher, Icons.Outlined.Delete, onUninstallLauncher)
     }
@@ -225,29 +223,11 @@ data class SettingsButtonData(
 
 @Composable
 fun SettingsHeader(textRes: Int, onGoBack: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
-        contentAlignment = Alignment.CenterStart,
-    ) {
-        IconButton(onClick = onGoBack) {
-            Icon(
-                imageVector = Icons.Outlined.KeyboardArrowLeft,
-                contentDescription = null,
-            )
-        }
-        Text(
-            text = stringResource(textRes),
-            Modifier
-                .wrapContentHeight()
-                .fillMaxWidth()
-                .padding(start = 16.dp),
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleMedium,
-        )
-    }
+    HeaderComponent(
+        modifier = Modifier.padding(bottom = 16.dp),
+        text = stringResource(textRes),
+        onGoBack = onGoBack,
+    )
 }
 
 @Composable

@@ -130,6 +130,7 @@ fun Screens(
         is ScreenState.AllAppsScreenState -> AllAppsScreen(
             uiState = uiState,
             onOpenApp = { mainViewModel.openApp(it) },
+            onGoBack = { mainViewModel.goBack() },
         )
         is ScreenState.OnboardingState -> OnboardingScreen(
             uiState = uiState,
@@ -158,6 +159,7 @@ fun Screens(
                     mainViewModel.goBack()
                 }
             },
+            onGoBack = { mainViewModel.goBack() },
         )
     }
 }

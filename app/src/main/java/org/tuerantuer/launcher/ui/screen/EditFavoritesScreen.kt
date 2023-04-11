@@ -53,6 +53,7 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.Job
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
+import org.tuerantuer.launcher.ui.components.HeaderComponent
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
@@ -67,31 +68,16 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
 fun EditFavoritesScreen(
     uiState: UiState,
     onApplyEdits: (newFavorites: List<AppItemInfo>) -> Unit = {},
+    onGoBack: () -> Unit = {},
 ) {
     val appIconSize = uiState.settings.appIconSize.sizeDp.dp
     Column(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
     ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            shadowElevation = 8.dp,
-            // only round bottom corners
-            shape = MaterialTheme.shapes.medium.copy(
-                topStart = CornerSize(0f),
-                topEnd = CornerSize(0f),
-            ),
-        ) {
-            Text(
-                text = stringResource(R.string.select_favorites),
-                Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
-                style = MaterialTheme.typography.titleMedium,
-            )
-        }
+        HeaderComponent(
+            text = stringResource(R.string.select_favorites),
+            onGoBack = onGoBack,
+        )
         val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
         EditFavoritesList(
             modifier = Modifier.weight(1f),

@@ -37,6 +37,7 @@
     <string name="share_launcher_description">Möchtest du Carikom deinen Freunden und Freundinnen, Kollegen und Kolleginnen, Familienmitgliedern oder jemand anderem zeigen oder weiterempfehlen? Wähle aus den angezeigten Möglichkeiten eine Option aus.</string>
     <string name="share_launcher_text">Carikom Launcher - [INSERT_TAGLINE]: %s</string>
     <string name="get_feedback_contact">Kontakt für Feedback</string>
+    <string name="write_email">Email schreiben</string>
     <string name="get_feedback_contact_description">Hast du etwas, das dir besonders gut oder schlecht an Carikom aufgefallen ist? Schreib uns  und sag uns, was du denkst.</string>
     <string name="uninstall_apps">Apps deinstallieren</string>
 
