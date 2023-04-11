@@ -30,10 +30,15 @@ fun LauncherTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val backgroundColor = colorScheme.background.toArgb()
-            (view.context as Activity).window.statusBarColor = backgroundColor
-            (view.context as Activity).window.navigationBarColor = backgroundColor
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = true
+            (view.context as Activity).window.apply {
+                val backgroundColor = colorScheme.background.toArgb()
+                statusBarColor = backgroundColor
+                navigationBarColor = backgroundColor
+            }
+            ViewCompat.getWindowInsetsController(view)?.apply {
+                isAppearanceLightStatusBars = true
+                isAppearanceLightNavigationBars = true
+            }
         }
     }
 
