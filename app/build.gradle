@@ -15,7 +15,7 @@ android {
         minSdk 26
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -23,9 +23,35 @@ android {
         }
     }
 
+    if (new File("app/keyStore.properties").exists()) {
+
+        Properties props = new Properties()
+        props.load(new FileInputStream(file("keyStore.properties")))
+
+        signingConfigs {
+            release {
+                keyAlias props['keyAlias']
+                keyPassword props['keyPassword']
+                storeFile file(props['keyStore'])
+                storePassword props['keyStorePassword']
+            }
+            debug {
+                keyAlias props['keyAlias']
+                keyPassword props['keyPassword']
+                storeFile file(props['keyStore'])
+                storePassword props['keyStorePassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            // Enables code shrinking, obfuscation, and optimization for only your project's release build type.
+            minifyEnabled true
+
+            // Enables resource shrinking, which is performed by the Android Gradle plugin.
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
