@@ -26,13 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import org.tuerantuer.launcher.R
-import org.tuerantuer.launcher.itemInfo.AppItemInfo
-import org.tuerantuer.launcher.ui.AppHomeScreenItem
-import org.tuerantuer.launcher.ui.ButtonHomeScreenItem
-import org.tuerantuer.launcher.ui.HomeScreenItem
-import org.tuerantuer.launcher.ui.ScreenState
-import org.tuerantuer.launcher.ui.UiState
+import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
+import org.tuerantuer.launcher.ui.data.ButtonHomeScreenItem
+import org.tuerantuer.launcher.ui.data.HomeScreenItem
+import org.tuerantuer.launcher.ui.data.ScreenState
+import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
 import java.util.*
 

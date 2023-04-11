@@ -23,6 +23,9 @@ class LauncherApplication : Application() {
         }
     }
 
+    /**
+     * Sets the strict mode for the app so that we can detect any potential issues during development.
+     */
     private fun setStrictMode() {
         StrictMode.setThreadPolicy(
             StrictMode.ThreadPolicy.Builder()

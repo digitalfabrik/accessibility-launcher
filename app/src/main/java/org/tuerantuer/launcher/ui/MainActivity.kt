@@ -21,6 +21,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.tuerantuer.launcher.ui.data.ScreenState
+import org.tuerantuer.launcher.ui.data.SettingsPage
+import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.motion.CustomMaterialMotion
 import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
 import org.tuerantuer.launcher.ui.screen.AllAppsScreen
@@ -149,7 +152,6 @@ fun Screens(
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(
             uiState = uiState,
-            onCancelEdits = { /*TODO*/ },
             onApplyEdits = { newFavorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(newFavorites) } },
         )
     }

@@ -2,8 +2,10 @@ package org.tuerantuer.launcher.ui
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.StateFlow
-import org.tuerantuer.launcher.data.AppIconSize
-import org.tuerantuer.launcher.itemInfo.AppItemInfo
+import org.tuerantuer.launcher.app.AppItemInfo
+import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.ui.data.SettingsPage
+import org.tuerantuer.launcher.ui.data.UiState
 
 /**
  * View Model of [MainActivity]. This class is not an extension of [ViewModel] because the [ViewModel]s lifecycle is
@@ -16,7 +18,7 @@ import org.tuerantuer.launcher.itemInfo.AppItemInfo
 interface MainViewModel {
     /**
      * Determines the current state ui. Each subclass of [ScreenState] represents a different screen in
-     * the app. You can subscribe to this [Flow] to be notified when the underlying [ScreenState]
+     * the app. You can subscribe to this [StateFlow] to be notified when the underlying [ScreenState]
      * changes.
      */
     val uiState: StateFlow<UiState>

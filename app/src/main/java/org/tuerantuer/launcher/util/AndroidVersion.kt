@@ -8,6 +8,7 @@ import android.os.Build
  * @author Peter Huber
  * Created on 06/03/2023
  */
+@Suppress("unused")
 object AndroidVersion {
     /**
      * Checks if the Android version is at least Android 8.1 Oreo (SDK version 27).

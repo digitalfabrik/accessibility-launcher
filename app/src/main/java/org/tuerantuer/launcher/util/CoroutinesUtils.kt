@@ -16,6 +16,7 @@
 package org.tuerantuer.launcher.util
 
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 
 private const val stopTimeoutMillis: Long = 5000
 

@@ -18,10 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import org.tuerantuer.launcher.ui.HomeScreenItem
+import org.tuerantuer.launcher.ui.data.HomeScreenItem
 
 /**
- * TODO: add description
+ * Visual representation of a [HomeScreenItem].
  *
  * @author Peter Huber
  * Created on 27/03/2023

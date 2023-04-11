@@ -20,11 +20,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
-import org.tuerantuer.launcher.itemInfo.AppItemInfo
-import org.tuerantuer.launcher.ui.AppHomeScreenItem
-import org.tuerantuer.launcher.ui.ScreenState
-import org.tuerantuer.launcher.ui.UiState
+import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
+import org.tuerantuer.launcher.ui.data.ScreenState
+import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**

@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.tuerantuer.launcher.data.FavoriteDao
-import org.tuerantuer.launcher.data.LauncherDatabase
+import org.tuerantuer.launcher.data.database.LauncherDatabase
+import org.tuerantuer.launcher.data.database.favorites.FavoriteDao
 import javax.inject.Singleton
 
 /**

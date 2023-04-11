@@ -52,9 +52,9 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.Job
 import org.tuerantuer.launcher.R
-import org.tuerantuer.launcher.itemInfo.AppItemInfo
-import org.tuerantuer.launcher.ui.ScreenState
-import org.tuerantuer.launcher.ui.UiState
+import org.tuerantuer.launcher.app.AppItemInfo
+import org.tuerantuer.launcher.ui.data.ScreenState
+import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
@@ -66,8 +66,7 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
 @Composable
 fun EditFavoritesScreen(
     uiState: UiState,
-    onCancelEdits: () -> Unit,
-    onApplyEdits: (newFavorites: List<AppItemInfo>) -> Unit,
+    onApplyEdits: (newFavorites: List<AppItemInfo>) -> Unit = {},
 ) {
     val appIconSize = uiState.settings.appIconSize.sizeDp.dp
     Column(
@@ -276,14 +275,15 @@ class DragDropListState(
     val lazyListState: LazyListState,
     private val onMove: (Int, Int) -> Unit,
 ) {
-    var draggedDistance by mutableStateOf(0f)
+    private var draggedDistance by mutableStateOf(0f)
 
     // used to obtain initial offsets on drag start
-    var initiallyDraggedElement by mutableStateOf<LazyListItemInfo?>(null)
+    private var initiallyDraggedElement by mutableStateOf<LazyListItemInfo?>(null)
 
     var currentIndexOfDraggedItem by mutableStateOf<Int?>(null)
+        private set
 
-    val initialOffsets: Pair<Int, Int>?
+    private val initialOffsets: Pair<Int, Int>?
         get() = initiallyDraggedElement?.let { Pair(it.offset, it.offsetEnd) }
 
     val elementDisplacement: Float?
@@ -291,12 +291,12 @@ class DragDropListState(
             ?.let { lazyListState.getVisibleItemInfoFor(absoluteIndex = it) }
             ?.let { item -> (initiallyDraggedElement?.offset ?: 0f).toFloat() + draggedDistance - item.offset }
 
-    val currentElement: LazyListItemInfo?
+    private val currentElement: LazyListItemInfo?
         get() = currentIndexOfDraggedItem?.let {
             lazyListState.getVisibleItemInfoFor(absoluteIndex = it)
         }
 
-    var overscrollJob by mutableStateOf<Job?>(null)
+    private var overscrollJob by mutableStateOf<Job?>(null)
 
     fun onDragStart(offset: Offset) {
         lazyListState.layoutInfo.visibleItemsInfo
@@ -363,11 +363,7 @@ class DragDropListState(
 @Composable
 fun EditFavoritesScreenPreview() {
     LauncherTheme {
-        EditFavoritesScreen(
-            uiState = UiState(ScreenState.EditFavoritesScreenState),
-            onCancelEdits = { },
-            onApplyEdits = { },
-        )
+        EditFavoritesScreen(uiState = UiState(ScreenState.EditFavoritesScreenState))
     }
 }
 

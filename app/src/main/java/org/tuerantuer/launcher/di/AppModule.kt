@@ -10,16 +10,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import org.tuerantuer.launcher.data.FavoriteDao
-import org.tuerantuer.launcher.data.SettingsManager
-import org.tuerantuer.launcher.data.SettingsManagerImpl
-import org.tuerantuer.launcher.itemInfo.AppActivityRepository
-import org.tuerantuer.launcher.itemInfo.AppActivityRepositoryImpl
-import org.tuerantuer.launcher.itemInfo.AppLauncher
-import org.tuerantuer.launcher.itemInfo.CustomLauncherApps
-import org.tuerantuer.launcher.itemInfo.CustomLauncherAppsImpl
-import org.tuerantuer.launcher.itemInfo.UserManager
-import org.tuerantuer.launcher.itemInfo.UserManagerImpl
+import org.tuerantuer.launcher.app.AppActivityRepository
+import org.tuerantuer.launcher.app.AppActivityRepositoryImpl
+import org.tuerantuer.launcher.app.AppLauncher
+import org.tuerantuer.launcher.app.CustomLauncherApps
+import org.tuerantuer.launcher.app.CustomLauncherAppsImpl
+import org.tuerantuer.launcher.app.UserManager
+import org.tuerantuer.launcher.app.UserManagerImpl
+import org.tuerantuer.launcher.data.database.favorites.FavoriteDao
+import org.tuerantuer.launcher.data.datastore.SettingsManager
+import org.tuerantuer.launcher.data.datastore.SettingsManagerImpl
 import org.tuerantuer.launcher.ui.MainViewModel
 import org.tuerantuer.launcher.ui.MainViewModelImpl
 import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
@@ -28,7 +28,7 @@ import org.tuerantuer.launcher.util.extension.dataStore
 import javax.inject.Singleton
 
 /**
- * This module contains all singletons that are allowed to live for the whole lifecycle of the app.
+ * This module contains singletons that are allowed to live for the whole lifecycle of the app.
  *
  * @author Peter Huber
  * Created on 06/03/2023
@@ -63,7 +63,6 @@ class AppModule {
     @Provides
     fun provideAppActivityRepository(
         customLauncherApps: CustomLauncherApps,
-        @ApplicationContext context: Context,
         userManager: UserManager,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
         coroutineScope: CoroutineScope,

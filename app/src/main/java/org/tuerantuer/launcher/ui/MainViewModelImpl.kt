@@ -9,13 +9,17 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.tuerantuer.launcher.BuildConfig
-import org.tuerantuer.launcher.data.AppIconSize
-import org.tuerantuer.launcher.data.SettingsManager
-import org.tuerantuer.launcher.itemInfo.AppActivityRepository
-import org.tuerantuer.launcher.itemInfo.AppItemInfo
-import org.tuerantuer.launcher.itemInfo.AppLauncher
-import org.tuerantuer.launcher.itemInfo.Apps
-import org.tuerantuer.launcher.itemInfo.appIdentifier.ComponentKey
+import org.tuerantuer.launcher.app.AppActivityRepository
+import org.tuerantuer.launcher.app.AppItemInfo
+import org.tuerantuer.launcher.app.AppLauncher
+import org.tuerantuer.launcher.app.Apps
+import org.tuerantuer.launcher.app.appIdentifier.ComponentKey
+import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.data.datastore.SettingsManager
+import org.tuerantuer.launcher.ui.data.OnboardingPage
+import org.tuerantuer.launcher.ui.data.ScreenState
+import org.tuerantuer.launcher.ui.data.SettingsPage
+import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.util.FrameworkActionsManager
 import org.tuerantuer.launcher.util.WhileUiSubscribed
 

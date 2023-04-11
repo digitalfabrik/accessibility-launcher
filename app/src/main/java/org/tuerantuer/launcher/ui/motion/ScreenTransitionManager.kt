@@ -1,8 +1,8 @@
 package org.tuerantuer.launcher.ui.motion
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import org.tuerantuer.launcher.ui.ScreenState
-import org.tuerantuer.launcher.ui.UiState
+import org.tuerantuer.launcher.ui.data.ScreenState
+import org.tuerantuer.launcher.ui.data.UiState
 
 private const val ANIMATION_SCALE_START = 0.92f
 private const val ANIMATION_SCALE_END = 1f / ANIMATION_SCALE_START
@@ -46,7 +46,6 @@ class ScreenTransitionManager {
             targetScale = ANIMATION_SCALE_START,
         )
 
-    //    TODO
     @OptIn(ExperimentalAnimationApi::class)
     fun loadAnimationForUiStateTransition(oldState: UiState, newState: UiState): MotionSpec? {
         if (oldState.screenState == newState.screenState) {

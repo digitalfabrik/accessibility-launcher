@@ -8,7 +8,7 @@ import android.provider.Settings
 import android.widget.Toast
 import org.tuerantuer.launcher.BuildConfig
 import org.tuerantuer.launcher.R
-import org.tuerantuer.launcher.itemInfo.appIdentifier.ComponentKey
+import org.tuerantuer.launcher.app.appIdentifier.ComponentKey
 import org.tuerantuer.launcher.util.extension.launchAppActivityInNewState
 
 /**
@@ -23,7 +23,7 @@ class FrameworkActionsManager(private val context: Context) {
      */
     fun openSetDefaultLauncherChooser() {
         try {
-            Intent(Settings.ACTION_HOME_SETTINGS).launchAppActivityInNewState(context, view = null)
+            Intent(Settings.ACTION_HOME_SETTINGS).launchAppActivityInNewState(context)
         } catch (e: ActivityLaunchFailedException) {
             showLongToast(R.string.opening_set_default_launcher_screen_failed)
         }
@@ -38,7 +38,7 @@ class FrameworkActionsManager(private val context: Context) {
                 putExtra(Intent.EXTRA_TITLE, chooserTitle)
                 putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_launcher_text, link))
             }
-            Intent.createChooser(intent, chooserTitle).launchAppActivityInNewState(context, view = null)
+            Intent.createChooser(intent, chooserTitle).launchAppActivityInNewState(context)
         } catch (e: ActivityLaunchFailedException) {
             showLongToast(R.string.action_not_supported)
         }
@@ -46,7 +46,7 @@ class FrameworkActionsManager(private val context: Context) {
 
     fun openSystemSettings() {
         try {
-            Intent(Settings.ACTION_SETTINGS).launchAppActivityInNewState(context, view = null)
+            Intent(Settings.ACTION_SETTINGS).launchAppActivityInNewState(context)
         } catch (e: ActivityLaunchFailedException) {
             showLongToast(R.string.action_not_supported)
         }
@@ -54,13 +54,13 @@ class FrameworkActionsManager(private val context: Context) {
 
     fun openAccessibilitySettings() {
         try {
-            Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).launchAppActivityInNewState(context, view = null)
+            Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).launchAppActivityInNewState(context)
         } catch (e: ActivityLaunchFailedException) {
             showLongToast(R.string.action_not_supported)
         }
     }
 
-    fun showLongToast(messageRes: Int) {
+    private fun showLongToast(messageRes: Int) {
         Toast.makeText(context, messageRes, Toast.LENGTH_LONG).show()
     }
 
@@ -115,7 +115,7 @@ class FrameworkActionsManager(private val context: Context) {
             putExtra(Intent.EXTRA_TEXT, body)
         }
         try {
-            intent.launchAppActivityInNewState(context, view = null)
+            intent.launchAppActivityInNewState(context)
         } catch (e: ActivityLaunchFailedException) {
             showLongToast(R.string.action_not_supported)
         }

@@ -42,10 +42,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
-import org.tuerantuer.launcher.ui.ScreenState
-import org.tuerantuer.launcher.ui.SettingsPage
-import org.tuerantuer.launcher.ui.UiState
 import org.tuerantuer.launcher.ui.components.BottomSheetComponent
+import org.tuerantuer.launcher.ui.data.ScreenState
+import org.tuerantuer.launcher.ui.data.SettingsPage
+import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**

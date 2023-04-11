@@ -3,17 +3,8 @@ package org.tuerantuer.launcher.util.extension
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import org.tuerantuer.launcher.util.ActivityLaunchFailedException
-import org.tuerantuer.launcher.util.AnimationUtil
-
-/**
- * Hints the intent receiver that the launch animation should start from the [view]'s bounds.
- */
-fun Intent.setSourceBoundsWithView(view: View?): Intent {
-    sourceBounds = view?.screenBounds
-    return this
-}
+import org.tuerantuer.launcher.util.LaunchAnimationUtil
 
 /**
  * Use this method to launch an activity that does not belong to our app. 'New state' means that we purposefully
@@ -29,20 +20,12 @@ fun Intent.setSourceBoundsWithView(view: View?): Intent {
  * not installed.
  */
 @Throws(ActivityLaunchFailedException::class)
-fun Intent.launchAppActivityInNewState(
-    context: Context,
-    view: View?,
-) {
+fun Intent.launchAppActivityInNewState(context: Context) {
     // Intent.FLAG_ACTIVITY_CLEAR_TASK purposefully recreates the activity we want to launch if its already open to
     // reset its UI state, see: https://stackoverflow.com/questions/21833402.
     val flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     addFlags(flags)
-    val options = if (view != null) {
-        setSourceBoundsWithView(view)
-        AnimationUtil.createOpenFromViewAnimationBundle(view)
-    } else {
-        Bundle().apply { AnimationUtil.setShowSplashScreen(this) }
-    }
+    val options = Bundle().apply { LaunchAnimationUtil.setShowSplashScreen(this) }
     @Suppress("TooGenericExceptionCaught")
     try {
         context.startActivity(this, options)
