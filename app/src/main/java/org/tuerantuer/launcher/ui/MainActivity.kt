@@ -152,7 +152,12 @@ fun Screens(
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(
             uiState = uiState,
-            onApplyEdits = { newFavorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(newFavorites) } },
+            onApplyEdits = { newFavorites ->
+                coroutinesScope.launch {
+                    mainViewModel.onSetFavorites(newFavorites)
+                    mainViewModel.goBack()
+                }
+            },
         )
     }
 }

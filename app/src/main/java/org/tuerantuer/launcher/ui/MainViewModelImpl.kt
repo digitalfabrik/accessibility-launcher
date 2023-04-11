@@ -176,6 +176,5 @@ class MainViewModelImpl(
 
     override suspend fun onSetFavorites(newFavorites: List<AppItemInfo>) {
         appActivityRepository.setFavorites(newFavorites)
-        screenState = ScreenState.HomeScreenState
     }
 }

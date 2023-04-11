@@ -36,6 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -87,6 +88,7 @@ fun OnboardingScreen(
 ) {
     val screenState = uiState.screenState
     require(screenState is ScreenState.OnboardingState)
+    val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
     val page = screenState.onboardingPage
     val textRes = when (page) {
         OnboardingPage.SCREEN_1 -> R.string.welcome_1
@@ -148,6 +150,7 @@ fun OnboardingScreen(
                     uiState = uiState,
                     page = page,
                     onSetIconSize = onSetIconSize,
+                    selectedFavorites = selectedFavorites,
                 )
             }
             Surface(
@@ -225,7 +228,10 @@ fun OnboardingScreen(
                         }
                         OnboardingPage.SCREEN_SET_FAVORITES_MAIN -> {
                             ExtendedFloatingActionButton(
-                                onClick = onGoToNextStep,
+                                onClick = {
+                                    onSetFavorites.invoke(selectedFavorites.value)
+                                    onGoToNextStep.invoke()
+                                },
                                 text = {
                                     Text(text = stringResource(R.string.button_save_favorites))
                                 },
@@ -262,6 +268,7 @@ fun ColumnScope.MainContent(
     uiState: UiState,
     page: OnboardingPage,
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
+    selectedFavorites: MutableState<List<AppItemInfo>>,
 ) {
     when (page) {
         in setOf(OnboardingPage.SCREEN_PRIVACY_POLICY, OnboardingPage.SCREEN_TERMS_OF_SERVICE) -> {
@@ -334,7 +341,6 @@ fun ColumnScope.MainContent(
             }
         }
         OnboardingPage.SCREEN_SET_FAVORITES_MAIN -> {
-            val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
             val appIconSize = uiState.settings.appIconSize.sizeDp.dp
             EditFavoritesList(
                 modifier = Modifier
