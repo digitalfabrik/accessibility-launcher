@@ -9,6 +9,8 @@
     <string name="action_not_supported">Diese Aktion wird auf deinem Gerät nicht unterstützt</string>
 
     <string name="welcome">Hallo</string>
+    <string name="setup">Einrichtung</string>
+    <string name="done">Fertig</string>
     <string name="welcome_1">Willkommen bei Carikom, deinem neuen Launcher</string>
     <string name="welcome_2">Mach mit Carikom deinen ersten Schritt zu einem leichteren digitalen Leben.</string>
     <string name="welcome_3">Carikom führt dich durch die Einrichtung und hilft dir, loszulegen.</string>
@@ -66,11 +68,22 @@
     <string name="support_mail_address">example@example.org</string>
     <string name="feedback_mail_subject">[SUBJECT_PLACEHOLDER]</string>
     <string name="feedback_mail_body">[BODY_PLACEHOLDER]</string>
-    <string name="privacy_policy_text">Zusammenfassung der wichtigsten Punkt + Button zu ganzem Dokument in leichter Sprache
-
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-    </string>
-    <string name="terms_of_service_text">Zusammenfassung der wichtigsten Punkt + Button zu ganzem Dokument in leichter Sprache
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+    <string name="privacy_policy_text">Dies ist ein Platzhaltertext.
+Wir achten sehr darauf, dass Ihre Daten geschützt sind und Ihre Privatsphäre respektiert wird. In diesem Text erklären wir Ihnen einfach und verständlich, welche Informationen wir von Ihnen sammeln, wenn Sie unsere Website und unsere Angebote nutzen. Wir möchten, dass Sie wissen, dass wir Ihre Daten vertraulich behandeln und nur für die Zwecke nutzen, für die Sie uns diese Informationen gegeben haben.
+Wir erheben nur die Daten, die wir wirklich benötigen, um unsere Dienstleistungen zu erbringen und um sicherzustellen, dass unsere Webseite reibungslos funktioniert.
+Wir verkaufen oder teilen Ihre Daten nicht mit Dritten, es sei denn, wir sind gesetzlich dazu verpflichtet oder Sie haben uns ausdrücklich Ihre Zustimmung dazu gegeben.
+Wenn Sie Fragen zum Datenschutz haben oder weitere Informationen benötigen, können Sie uns jederzeit kontaktieren. Wir werden Ihre Anfrage so schnell wie möglich beantworten und alle notwendigen Schritte unternehmen, um Ihre Daten zu schützen.</string>
+    <string name="terms_of_service_text">Dies ist ein Platzhaltertext.
+Wir haben Regeln für die Nutzung unserer App. Bitte lesen Sie diese Regeln sorgfältig durch, bevor Sie unsere App herunterladen und nutzen.
+Unsere App ist nur für den persönlichen Gebrauch bestimmt und darf nicht für geschäftliche Zwecke verwendet werden.
+Wir können unsere App ändern oder Funktionen hinzufügen oder entfernen, ohne Sie im Voraus zu informieren.
+Wir sind nicht für die Inhalte oder Informationen verantwortlich, die andere Personen in der App teilen.
+Sie müssen sicherstellen, dass Ihre Anmeldeinformationen sicher sind und nicht an andere Personen weitergegeben werden.
+Wir können Ihr Benutzerkonto jederzeit deaktivieren oder löschen, wenn Sie gegen unsere Regeln verstoßen.
+Die Nutzung unserer App geschieht auf eigene Gefahr. Wir haften nicht für Schäden oder Verluste, die durch die Nutzung unserer App entstehen.
+Bitte stellen Sie sicher, dass die Inhalte, die Sie in der App teilen, nicht illegal, beleidigend oder obszön sind.
+Wir können unsere Regeln jederzeit ändern. Wir werden Sie jedoch im Voraus darüber informieren.
+Wenn Sie unsere App nutzen, stimmen Sie unseren Regeln zu. Wir werden Ihre Daten gemäß unserer Datenschutzerklärung schützen.
+Wenn Sie Fragen haben, kontaktieren Sie uns bitte.</string>
 
 </resources>

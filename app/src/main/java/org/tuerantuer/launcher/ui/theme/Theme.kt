@@ -13,6 +13,9 @@ import androidx.core.view.ViewCompat
 private val LightColorScheme = lightColorScheme(
     primary = purple,
     primaryContainer = almostBlack,
+    secondary = purple,
+    secondaryContainer = gray,
+    onSecondaryContainer = almostWhite,
     onPrimaryContainer = almostWhite,
     onPrimary = almostWhite,
     surface = almostWhite,

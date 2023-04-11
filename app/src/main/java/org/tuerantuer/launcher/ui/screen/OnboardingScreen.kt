@@ -3,6 +3,7 @@ package org.tuerantuer.launcher.ui.screen
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,8 +27,10 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.Done
+import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -45,6 +49,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -90,27 +96,27 @@ fun OnboardingScreen(
     require(screenState is ScreenState.OnboardingState)
     val selectedFavorites = remember { mutableStateOf(uiState.favorites) }
     val page = screenState.onboardingPage
-    val textRes = when (page) {
-        OnboardingPage.SCREEN_1 -> R.string.welcome_1
-        OnboardingPage.SCREEN_2 -> R.string.welcome_2
-        OnboardingPage.SCREEN_3 -> R.string.welcome_3
-        OnboardingPage.SCREEN_4 -> R.string.welcome_4
-        OnboardingPage.SCREEN_5 -> R.string.setup_1
-        OnboardingPage.SCREEN_6 -> R.string.setup_2
-        OnboardingPage.SCREEN_7 -> R.string.setup_3
-        OnboardingPage.SCREEN_8 -> R.string.setup_4
-        OnboardingPage.SCREEN_9 -> R.string.setup_5
-        OnboardingPage.SCREEN_SET_DEFAULT_LAUNCHER -> R.string.setup_6
-        OnboardingPage.SCREEN_PRIVACY_POLICY -> R.string.setup_7
-        OnboardingPage.SCREEN_TERMS_OF_SERVICE -> R.string.setup_8
-        OnboardingPage.SCREEN_SET_SIZE_INTRO -> R.string.setup_9
-        OnboardingPage.SCREEN_SET_SIZE_MAIN -> null
-        OnboardingPage.SCREEN_SET_FAVORITES_INTRO_1 -> R.string.setup_10
-        OnboardingPage.SCREEN_SET_FAVORITES_INTRO_2 -> R.string.setup_11
-        OnboardingPage.SCREEN_SET_FAVORITES_INTRO_3 -> R.string.setup_12
-        OnboardingPage.SCREEN_SETUP_FINISHED_1 -> R.string.setup_13
-        OnboardingPage.SCREEN_SETUP_FINISHED_2 -> R.string.setup_14
-        OnboardingPage.SCREEN_SETUP_FINISHED_3 -> R.string.setup_15
+    val contentTextRes = when (page) {
+        OnboardingPage.INTRODUCTION_1 -> R.string.welcome_1
+        OnboardingPage.INTRODUCTION_2 -> R.string.welcome_2
+        OnboardingPage.INTRODUCTION_3 -> R.string.welcome_3
+        OnboardingPage.INTRODUCTION_4 -> R.string.welcome_4
+        OnboardingPage.PROGRESS_EXPLANATION_1 -> R.string.setup_1
+        OnboardingPage.PROGRESS_EXPLANATION_2 -> R.string.setup_2
+        OnboardingPage.PROGRESS_EXPLANATION_3 -> R.string.setup_3
+        OnboardingPage.SET_AS_DEFAULT_1 -> R.string.setup_4
+        OnboardingPage.SET_AS_DEFAULT_2 -> R.string.setup_5
+        OnboardingPage.SET_AS_DEFAULT_3 -> R.string.setup_6
+        OnboardingPage.PRIVACY_POLICY -> R.string.setup_7
+        OnboardingPage.TERMS_OF_SERVICE -> R.string.setup_8
+        OnboardingPage.SET_SIZE_INTRO -> R.string.setup_9
+        OnboardingPage.SET_SIZE_MAIN -> null
+        OnboardingPage.SET_FAVORITES_INTRO_1 -> R.string.setup_10
+        OnboardingPage.SET_FAVORITES_INTRO_2 -> R.string.setup_11
+        OnboardingPage.SET_FAVORITES_INTRO_3 -> R.string.setup_12
+        OnboardingPage.SETUP_FINISHED_1 -> R.string.setup_13
+        OnboardingPage.SETUP_FINISHED_2 -> R.string.setup_14
+        OnboardingPage.SETUP_FINISHED_3 -> R.string.setup_15
         else -> null
     }
 
@@ -125,7 +131,7 @@ fun OnboardingScreen(
         ) {
             Toolbar(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                progress = page.pageNumber.toFloat() / OnboardingPage.LAST_PAGE.pageNumber.toFloat(),
+                progress = page.pageNumber.toFloat() / OnboardingPage.SETUP_FINISHED_3.pageNumber.toFloat(),
                 onGoToPreviousStep = onGoToPreviousStep,
                 onCancelOnboarding = onCancelOnboarding,
             )
@@ -169,15 +175,26 @@ fun OnboardingScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .run { if (contentTextRes != null) heightIn(min = 260.dp) else this }
                         .padding(
-                            top = 16.dp,
-                            bottom = 64.dp,
+                            top = 32.dp,
+                            bottom = 0.dp,
                             start = 16.dp,
                             end = 16.dp,
                         ),
                 ) {
+                    val headerTextRes = when (page) {
+                        OnboardingPage.INTRODUCTION_1,
+                        OnboardingPage.INTRODUCTION_2,
+                        OnboardingPage.INTRODUCTION_3,
+                        OnboardingPage.INTRODUCTION_4,
+                        -> R.string.welcome
+                        OnboardingPage.SETUP_FINISHED_3,
+                        -> R.string.done
+                        else -> R.string.setup
+                    }
                     Text(
-                        text = stringResource(R.string.welcome),
+                        text = stringResource(headerTextRes),
                         Modifier
                             .wrapContentHeight()
                             .fillMaxWidth()
@@ -186,81 +203,127 @@ fun OnboardingScreen(
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
                     )
-                    if (textRes != null) {
+                    if (contentTextRes != null) {
                         Text(
-                            text = stringResource(textRes),
+                            text = stringResource(contentTextRes),
                             Modifier
                                 .wrapContentHeight()
                                 .fillMaxWidth()
-                                .padding(bottom = 64.dp),
-                            minLines = 4,
+                                .padding(bottom = 16.dp),
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
                         )
                     }
-                    when (page) {
-                        OnboardingPage.SCREEN_SET_DEFAULT_LAUNCHER -> {
-                            Button(onClick = onSetDefaultLauncher) {
-                                Text(text = stringResource(R.string.button_yes))
-                            }
-                            Button(onClick = onGoToNextStep) {
-                                Text(text = stringResource(R.string.button_skip))
-                            }
-                        }
-                        OnboardingPage.SCREEN_PRIVACY_POLICY, OnboardingPage.SCREEN_TERMS_OF_SERVICE -> {
-                            Button(onClick = onGoToNextStep) {
-                                Text(text = stringResource(R.string.button_accept))
-                            }
-                        }
-                        OnboardingPage.SCREEN_SET_SIZE_MAIN -> {
-                            ExtendedFloatingActionButton(
-                                onClick = onGoToNextStep,
-                                text = {
-                                    Text(text = stringResource(R.string.button_set_size))
-                                },
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Done,
-                                        contentDescription = null,
-                                    )
-                                },
-                            )
-                        }
-                        OnboardingPage.SCREEN_SET_FAVORITES_MAIN -> {
-                            ExtendedFloatingActionButton(
-                                onClick = {
-                                    onSetFavorites.invoke(selectedFavorites.value)
-                                    onGoToNextStep.invoke()
-                                },
-                                text = {
-                                    Text(text = stringResource(R.string.button_save_favorites))
-                                },
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Done,
-                                        contentDescription = null,
-                                    )
-                                },
-                            )
-                        }
-                        OnboardingPage.SCREEN_SETUP_FINISHED_3 -> {
-                            Button(onClick = onGoToNextStep) {
-                                Text(text = stringResource(R.string.start))
-                            }
-                        }
-                        else -> {
-                            FloatingActionButton(onClick = onGoToNextStep) {
-                                Icon(
-                                    Icons.Filled.ArrowForward,
-                                    contentDescription = stringResource(id = R.string.next_step),
-                                )
-                            }
-                        }
-                    }
+                    SheetButtons(
+                        page = page,
+                        onSetDefaultLauncher = onSetDefaultLauncher,
+                        onGoToNextStep = onGoToNextStep,
+                        onSetFavorites = { onSetFavorites.invoke(selectedFavorites.value) },
+                    )
                 }
             }
         }
     }
+}
+
+@Composable
+fun SheetButtons(
+    page: OnboardingPage,
+    onSetDefaultLauncher: () -> Unit,
+    onGoToNextStep: () -> Unit,
+    onSetFavorites: () -> Unit,
+) {
+    Box(
+        modifier = Modifier.heightIn(min = 100.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        when (page) {
+            OnboardingPage.SET_AS_DEFAULT_3 -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    ExtendedFab(
+                        onClick = {
+                            onSetDefaultLauncher.invoke()
+                            onGoToNextStep.invoke()
+                        },
+                        textRes = R.string.button_yes,
+                        imageVector = Icons.Outlined.Home,
+                    )
+                    Button(
+                        onClick = onGoToNextStep,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        ),
+                    ) {
+                        Text(text = stringResource(R.string.button_skip))
+                    }
+                }
+            }
+            OnboardingPage.PRIVACY_POLICY, OnboardingPage.TERMS_OF_SERVICE -> {
+                ExtendedFab(
+                    onClick = onGoToNextStep,
+                    textRes = R.string.button_accept,
+                    imageVector = Icons.Outlined.Done,
+                )
+            }
+            OnboardingPage.SET_SIZE_MAIN -> {
+                ExtendedFab(
+                    onClick = onGoToNextStep,
+                    textRes = R.string.button_set_size,
+                    imageVector = Icons.Outlined.Done,
+                )
+            }
+            OnboardingPage.SET_FAVORITES_MAIN -> {
+                ExtendedFab(
+                    onClick = {
+                        onSetFavorites.invoke()
+                        onGoToNextStep.invoke()
+                    },
+                    textRes = R.string.button_save_favorites,
+                    imageVector = Icons.Outlined.Done,
+                )
+            }
+            OnboardingPage.SETUP_FINISHED_3 -> {
+                ExtendedFab(
+                    onClick = onGoToNextStep,
+                    textRes = R.string.start,
+                    imageVector = Icons.Outlined.Home,
+                )
+            }
+            else -> {
+                FloatingActionButton(onClick = onGoToNextStep) {
+                    Icon(
+                        Icons.Filled.ArrowForward,
+                        contentDescription = stringResource(id = R.string.next_step),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ExtendedFab(
+    modifier: Modifier = Modifier,
+    textRes: Int,
+    imageVector: ImageVector,
+    onClick: () -> Unit,
+) {
+    ExtendedFloatingActionButton(
+        modifier = modifier.padding(16.dp),
+        onClick = onClick,
+        text = {
+            Text(text = stringResource(textRes))
+        },
+        icon = {
+            Icon(
+                imageVector = imageVector,
+                contentDescription = null,
+            )
+        },
+    )
 }
 
 @Composable
@@ -271,20 +334,19 @@ fun ColumnScope.MainContent(
     selectedFavorites: MutableState<List<AppItemInfo>>,
 ) {
     when (page) {
-        in setOf(OnboardingPage.SCREEN_PRIVACY_POLICY, OnboardingPage.SCREEN_TERMS_OF_SERVICE) -> {
+        in setOf(OnboardingPage.PRIVACY_POLICY, OnboardingPage.TERMS_OF_SERVICE) -> {
             val textRes = when (page) {
-                OnboardingPage.SCREEN_PRIVACY_POLICY -> R.string.privacy_policy_text
-                OnboardingPage.SCREEN_TERMS_OF_SERVICE -> R.string.terms_of_service_text
+                OnboardingPage.PRIVACY_POLICY -> R.string.privacy_policy_text
+                OnboardingPage.TERMS_OF_SERVICE -> R.string.terms_of_service_text
                 else -> throw IllegalStateException()
             }
             ScrollableText(
                 modifier = Modifier
-                    .padding(16.dp)
                     .weight(1f),
                 text = stringResource(textRes),
             )
         }
-        OnboardingPage.SCREEN_SET_SIZE_MAIN -> {
+        OnboardingPage.SET_SIZE_MAIN -> {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -340,7 +402,7 @@ fun ColumnScope.MainContent(
                 }
             }
         }
-        OnboardingPage.SCREEN_SET_FAVORITES_MAIN -> {
+        OnboardingPage.SET_FAVORITES_MAIN -> {
             val appIconSize = uiState.settings.appIconSize.sizeDp.dp
             EditFavoritesList(
                 modifier = Modifier
@@ -367,13 +429,45 @@ fun ColumnScope.MainContent(
                 modifier = Modifier
                     .fillMaxSize(),
             ) {
-                Box(
-                    modifier = Modifier
-                        .width(200.dp)
-                        .height(200.dp)
-                        .background(Color.LightGray)
-                        .align(Alignment.Center),
-                )
+                val imageRes = when (page) {
+                    OnboardingPage.INTRODUCTION_1,
+                    OnboardingPage.INTRODUCTION_2,
+                    OnboardingPage.INTRODUCTION_3,
+                    OnboardingPage.INTRODUCTION_4,
+                    -> R.drawable.onboarding_image_1
+                    OnboardingPage.PROGRESS_EXPLANATION_1,
+                    -> R.drawable.onboarding_image_2
+                    OnboardingPage.PROGRESS_EXPLANATION_2,
+                    -> R.drawable.onboarding_image_3
+                    OnboardingPage.PROGRESS_EXPLANATION_3,
+                    -> R.drawable.onboarding_image_4
+                    OnboardingPage.SET_AS_DEFAULT_1,
+                    OnboardingPage.SET_AS_DEFAULT_2,
+                    OnboardingPage.SET_AS_DEFAULT_3,
+                    -> R.drawable.onboarding_image_5
+                    OnboardingPage.SET_SIZE_INTRO,
+                    -> R.drawable.onboarding_image_7
+                    OnboardingPage.SET_FAVORITES_INTRO_1,
+                    OnboardingPage.SET_FAVORITES_INTRO_2,
+                    OnboardingPage.SET_FAVORITES_INTRO_3,
+                    -> R.drawable.onboarding_image_8
+                    OnboardingPage.SETUP_FINISHED_1,
+                    OnboardingPage.SETUP_FINISHED_2,
+                    OnboardingPage.SETUP_FINISHED_3,
+                    -> R.drawable.onboarding_image_9
+                    else -> null
+                }
+                if (imageRes != null) {
+                    Image(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .fillMaxWidth()
+                            .padding(32.dp)
+                            .heightIn(0.dp, 240.dp),
+                        painter = painterResource(id = imageRes),
+                        contentDescription = null,
+                    )
+                }
             }
         }
     }
@@ -389,6 +483,8 @@ fun ScrollableText(
     ) {
         item {
             Text(
+                modifier = Modifier
+                    .padding(16.dp),
                 text = text,
             )
         }
@@ -427,8 +523,9 @@ fun Toolbar(
             progress = animatedProgress,
             modifier = Modifier
                 .weight(1f)
-                .height(6.dp)
-                .clip(RoundedCornerShape(3.dp)),
+                .height(8.dp)
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(4.dp)),
         )
         IconButton(
             onClick = onCancelOnboarding,
@@ -449,7 +546,7 @@ fun Toolbar(
 @Composable
 fun OnoboardingPreview() {
     LauncherTheme {
-        val screenState = ScreenState.OnboardingState(OnboardingPage.SCREEN_1)
+        val screenState = ScreenState.OnboardingState(OnboardingPage.INTRODUCTION_1)
         OnboardingScreen(uiState = UiState(screenState))
     }
 }

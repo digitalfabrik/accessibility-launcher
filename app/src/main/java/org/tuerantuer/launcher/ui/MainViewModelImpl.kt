@@ -115,7 +115,7 @@ class MainViewModelImpl(
     }
 
     override fun onOpenOnboarding() {
-        screenState = ScreenState.OnboardingState(OnboardingPage.SCREEN_1)
+        screenState = ScreenState.OnboardingState(OnboardingPage.INTRODUCTION_1)
     }
 
     override suspend fun onSetIconSize(appIconSize: AppIconSize) {
@@ -135,8 +135,8 @@ class MainViewModelImpl(
         require(screenState is ScreenState.OnboardingState)
         val nextStep = screenState.onboardingPage.pageNumber + stepSize
         when {
-            nextStep < OnboardingPage.SCREEN_1.pageNumber -> cancelOnboarding()
-            nextStep > OnboardingPage.LAST_PAGE.pageNumber -> {
+            nextStep < OnboardingPage.INTRODUCTION_1.pageNumber -> cancelOnboarding()
+            nextStep > OnboardingPage.SETUP_FINISHED_3.pageNumber -> {
                 coroutineScope.launch {
                     settingsManager.setIsUserOnboarded(isOnboarded = true)
                     loadHomeScreen()
