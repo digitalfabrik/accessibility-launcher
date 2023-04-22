@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -41,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.ui.components.BottomSheetComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
+import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
@@ -106,7 +106,7 @@ fun SettingsScreen(
 }
 
 @Composable
-fun SettingsOverviewScreen(
+fun ColumnScope.SettingsOverviewScreen(
     onOpenSystemSettings: () -> Unit = {},
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onGoBack: () -> Unit = {},
@@ -131,7 +131,7 @@ fun SettingsOverviewScreen(
 }
 
 @Composable
-fun SettingsAssistantScreen(
+fun ColumnScope.SettingsAssistantScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
@@ -153,7 +153,7 @@ fun SettingsAssistantScreen(
 }
 
 @Composable
-fun SetDefaultLauncherScreen(
+fun ColumnScope.SetDefaultLauncherScreen(
     onSetDefaultLauncher: () -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
@@ -165,7 +165,7 @@ fun SetDefaultLauncherScreen(
 }
 
 @Composable
-fun FeedbackScreen(
+fun ColumnScope.FeedbackScreen(
     onGoBack: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
 ) {
@@ -177,7 +177,7 @@ fun FeedbackScreen(
 }
 
 @Composable
-fun SystemSettingsScreen(
+fun ColumnScope.SystemSettingsScreen(
     onOpenSystemSettings: () -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
@@ -198,12 +198,11 @@ fun ColumnScope.ShareLauncherScreen(
         SettingsBody(R.string.share_launcher_description)
         SettingsFab(R.string.share_launcher, Icons.Outlined.Share, onShareLauncher)
     }
-    Spacer(modifier = Modifier.weight(1f))
     SettingsInfoCard()
 }
 
 @Composable
-fun UninstallLauncherScreen(
+fun ColumnScope.UninstallLauncherScreen(
     onUninstallLauncher: () -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
@@ -231,23 +230,26 @@ fun SettingsHeader(textRes: Int, onGoBack: () -> Unit) {
 }
 
 @Composable
-fun SettingsBody(textRes: Int) {
-    Text(
+fun ColumnScope.SettingsBody(textRes: Int) {
+    ScrollableColumn(
         modifier = Modifier
-            .wrapContentHeight()
+            .weight(1f)
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp),
-        text = stringResource(textRes),
-        textAlign = TextAlign.Center,
-    )
+    ) {
+        Text(
+            text = stringResource(textRes),
+            textAlign = TextAlign.Center,
+        )
+    }
 }
 
 @Composable
-fun SettingsFrame(
+fun ColumnScope.SettingsFrame(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        Modifier.padding(16.dp),
+        Modifier.padding(16.dp).weight(1f),
         content = content,
     )
 }
@@ -261,6 +263,7 @@ fun SettingsFab(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .wrapContentHeight()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.Center,
     ) {

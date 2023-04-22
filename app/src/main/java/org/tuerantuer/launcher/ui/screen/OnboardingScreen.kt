@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -67,6 +66,7 @@ import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.OnboardingPage
 import org.tuerantuer.launcher.ui.data.ScreenState
@@ -146,7 +146,9 @@ fun OnboardingScreen(
                 onCancelOnboarding = onCancelOnboarding,
             )
             CustomMaterialMotion(
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 targetState = uiState,
                 animationForStateTransition = { old, new ->
                     val oldPage = (old.screenState as? ScreenState.OnboardingState)?.onboardingPage
@@ -378,7 +380,7 @@ fun ColumnScope.MainContent(
                         animationSpec = tween(
                             durationMillis = 500,
                             easing = LinearOutSlowInEasing,
-                        )
+                        ),
                     )
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(minSize = appIconSize),
@@ -393,7 +395,7 @@ fun ColumnScope.MainContent(
                                     animationSpec = tween(
                                         durationMillis = 500,
                                         easing = LinearOutSlowInEasing,
-                                    )
+                                    ),
                                 ),
                                 homeScreenItem = homeScreenItem,
                                 iconSize = animatedAppIconSize,
@@ -524,16 +526,12 @@ fun ScrollableText(
     modifier: Modifier = Modifier,
     text: String,
 ) {
-    LazyColumn(
-        modifier = modifier,
-    ) {
-        item {
-            Text(
-                modifier = Modifier
-                    .padding(16.dp),
-                text = text,
-            )
-        }
+    ScrollableColumn(modifier = modifier) {
+        Text(
+            modifier = Modifier
+                .padding(16.dp),
+            text = text,
+        )
     }
 }
 
