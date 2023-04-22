@@ -29,8 +29,8 @@ import org.tuerantuer.launcher.ui.data.HomeScreenItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenItemComponent(
-    homeScreenItem: HomeScreenItem,
     modifier: Modifier = Modifier,
+    homeScreenItem: HomeScreenItem,
     iconSize: Dp,
 ) {
     Card(

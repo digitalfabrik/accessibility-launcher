@@ -1,8 +1,12 @@
 package org.tuerantuer.launcher.ui.screen
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -335,6 +339,7 @@ fun ExtendedFab(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColumnScope.MainContent(
     uiState: UiState,
@@ -368,6 +373,13 @@ fun ColumnScope.MainContent(
                     val homeScreenItems =
                         uiState.allApps.map { appItemInfo -> AppHomeScreenItem(appItemInfo, onClick = { }) }
                     val appIconSize = uiState.settings.appIconSize.sizeDp.dp
+                    val animatedAppIconSize by animateDpAsState(
+                        targetValue = appIconSize,
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = LinearOutSlowInEasing,
+                        )
+                    )
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(minSize = appIconSize),
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
@@ -377,8 +389,14 @@ fun ColumnScope.MainContent(
                             key = { homeScreenItems -> homeScreenItems.key },
                         ) { homeScreenItem ->
                             HomeScreenItemComponent(
+                                modifier = Modifier.animateItemPlacement(
+                                    animationSpec = tween(
+                                        durationMillis = 500,
+                                        easing = LinearOutSlowInEasing,
+                                    )
+                                ),
                                 homeScreenItem = homeScreenItem,
-                                iconSize = appIconSize,
+                                iconSize = animatedAppIconSize,
                             )
                         }
                     }
