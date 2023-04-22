@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface AppActivityRepository {
     /**
      * Lets you query and observe all installed apps of the user along with their favorites.
+     * Note: We filter out the launcher app itself.
      */
     val apps: Flow<Apps>
 

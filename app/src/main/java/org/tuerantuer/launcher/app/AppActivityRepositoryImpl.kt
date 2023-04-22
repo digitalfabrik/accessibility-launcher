@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.tuerantuer.launcher.BuildConfig
 import org.tuerantuer.launcher.app.appIdentifier.ComponentKey
 import org.tuerantuer.launcher.app.appIdentifier.ComponentKeySer
 import org.tuerantuer.launcher.app.appIdentifier.PackageUserSer
@@ -93,10 +94,13 @@ class AppActivityRepositoryImpl(
     private suspend fun queryAllApps(): List<AppItemInfo> {
         return withContext(ioDispatcher) {
             val result = mutableListOf<AppItemInfo>()
-            customLauncherApps.queryAllAppActivities().mapTo(result) { activityInfo ->
+            customLauncherApps.queryAllAppActivities().mapNotNullTo(result) { activityInfo ->
+                val componentKey = ComponentKey.fromLauncherActivityInfo(activityInfo)
+                if (isComponentKeyFromLauncher(componentKey)) {
+                    return@mapNotNullTo null
+                }
                 val name = activityInfo.label?.toString().orEmpty()
                 val icon = getActivityInfoIcon(activityInfo, appIconDpi = 0)
-                val componentKey = ComponentKey.fromLauncherActivityInfo(activityInfo)
                 val userSerialized = userManager.serializeUser(componentKey.userHandle)
                 val componentKeySer = ComponentKeySer(componentKey.componentName, userSerialized)
                 AppItemInfo(name, icon, componentKey, componentKeySer)
@@ -104,6 +108,11 @@ class AppActivityRepositoryImpl(
             result.sortBy { it.name }
             result
         }
+    }
+
+    private fun isComponentKeyFromLauncher(componentKey: ComponentKey): Boolean {
+        // Also ignore launcher activities that are not from the primary user since it's not possible to launch them.
+        return componentKey.packageName == BuildConfig.APPLICATION_ID
     }
 
     private fun getActivityInfoIcon(activityInfo: LauncherActivityInfo, appIconDpi: Int): Drawable? {
