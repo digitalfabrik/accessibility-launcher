@@ -1,6 +1,8 @@
 package org.tuerantuer.launcher.app
 
+import android.content.Context
 import android.content.pm.LauncherActivityInfo
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.AdaptiveIconDrawable
@@ -35,6 +37,7 @@ class AppActivityRepositoryImpl(
     private val coroutineScope: CoroutineScope,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val favoriteDao: FavoriteDao,
+    private val context: Context,
 ) : AppActivityRepository, CustomLauncherApps.AppChangeListener {
 
     private val allApps: MutableSharedFlow<List<AppItemInfo>> = MutableSharedFlow()
@@ -94,13 +97,14 @@ class AppActivityRepositoryImpl(
     private suspend fun queryAllApps(): List<AppItemInfo> {
         return withContext(ioDispatcher) {
             val result = mutableListOf<AppItemInfo>()
+            val packageManager = context.packageManager
             customLauncherApps.queryAllAppActivities().mapNotNullTo(result) { activityInfo ->
                 val componentKey = ComponentKey.fromLauncherActivityInfo(activityInfo)
                 if (isComponentKeyFromLauncher(componentKey)) {
                     return@mapNotNullTo null
                 }
                 val name = activityInfo.label?.toString().orEmpty()
-                val icon = getActivityInfoIcon(activityInfo, appIconDpi = 0)
+                val icon = getActivityInfoIcon(packageManager, activityInfo, appIconDpi = 0)
                 val userSerialized = userManager.serializeUser(componentKey.userHandle)
                 val componentKeySer = ComponentKeySer(componentKey.componentName, userSerialized)
                 AppItemInfo(name, icon, componentKey, componentKeySer)
@@ -115,7 +119,11 @@ class AppActivityRepositoryImpl(
         return componentKey.packageName == BuildConfig.APPLICATION_ID
     }
 
-    private fun getActivityInfoIcon(activityInfo: LauncherActivityInfo, appIconDpi: Int): Drawable? {
+    private fun getActivityInfoIcon(
+        packageManager: PackageManager,
+        activityInfo: LauncherActivityInfo,
+        appIconDpi: Int,
+    ): Drawable? {
         @Suppress("SwallowedException", "TooGenericExceptionCaught")
         val originalIcon = try {
             activityInfo.getIcon(appIconDpi)
@@ -131,15 +139,20 @@ class AppActivityRepositoryImpl(
             null
         } ?: return null
 
-        return if (originalIcon is AdaptiveIconDrawable) {
+        val nonBadgedIcon = if (originalIcon is AdaptiveIconDrawable) {
             originalIcon
         } else {
-            run {
-                AdaptiveIconDrawable(
-                    ColorDrawable(Color.WHITE),
-                    CustomInsetDrawable(originalIcon, wrappedDrawableRatio = 0.5f),
-                )
-            }
+            // Create a new AdaptiveIconDrawable with the original icon as the foreground.
+            AdaptiveIconDrawable(
+                ColorDrawable(Color.WHITE),
+                CustomInsetDrawable(originalIcon, wrappedDrawableRatio = 0.5f),
+            )
+        }
+        val user = activityInfo.user
+        return if (user == userManager.primaryUser) {
+            nonBadgedIcon
+        } else {
+            packageManager.getUserBadgedIcon(nonBadgedIcon, user)
         }
     }
 }

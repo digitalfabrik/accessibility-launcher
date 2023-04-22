@@ -67,8 +67,9 @@ class AppModule {
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
         coroutineScope: CoroutineScope,
         favoriteDao: FavoriteDao,
+        @ApplicationContext context: Context,
     ): AppActivityRepository =
-        AppActivityRepositoryImpl(customLauncherApps, userManager, coroutineScope, ioDispatcher, favoriteDao)
+        AppActivityRepositoryImpl(customLauncherApps, userManager, coroutineScope, ioDispatcher, favoriteDao, context)
 
     @Singleton
     @Provides
