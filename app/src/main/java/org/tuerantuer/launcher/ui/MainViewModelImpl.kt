@@ -40,6 +40,7 @@ class MainViewModelImpl(
     private var screenState: ScreenState
         get() = _screenState.value
         set(value) {
+            if (screenState == value) return
             _screenState.value = value
         }
 
@@ -80,6 +81,7 @@ class MainViewModelImpl(
                     loadHomeScreen()
                 }
             }
+
             is ScreenState.EditFavoritesScreenState -> loadHomeScreen()
             // is ScreenState.LoadingState, is ScreenState.MainMenu, ScreenState.OnboardingState -> return false
             // is ScreenState.MatchOverview, is ScreenState.SettingsState -> loadMainMenu()
@@ -100,6 +102,7 @@ class MainViewModelImpl(
 
     override fun openApp(appItemInfo: AppItemInfo) {
         appLauncher.launchApp(appItemInfo)
+        loadHomeScreen() // always go to home screen after launching app, does nothing if already on home screen
     }
 
     override fun onEditFavorites() {
@@ -142,6 +145,7 @@ class MainViewModelImpl(
                     loadHomeScreen()
                 }
             }
+
             else -> {
                 this.screenState =
                     ScreenState.OnboardingState(OnboardingPage.values().first { it.pageNumber == nextStep })
