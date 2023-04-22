@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
@@ -130,15 +129,15 @@ fun Clock() {
     ) {
         val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
         Spacer(modifier = Modifier.height(32.dp))
-        val textSizeDate = 18.sp
-        val textSizeTime = 72.dp
         AndroidView(
             factory = { context ->
                 TextClock(context).apply {
                     val format = getTimeFormat(defaultLocale)
                     format12Hour = format
                     format24Hour = format
-                    textSize = textSizeTime.value
+                    // Use dp instead of sp, because the clock should not be scaled with the system font size setting
+                    // (it's always big enough to be readable)
+                    setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, 72f)
                     setTextColor(textColor)
                 }
             },
@@ -149,7 +148,7 @@ fun Clock() {
                     val format = getDateFormat(defaultLocale)
                     format12Hour = format
                     format24Hour = format
-                    textSize = textSizeDate.value
+                    setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18f)
                     setTextColor(textColor)
                 }
             },
