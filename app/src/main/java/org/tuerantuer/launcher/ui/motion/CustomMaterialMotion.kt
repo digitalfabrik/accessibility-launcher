@@ -2,6 +2,7 @@ package org.tuerantuer.launcher.ui.motion
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +26,9 @@ fun <S> CustomMaterialMotion(
     val animation = animationForStateTransition(transition.currentState, transition.targetState)
     if (animation == null) {
         // Don't animate screen
-        content(targetState)
+        Box(modifier = modifier, contentAlignment = contentAlignment) {
+            content(targetState)
+        }
     } else {
         transition.MaterialMotion(
             animation,

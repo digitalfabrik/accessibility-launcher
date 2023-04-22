@@ -144,6 +144,7 @@ fun OnboardingScreen(
                     val newPage = (new.screenState as? ScreenState.OnboardingState)?.onboardingPage
                         ?: return@CustomMaterialMotion null
                     when {
+                        getMainContentIconResFromPage(oldPage) == getMainContentIconResFromPage(newPage) -> null
                         oldPage.pageNumber < newPage.pageNumber -> sharedXMotionSpec
                         oldPage.pageNumber > newPage.pageNumber -> sharedXMotionSpecReverse
                         old.settings.appIconSize < new.settings.appIconSize -> sharedXMotionSpec
@@ -153,8 +154,7 @@ fun OnboardingScreen(
                 },
             ) { animatedUiState ->
                 MainContent(
-                    uiState = uiState,
-                    page = page,
+                    uiState = animatedUiState,
                     onSetIconSize = onSetIconSize,
                     selectedFavorites = selectedFavorites,
                 )
@@ -332,16 +332,16 @@ fun ExtendedFab(
 @Composable
 fun ColumnScope.MainContent(
     uiState: UiState,
-    page: OnboardingPage,
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
     selectedFavorites: MutableState<List<AppItemInfo>>,
 ) {
-    when (page) {
+    val screenState = uiState.screenState as ScreenState.OnboardingState
+    when (val page = screenState.onboardingPage) {
         in setOf(OnboardingPage.PRIVACY_POLICY, OnboardingPage.TERMS_OF_SERVICE) -> {
             val textRes = when (page) {
                 OnboardingPage.PRIVACY_POLICY -> R.string.privacy_policy_text
                 OnboardingPage.TERMS_OF_SERVICE -> R.string.terms_of_service_text
-                else -> throw IllegalStateException()
+                else -> error("Invalid page: $page")
             }
             ScrollableText(
                 modifier = Modifier
@@ -428,38 +428,11 @@ fun ColumnScope.MainContent(
             )
         }
         else -> {
+            val imageRes = getMainContentIconResFromPage(page)
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
             ) {
-                val imageRes = when (page) {
-                    OnboardingPage.INTRODUCTION_1,
-                    OnboardingPage.INTRODUCTION_2,
-                    OnboardingPage.INTRODUCTION_3,
-                    OnboardingPage.INTRODUCTION_4,
-                    -> R.drawable.onboarding_image_1
-                    OnboardingPage.PROGRESS_EXPLANATION_1,
-                    -> R.drawable.onboarding_image_2
-                    OnboardingPage.PROGRESS_EXPLANATION_2,
-                    -> R.drawable.onboarding_image_3
-                    OnboardingPage.PROGRESS_EXPLANATION_3,
-                    -> R.drawable.onboarding_image_4
-                    OnboardingPage.SET_AS_DEFAULT_1,
-                    OnboardingPage.SET_AS_DEFAULT_2,
-                    OnboardingPage.SET_AS_DEFAULT_3,
-                    -> R.drawable.onboarding_image_5
-                    OnboardingPage.SET_SIZE_INTRO,
-                    -> R.drawable.onboarding_image_7
-                    OnboardingPage.SET_FAVORITES_INTRO_1,
-                    OnboardingPage.SET_FAVORITES_INTRO_2,
-                    OnboardingPage.SET_FAVORITES_INTRO_3,
-                    -> R.drawable.onboarding_image_8
-                    OnboardingPage.SETUP_FINISHED_1,
-                    OnboardingPage.SETUP_FINISHED_2,
-                    OnboardingPage.SETUP_FINISHED_3,
-                    -> R.drawable.onboarding_image_9
-                    else -> null
-                }
                 if (imageRes != null) {
                     Image(
                         modifier = Modifier
@@ -473,6 +446,37 @@ fun ColumnScope.MainContent(
                 }
             }
         }
+    }
+}
+
+private fun getMainContentIconResFromPage(page: OnboardingPage): Int? {
+    return when (page) {
+        OnboardingPage.INTRODUCTION_1,
+        OnboardingPage.INTRODUCTION_2,
+        OnboardingPage.INTRODUCTION_3,
+        OnboardingPage.INTRODUCTION_4,
+        -> R.drawable.onboarding_image_1
+        OnboardingPage.PROGRESS_EXPLANATION_1,
+        -> R.drawable.onboarding_image_2
+        OnboardingPage.PROGRESS_EXPLANATION_2,
+        -> R.drawable.onboarding_image_3
+        OnboardingPage.PROGRESS_EXPLANATION_3,
+        -> R.drawable.onboarding_image_4
+        OnboardingPage.SET_AS_DEFAULT_1,
+        OnboardingPage.SET_AS_DEFAULT_2,
+        OnboardingPage.SET_AS_DEFAULT_3,
+        -> R.drawable.onboarding_image_5
+        OnboardingPage.SET_SIZE_INTRO,
+        -> R.drawable.onboarding_image_7
+        OnboardingPage.SET_FAVORITES_INTRO_1,
+        OnboardingPage.SET_FAVORITES_INTRO_2,
+        OnboardingPage.SET_FAVORITES_INTRO_3,
+        -> R.drawable.onboarding_image_8
+        OnboardingPage.SETUP_FINISHED_1,
+        OnboardingPage.SETUP_FINISHED_2,
+        OnboardingPage.SETUP_FINISHED_3,
+        -> R.drawable.onboarding_image_9
+        else -> null
     }
 }
 
