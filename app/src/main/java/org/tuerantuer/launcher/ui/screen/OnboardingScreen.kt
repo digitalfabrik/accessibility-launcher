@@ -9,24 +9,27 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.ZoomIn
+import androidx.compose.material.icons.filled.ZoomOut
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Button
@@ -48,6 +51,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -58,6 +62,8 @@ import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.OnboardingPage
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
@@ -352,21 +358,42 @@ fun ColumnScope.MainContent(
         OnboardingPage.SET_SIZE_MAIN -> {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
+                    .fillMaxSize(),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
                 ) {
-                    val iconSizeDp = uiState.settings.appIconSize.sizeDp.dp
+                    val homeScreenItems =
+                        uiState.allApps.map { appItemInfo -> AppHomeScreenItem(appItemInfo, onClick = { }) }
+                    val appIconSize = uiState.settings.appIconSize.sizeDp.dp
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = appIconSize),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    ) {
+                        items(
+                            items = homeScreenItems,
+                            key = { homeScreenItems -> homeScreenItems.key },
+                        ) { homeScreenItem ->
+                            HomeScreenItemComponent(
+                                homeScreenItem = homeScreenItem,
+                                iconSize = appIconSize,
+                            )
+                        }
+                    }
+
+                    // Add a fade-out scrim at the bottom of the app list.
                     Box(
-                        modifier = Modifier
-                            .width(iconSizeDp)
-                            .height(iconSizeDp)
-                            .background(Color.LightGray)
-                            .align(Alignment.Center),
+                        Modifier
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .align(Alignment.BottomCenter)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(Color.Transparent, MaterialTheme.colorScheme.background),
+                                ),
+                            ),
                     )
                 }
                 Row(
@@ -381,26 +408,20 @@ fun ColumnScope.MainContent(
                     val smallerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex - 1)
                     val largerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex + 1)
                     if (smallerIconSize != null) {
-                        FloatingActionButton(
-                            modifier = Modifier.padding(16.dp),
+                        ExtendedFab(
+                            modifier = Modifier.padding(start = 0.dp, bottom = 16.dp),
                             onClick = { onSetIconSize(smallerIconSize) },
-                        ) {
-                            Icon(
-                                Icons.Filled.KeyboardArrowLeft,
-                                contentDescription = stringResource(id = R.string.button_decrease_size),
-                            )
-                        }
+                            textRes = R.string.button_decrease_size,
+                            imageVector = Icons.Filled.ZoomOut,
+                        )
                     }
                     if (largerIconSize != null) {
-                        FloatingActionButton(
-                            modifier = Modifier.padding(16.dp),
+                        ExtendedFab(
+                            modifier = Modifier.padding(end = 0.dp, bottom = 16.dp),
                             onClick = { onSetIconSize(largerIconSize) },
-                        ) {
-                            Icon(
-                                Icons.Filled.KeyboardArrowRight,
-                                contentDescription = stringResource(id = R.string.button_increase_size),
-                            )
-                        }
+                            textRes = R.string.button_increase_size,
+                            imageVector = Icons.Filled.ZoomIn,
+                        )
                     }
                 }
             }
