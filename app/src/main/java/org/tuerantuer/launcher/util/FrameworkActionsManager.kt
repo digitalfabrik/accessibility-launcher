@@ -18,6 +18,14 @@ import org.tuerantuer.launcher.util.extension.launchAppActivityInNewState
  * Created on 07/03/2023
  */
 class FrameworkActionsManager(private val context: Context) {
+
+    companion object {
+        /**
+         * Constant is hidden in the Android framework, so we have to define it ourselves.
+         */
+        private const val INTENT_ACTION_OPEN_NOTIFICATION_SETTINGS = "android.settings.APP_NOTIFICATION_SETTINGS"
+    }
+
     /**
      * Opens the default launcher chooser to let the user set this (or another) launcher as the default launcher.
      */
@@ -45,16 +53,28 @@ class FrameworkActionsManager(private val context: Context) {
     }
 
     fun openSystemSettings() {
-        try {
-            Intent(Settings.ACTION_SETTINGS).launchAppActivityInNewState(context)
-        } catch (e: ActivityLaunchFailedException) {
-            showLongToast(R.string.action_not_supported)
-        }
+        launchIntentAndHandleFailure(Intent(Settings.ACTION_SETTINGS))
     }
 
     fun openAccessibilitySettings() {
+        launchIntentAndHandleFailure(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+    }
+
+    fun openNotificationSettings() {
+        launchIntentAndHandleFailure(Intent(INTENT_ACTION_OPEN_NOTIFICATION_SETTINGS))
+    }
+
+    fun openSoundSettings() {
+        launchIntentAndHandleFailure(Intent(Settings.ACTION_SOUND_SETTINGS))
+    }
+
+    fun openDisplaySettings() {
+        launchIntentAndHandleFailure(Intent(Settings.ACTION_DISPLAY_SETTINGS))
+    }
+
+    fun launchIntentAndHandleFailure(intent: Intent) {
         try {
-            Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).launchAppActivityInNewState(context)
+            intent.launchAppActivityInNewState(context)
         } catch (e: ActivityLaunchFailedException) {
             showLongToast(R.string.action_not_supported)
         }

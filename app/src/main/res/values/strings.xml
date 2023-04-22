@@ -44,7 +44,7 @@
     <string name="uninstall_apps">Apps deinstallieren</string>
 
     <string name="uninstall_launcher">Carikom deinstallieren</string>
-    <string name="uninstall_launcher_description">Hier kannst du Carikom deinstallieren. Achtung: Das bedeutet, dass deine Einstellungen und Favoriten gelöscht werden. \n Hier kannst du Carikom deinstallieren.</string>
+    <string name="uninstall_launcher_description">Hier kannst du Carikom deinstallieren. Achtung: Das bedeutet, dass deine Einstellungen und Favoriten gelöscht werden.</string>
 
     <string name="assistant">Assistent</string>
     <string name="assistant_visual">Sehen</string>
@@ -64,6 +64,21 @@
     <string name="button_save_favorites">Favoriten speichern</string>
     <string name="edit_favorites_info">Für mehr Informationen zu dieser Einstellung besuche die Carikom-Wiki-Website.</string>
     <string name="settings_info">Um zu erfahren, warum es wichtig sein kann, diese Einstellungen anzupassen, besuche die Carikom-Wiki-Website. Hier erfährt du auch, welche Einstellung für dich geeignet ist.</string>
+
+    <string name="display_scale">Anzeigegröße</string>
+    <string name="wallpaper">Hintergrundbild</string>
+    <string name="display_timeout">Display-Timeout</string>
+    <string name="display_timeout_description">Dein Handy geht nach einiger Zeit, in der du den Bildschirm nicht berührt hast, aus. Du kannst diese Funktion in den Einstellungen deines Geräts ausstellen.</string>
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="notifications_description">Du bekommst von verschiedenen Apps Push-Benachrichtigungen. Du kannst diese anpassen oder ganz auszustellen.</string>
+    <string name="input_delay">Eingabeverzögerung</string>
+    <string name="input_delay_description">Dein Handy reagiert unmittelbar auf deine Berührung. Um die Bedienung zu erleichtern kann es hilfreich sein, eine Eingabeverzögerung zu aktivieren. Das bedeutet, dass dein Handy etwas langsamer auf deine Gesten reagiert.</string>
+    <string name="notification_sounds">Benachrichtigungstöne</string>
+    <string name="notification_sounds_description">Du kannst die Benachrichtigungstöne für Anrufe, Nachrichten oder App-Mittelungen anpassen. Das bedeutet, das du sowohl Töne wählen kannst, die du gerne hören möchtest. Du kannst aber auch anpassen, ob und welche Töne du überhaupt hören möchtest.</string>
+    <string name="screen_reader">Vorlesefunktion</string>
+    <string name="screen_reader_description">Du kannst dir die Inhalte deines Bildschirms auch vorlesen lassen. Dafür kannst du einen sogenannten Screen-Reader, also auf Deutsch Bildschirm-Vorleser, aktivieren.</string>
+    <string name="voice_commands">Bedienung mit Sprache</string>
+    <string name="voice_commands_description">Du kannst dein Handy statt über das Tippen mit den Fingern oder über die Tastatur auch über das Sprechen bedienen.</string>
 
     <string name="support_mail_address">example@example.org</string>
     <string name="feedback_mail_subject">[SUBJECT_PLACEHOLDER]</string>

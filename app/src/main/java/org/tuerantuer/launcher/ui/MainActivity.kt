@@ -128,13 +128,17 @@ fun Screens(
         )
         is ScreenState.SettingsState -> SettingsScreen(
             uiState = uiState,
-            onSetDefaultLauncher = { mainViewModel.onSetDefaultLauncher() },
-            onShareLauncher = { mainViewModel.onShareLauncher() },
-            onOpenSystemSettings = { mainViewModel.onOpenSystemSettings() },
-            onUninstallLauncher = { mainViewModel.onUninstallLauncher() },
-            onWriteFeedbackMail = { mainViewModel.onWriteFeedbackMail() },
-            onOpenSettingsPage = { page -> mainViewModel.openSettingsPage(page) },
-            onGoBack = { mainViewModel.goBack() },
+            onSetDefaultLauncher = mainViewModel::onSetDefaultLauncher,
+            onShareLauncher = mainViewModel::onShareLauncher,
+            onOpenSystemSettings = mainViewModel::onOpenSystemSettings,
+            onOpenAccessibilitySettings = mainViewModel::onOpenAccessibilitySettings,
+            onOpenSoundSettings = mainViewModel::onOpenSoundSettings,
+            onOpenDisplaySettings = mainViewModel::onOpenDisplaySettings,
+            onOpenNotificationSettings = mainViewModel::onOpenNotificationSettings,
+            onUninstallLauncher = mainViewModel::onUninstallLauncher,
+            onWriteFeedbackMail = mainViewModel::onWriteFeedbackMail,
+            onOpenSettingsPage = mainViewModel::openSettingsPage,
+            onGoBack = mainViewModel::goBack,
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(
             uiState = uiState,
