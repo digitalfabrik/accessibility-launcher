@@ -4,6 +4,7 @@ import android.os.Process
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -21,7 +22,6 @@ import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.util.FrameworkActionsManager
-import org.tuerantuer.launcher.util.WhileUiSubscribed
 
 /**
  * Default implementation of [MainViewModel].
@@ -60,7 +60,7 @@ class MainViewModelImpl(
         UiState(screenState = screenState, apps = apps, settings = settings)
     }.stateIn(
         scope = coroutineScope,
-        started = WhileUiSubscribed,
+        started = SharingStarted.Lazily,
         initialValue = UiState(screenState = ScreenState.LoadingState, apps = Apps()),
     )
 

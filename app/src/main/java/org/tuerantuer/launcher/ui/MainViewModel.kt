@@ -17,8 +17,8 @@ import org.tuerantuer.launcher.ui.data.UiState
  */
 interface MainViewModel {
     /**
-     * Determines the current state ui. Each subclass of [ScreenState] represents a different screen in
-     * the app. You can subscribe to this [StateFlow] to be notified when the underlying [ScreenState]
+     * Determines the current state ui. Each subclass of [UiState] represents a different screen in
+     * the app. You can subscribe to this [StateFlow] to be notified when the underlying [UiState]
      * changes.
      */
     val uiState: StateFlow<UiState>

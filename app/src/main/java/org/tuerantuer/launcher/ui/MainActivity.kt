@@ -73,22 +73,7 @@ fun LauncherApp(
     screenTransitionManager: ScreenTransitionManager,
 ) {
     val coroutinesScope = rememberCoroutineScope()
-//    val openDialog = remember { mutableStateOf(false) }
     val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
-//        // Error Dialog
-//        val error = (uiState as? ErrorProneState)?.error
-//        if (error != null) {
-//            ConstructErrorDialog(e = error, open = openDialog)
-//            displayError(
-//                uiState,
-//                scaffoldState,
-//                mainViewModel,
-//                coroutinesScope,
-//                openDialog,
-//                LocalContext.current,
-//            )
-//        }
-
     CustomMaterialMotion(
         targetState = uiState,
         animationForStateTransition = { old, new ->
@@ -99,7 +84,6 @@ fun LauncherApp(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(),
-//                    .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
