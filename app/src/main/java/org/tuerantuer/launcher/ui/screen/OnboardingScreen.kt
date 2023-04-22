@@ -189,8 +189,10 @@ fun OnboardingScreen(
                         OnboardingPage.INTRODUCTION_3,
                         OnboardingPage.INTRODUCTION_4,
                         -> R.string.welcome
+
                         OnboardingPage.SETUP_FINISHED_3,
                         -> R.string.done
+
                         else -> R.string.setup
                     }
                     Text(
@@ -218,7 +220,10 @@ fun OnboardingScreen(
                         page = page,
                         onSetDefaultLauncher = onSetDefaultLauncher,
                         onGoToNextStep = onGoToNextStep,
-                        onSetFavorites = { onSetFavorites.invoke(selectedFavorites.value) },
+                        onSetFavorites = {
+                            // TODO: Don't sort favorites by name. Instead, allow the user to reorder them.
+                            onSetFavorites.invoke(selectedFavorites.value.sortedBy { it.name })
+                        },
                     )
                 }
             }
@@ -261,6 +266,7 @@ fun SheetButtons(
                     }
                 }
             }
+
             OnboardingPage.PRIVACY_POLICY, OnboardingPage.TERMS_OF_SERVICE -> {
                 ExtendedFab(
                     onClick = onGoToNextStep,
@@ -268,6 +274,7 @@ fun SheetButtons(
                     imageVector = Icons.Outlined.Done,
                 )
             }
+
             OnboardingPage.SET_SIZE_MAIN -> {
                 ExtendedFab(
                     onClick = onGoToNextStep,
@@ -275,6 +282,7 @@ fun SheetButtons(
                     imageVector = Icons.Outlined.Done,
                 )
             }
+
             OnboardingPage.SET_FAVORITES_MAIN -> {
                 ExtendedFab(
                     onClick = {
@@ -285,6 +293,7 @@ fun SheetButtons(
                     imageVector = Icons.Outlined.Done,
                 )
             }
+
             OnboardingPage.SETUP_FINISHED_3 -> {
                 ExtendedFab(
                     onClick = onGoToNextStep,
@@ -292,6 +301,7 @@ fun SheetButtons(
                     imageVector = Icons.Outlined.Home,
                 )
             }
+
             else -> {
                 FloatingActionButton(onClick = onGoToNextStep) {
                     Icon(
@@ -346,6 +356,7 @@ fun ColumnScope.MainContent(
                 text = stringResource(textRes),
             )
         }
+
         OnboardingPage.SET_SIZE_MAIN -> {
             Column(
                 modifier = Modifier
@@ -402,6 +413,7 @@ fun ColumnScope.MainContent(
                 }
             }
         }
+
         OnboardingPage.SET_FAVORITES_MAIN -> {
             val appIconSize = uiState.settings.appIconSize.sizeDp.dp
             EditFavoritesList(
@@ -424,6 +436,7 @@ fun ColumnScope.MainContent(
                 },
             )
         }
+
         else -> {
             Box(
                 modifier = Modifier
@@ -435,26 +448,34 @@ fun ColumnScope.MainContent(
                     OnboardingPage.INTRODUCTION_3,
                     OnboardingPage.INTRODUCTION_4,
                     -> R.drawable.onboarding_image_1
+
                     OnboardingPage.PROGRESS_EXPLANATION_1,
                     -> R.drawable.onboarding_image_2
+
                     OnboardingPage.PROGRESS_EXPLANATION_2,
                     -> R.drawable.onboarding_image_3
+
                     OnboardingPage.PROGRESS_EXPLANATION_3,
                     -> R.drawable.onboarding_image_4
+
                     OnboardingPage.SET_AS_DEFAULT_1,
                     OnboardingPage.SET_AS_DEFAULT_2,
                     OnboardingPage.SET_AS_DEFAULT_3,
                     -> R.drawable.onboarding_image_5
+
                     OnboardingPage.SET_SIZE_INTRO,
                     -> R.drawable.onboarding_image_7
+
                     OnboardingPage.SET_FAVORITES_INTRO_1,
                     OnboardingPage.SET_FAVORITES_INTRO_2,
                     OnboardingPage.SET_FAVORITES_INTRO_3,
                     -> R.drawable.onboarding_image_8
+
                     OnboardingPage.SETUP_FINISHED_1,
                     OnboardingPage.SETUP_FINISHED_2,
                     OnboardingPage.SETUP_FINISHED_3,
                     -> R.drawable.onboarding_image_9
+
                     else -> null
                 }
                 if (imageRes != null) {

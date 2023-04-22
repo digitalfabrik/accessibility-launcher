@@ -123,7 +123,10 @@ fun EditFavoritesScreen(
                 ExtendedFloatingActionButton(
                     modifier = Modifier
                         .wrapContentSize(),
-                    onClick = { onApplyEdits.invoke(selectedFavorites.value) },
+                    onClick = {
+                        // TODO: Don't sort favorites by name. Instead, allow the user to reorder them.
+                        onApplyEdits.invoke(selectedFavorites.value.sortedBy { it.name })
+                    },
                     text = {
                         Text(text = stringResource(R.string.button_save_favorites))
                     },
@@ -335,8 +338,10 @@ class DragDropListState(
             return@let when {
                 draggedDistance > 0 -> (endOffset - lazyListState.layoutInfo.viewportEndOffset)
                     .takeIf { diff -> diff > 0 }
+
                 draggedDistance < 0 -> (startOffset - lazyListState.layoutInfo.viewportStartOffset)
                     .takeIf { diff -> diff < 0 }
+
                 else -> null
             }
         } ?: 0f
