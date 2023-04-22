@@ -34,7 +34,7 @@ import org.tuerantuer.launcher.ui.data.HomeScreenItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
-import java.util.*
+import java.util.Locale
 
 private const val DATE_PATTERN = "EEEE, MMMd"
 private const val TIME_PATTERN = "HH:mm"

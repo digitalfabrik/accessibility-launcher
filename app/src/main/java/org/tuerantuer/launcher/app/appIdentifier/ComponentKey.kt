@@ -24,10 +24,10 @@ data class ComponentKey(val componentName: ComponentName, val userHandle: UserHa
     }
 
     constructor(packageName: String, className: String, userHandle: UserHandle?) :
-        this(ComponentName(packageName, className), userHandle)
+            this(ComponentName(packageName, className), userHandle)
 
     constructor(packageUser: PackageUser, className: String) :
-        this(ComponentName(packageUser.packageName, className), packageUser.userHandle)
+            this(ComponentName(packageUser.packageName, className), packageUser.userHandle)
 
     /**
      * Identifies an app within a user profile.

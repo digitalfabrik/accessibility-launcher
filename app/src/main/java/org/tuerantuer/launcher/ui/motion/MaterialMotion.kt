@@ -82,11 +82,11 @@ fun <S> Transition<S>.MaterialMotion(
         modifier = modifier,
         transitionSpec = {
             (
-                motionSpec.enter.transition(forward, density) with motionSpec.exit.transition(
-                    forward,
-                    density,
-                )
-                )
+                    motionSpec.enter.transition(forward, density) with motionSpec.exit.transition(
+                        forward,
+                        density,
+                    )
+                    )
                 .apply {
                     // Show forward contents over the backward contents.
                     targetContentZIndex = if (forward) 0.1f else 0f

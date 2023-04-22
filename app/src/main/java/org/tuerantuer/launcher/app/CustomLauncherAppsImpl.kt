@@ -18,7 +18,7 @@ import org.tuerantuer.launcher.di.IoDispatcher
 import org.tuerantuer.launcher.util.ActivityLaunchFailedException
 import org.tuerantuer.launcher.util.extension.isSingle
 import timber.log.Timber
-import java.util.*
+import java.util.Collections
 
 /**
  * Default implementation of [CustomLauncherApps].
