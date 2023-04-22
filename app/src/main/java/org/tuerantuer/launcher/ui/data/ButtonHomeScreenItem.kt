@@ -32,7 +32,7 @@ class ButtonHomeScreenItem(
      */
     @Parcelize
     @Suppress("unused")
-    private class SubKey(val nameRes: Int) : Parcelable
+    private data class SubKey(val nameRes: Int) : Parcelable
 
     override val key: HomeScreenItem.HomeScreenItemKey =
         HomeScreenItem.HomeScreenItemKey(HomeScreenItem.KeyType.BUTTON, SubKey(nameRes))

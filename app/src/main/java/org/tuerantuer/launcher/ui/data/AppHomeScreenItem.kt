@@ -22,7 +22,7 @@ class AppHomeScreenItem(
      */
     @Parcelize
     @Suppress("unused")
-    private class SubKey(val packageName: String, val className: String, val user: Long) : Parcelable
+    private data class SubKey(val packageName: String, val className: String, val user: Long) : Parcelable
 
     override val key: HomeScreenItem.HomeScreenItemKey
 
