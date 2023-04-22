@@ -3,3 +3,4 @@
 # KeyStore + Passwords
 keyStore.properties
 *.jks
+/release/
