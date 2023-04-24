@@ -106,23 +106,23 @@ fun Screens(
         is ScreenState.LoadingState -> LoadingScreen()
         is ScreenState.HomeScreenState -> HomeScreen(
             uiState = uiState,
-            onShowAllApps = { mainViewModel.onShowAllApps() },
+            onShowAllApps = mainViewModel::onShowAllApps,
             onOpenSettings = { mainViewModel.openSettingsPage(SettingsPage.Overview) },
-            onEditFavorites = { mainViewModel.onEditFavorites() },
-            onShowOnboarding = { mainViewModel.onOpenOnboarding() },
-            onOpenApp = { mainViewModel.openApp(it) },
+            onEditFavorites = mainViewModel::onEditFavorites,
+            onShowOnboarding = mainViewModel::onOpenOnboarding,
+            onOpenApp = mainViewModel::openApp,
         )
         is ScreenState.AllAppsScreenState -> AllAppsScreen(
             uiState = uiState,
-            onOpenApp = { mainViewModel.openApp(it) },
-            onGoBack = { mainViewModel.goBack() },
+            onOpenApp = mainViewModel::openApp,
+            onGoBack = mainViewModel::goBack,
         )
         is ScreenState.OnboardingState -> OnboardingScreen(
             uiState = uiState,
-            onGoToPreviousStep = { mainViewModel.goBack() },
-            onGoToNextStep = { mainViewModel.onGoToNextOnboardingStep() },
-            onSetDefaultLauncher = { mainViewModel.onSetDefaultLauncher() },
-            onCancelOnboarding = { mainViewModel.cancelOnboarding() },
+            onGoToPreviousStep = mainViewModel::goBack,
+            onGoToNextStep = mainViewModel::onGoToNextOnboardingStep,
+            onSetDefaultLauncher = mainViewModel::onSetDefaultLauncher,
+            onCancelOnboarding = mainViewModel::cancelOnboarding,
             onSetIconSize = { appIconSize -> coroutinesScope.launch { mainViewModel.onSetIconSize(appIconSize) } },
             onSetFavorites = { favorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(favorites) } },
         )
@@ -138,6 +138,7 @@ fun Screens(
             onUninstallLauncher = mainViewModel::onUninstallLauncher,
             onWriteFeedbackMail = mainViewModel::onWriteFeedbackMail,
             onOpenSettingsPage = mainViewModel::openSettingsPage,
+            onSetIconSize = { appIconSize -> coroutinesScope.launch { mainViewModel.onSetIconSize(appIconSize) } },
             onGoBack = mainViewModel::goBack,
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(
@@ -148,7 +149,7 @@ fun Screens(
                     mainViewModel.goBack()
                 }
             },
-            onGoBack = { mainViewModel.goBack() },
+            onGoBack = mainViewModel::goBack,
         )
     }
 }

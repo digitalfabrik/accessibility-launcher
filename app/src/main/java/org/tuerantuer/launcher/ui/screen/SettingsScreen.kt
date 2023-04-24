@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AppSettingsAlt
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Hearing
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
@@ -38,9 +39,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
+import org.tuerantuer.launcher.data.datastore.AppIconSize
 import org.tuerantuer.launcher.ui.components.BottomSheetComponent
+import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
+import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
@@ -65,6 +69,7 @@ fun SettingsScreen(
     onUninstallLauncher: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
+    onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
     val screenState = uiState.screenState
@@ -103,7 +108,9 @@ fun SettingsScreen(
                 onUninstallLauncher = onUninstallLauncher,
                 onGoBack = onGoBack,
             )
-            SettingsPage.DisplayScale -> DisplayScaleScreen(
+            SettingsPage.IconSize -> IconSizeScreen(
+                uiState = uiState,
+                onSetIconSize = onSetIconSize,
                 onGoBack = onGoBack,
             )
             SettingsPage.Wallpaper -> WallpaperScreen(
@@ -204,7 +211,7 @@ fun ColumnScope.VisualAssistantScreen(
     SettingsFrame {
         val settingsButtons = listOf(
             SettingsButtonData(R.string.display_scale) {
-                onOpenSettingsPage(SettingsPage.DisplayScale)
+                onOpenSettingsPage(SettingsPage.IconSize)
             },
             SettingsButtonData(R.string.wallpaper) {
                 onOpenSettingsPage(SettingsPage.Wallpaper)
@@ -259,11 +266,27 @@ fun ColumnScope.SpeechAssistantScreen(
 }
 
 @Composable
-fun ColumnScope.DisplayScaleScreen(
+fun ColumnScope.IconSizeScreen(
+    uiState: UiState,
+    onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
     SettingsHeader(R.string.display_scale, onGoBack)
-    SettingsFrame {
+    SetIconSizeComponent(
+        modifier = Modifier.fillMaxSize().weight(1f),
+        uiState = uiState,
+        onSetIconSize = onSetIconSize,
+    )
+    BottomSheetComponent {
+        ExtendedFabComponent(
+            onClick = onGoBack,
+            textRes = R.string.button_set_size,
+            imageVector = Icons.Outlined.Done,
+        )
+        Text(
+            text = stringResource(R.string.settings_info_short),
+            textAlign = TextAlign.Center,
+        )
     }
 }
 

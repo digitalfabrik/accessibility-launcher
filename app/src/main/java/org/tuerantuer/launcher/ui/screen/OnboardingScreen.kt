@@ -1,11 +1,8 @@
 package org.tuerantuer.launcher.ui.screen
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,22 +18,16 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.ZoomIn
-import androidx.compose.material.icons.filled.ZoomOut
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -54,9 +44,6 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -65,9 +52,9 @@ import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
-import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
-import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
+import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
 import org.tuerantuer.launcher.ui.data.OnboardingPage
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
@@ -257,7 +244,7 @@ fun SheetButtons(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    ExtendedFab(
+                    ExtendedFabComponent(
                         onClick = {
                             onSetDefaultLauncher.invoke()
                             onGoToNextStep.invoke()
@@ -277,21 +264,21 @@ fun SheetButtons(
                 }
             }
             OnboardingPage.PRIVACY_POLICY, OnboardingPage.TERMS_OF_SERVICE -> {
-                ExtendedFab(
+                ExtendedFabComponent(
                     onClick = onGoToNextStep,
                     textRes = R.string.button_accept,
                     imageVector = Icons.Outlined.Done,
                 )
             }
             OnboardingPage.SET_SIZE_MAIN -> {
-                ExtendedFab(
+                ExtendedFabComponent(
                     onClick = onGoToNextStep,
                     textRes = R.string.button_set_size,
                     imageVector = Icons.Outlined.Done,
                 )
             }
             OnboardingPage.SET_FAVORITES_MAIN -> {
-                ExtendedFab(
+                ExtendedFabComponent(
                     onClick = {
                         onSetFavorites.invoke()
                         onGoToNextStep.invoke()
@@ -301,7 +288,7 @@ fun SheetButtons(
                 )
             }
             OnboardingPage.SETUP_FINISHED_3 -> {
-                ExtendedFab(
+                ExtendedFabComponent(
                     onClick = onGoToNextStep,
                     textRes = R.string.start,
                     imageVector = Icons.Outlined.Home,
@@ -317,28 +304,6 @@ fun SheetButtons(
             }
         }
     }
-}
-
-@Composable
-fun ExtendedFab(
-    modifier: Modifier = Modifier,
-    textRes: Int,
-    imageVector: ImageVector,
-    onClick: () -> Unit,
-) {
-    ExtendedFloatingActionButton(
-        modifier = modifier.padding(16.dp),
-        onClick = onClick,
-        text = {
-            Text(text = stringResource(textRes))
-        },
-        icon = {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = null,
-            )
-        },
-    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -363,88 +328,11 @@ fun ColumnScope.MainContent(
             )
         }
         OnboardingPage.SET_SIZE_MAIN -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                ) {
-                    val homeScreenItems =
-                        uiState.allApps.map { appItemInfo -> AppHomeScreenItem(appItemInfo, onClick = { }) }
-                    val appIconSize = uiState.settings.appIconSize.sizeDp.dp
-                    val animatedAppIconSize by animateDpAsState(
-                        targetValue = appIconSize,
-                        animationSpec = tween(
-                            durationMillis = 500,
-                            easing = LinearOutSlowInEasing,
-                        ),
-                    )
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = appIconSize),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    ) {
-                        items(
-                            items = homeScreenItems,
-                            key = { homeScreenItems -> homeScreenItems.key },
-                        ) { homeScreenItem ->
-                            HomeScreenItemComponent(
-                                modifier = Modifier.animateItemPlacement(
-                                    animationSpec = tween(
-                                        durationMillis = 500,
-                                        easing = LinearOutSlowInEasing,
-                                    ),
-                                ),
-                                homeScreenItem = homeScreenItem,
-                                iconSize = animatedAppIconSize,
-                            )
-                        }
-                    }
-
-                    // Add a fade-out scrim at the bottom of the app list.
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(100.dp)
-                            .align(Alignment.BottomCenter)
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, MaterialTheme.colorScheme.background),
-                                ),
-                            ),
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    val allAppIconSizes = AppIconSize.values()
-                    val currentAppIconSize = uiState.settings.appIconSize
-                    val currentAppIconSizeIndex = allAppIconSizes.indexOf(currentAppIconSize)
-                    val smallerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex - 1)
-                    val largerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex + 1)
-                    if (smallerIconSize != null) {
-                        ExtendedFab(
-                            modifier = Modifier.padding(start = 0.dp, bottom = 16.dp),
-                            onClick = { onSetIconSize(smallerIconSize) },
-                            textRes = R.string.button_decrease_size,
-                            imageVector = Icons.Filled.ZoomOut,
-                        )
-                    }
-                    if (largerIconSize != null) {
-                        ExtendedFab(
-                            modifier = Modifier.padding(end = 0.dp, bottom = 16.dp),
-                            onClick = { onSetIconSize(largerIconSize) },
-                            textRes = R.string.button_increase_size,
-                            imageVector = Icons.Filled.ZoomIn,
-                        )
-                    }
-                }
-            }
+            SetIconSizeComponent(
+                modifier = Modifier.fillMaxSize(),
+                uiState = uiState,
+                onSetIconSize = onSetIconSize,
+            )
         }
         OnboardingPage.SET_FAVORITES_MAIN -> {
             val appIconSize = uiState.settings.appIconSize.sizeDp.dp

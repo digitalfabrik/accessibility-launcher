@@ -16,7 +16,7 @@ enum class SettingsPage(val parentPage: SettingsPage?) {
     UninstallLauncher(parentPage = Overview),
     Assistant(parentPage = Overview),
     VisualAssistant(parentPage = Assistant),
-    DisplayScale(parentPage = VisualAssistant),
+    IconSize(parentPage = VisualAssistant),
     Wallpaper(parentPage = VisualAssistant),
     DisplayTimeout(parentPage = VisualAssistant),
     Notifications(parentPage = VisualAssistant),
