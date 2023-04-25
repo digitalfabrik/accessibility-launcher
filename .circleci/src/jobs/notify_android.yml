@@ -1,0 +1,18 @@
+# Send a mattermost notification.
+parameters:
+  production_delivery:
+    description: Whether builds are delivered to the production store.
+    type: boolean
+docker:
+  - image: cimg/node:14.19.0
+resource_class: small
+steps:
+  - checkout
+  - prepare_workspace
+  - run:
+      name: Prepare artifact urls
+      command: echo "export ANDROID_ARTIFACT_URLS='$(echo $(cat $(ls | grep apk-url)))'" >> ${BASH_ENV}
+      working_directory: ~/attached_workspace
+  - notify:
+      success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Launcher has been released successfully on Android!\n${ANDROID_ARTIFACT_URLS}
+      channel: releases

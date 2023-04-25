@@ -14,38 +14,39 @@ android {
         applicationId "org.tuerantuer.launcher"
         minSdk 26
         targetSdk 33
-        versionCode 1
-        versionName "0.2"
-
+        if (project.hasProperty('VERSION_CODE')) {
+            versionCode project.VERSION_CODE.toInteger()
+            versionName project.VERSION_NAME
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
     }
 
-    if (new File("app/keyStore.properties").exists()) {
+    signingConfigs {
+        release {
+            if (project.hasProperty('KEYSTORE_PATH')) {
+                storeFile file(project.KEYSTORE_PATH)
+                storePassword project.KEYSTORE_PASSWORD
+                keyAlias project.KEYSTORE_KEY_ALIAS
+                keyPassword project.KEYSTORE_KEY_PASSWORD
+            } else {
+                storeFile file('debug.keystore')
+                storePassword 'android'
+                keyAlias 'androiddebugkey'
+                keyPassword 'android'
 
-        Properties props = new Properties()
-        props.load(new FileInputStream(file("keyStore.properties")))
-
-        signingConfigs {
-            release {
-                keyAlias props['keyAlias']
-                keyPassword props['keyPassword']
-                storeFile file(props['keyStore'])
-                storePassword props['keyStorePassword']
-            }
-            debug {
-                keyAlias props['keyAlias']
-                keyPassword props['keyPassword']
-                storeFile file(props['keyStore'])
-                storePassword props['keyStorePassword']
+                logger.warn("You should provide a keystore using the " +
+                        "KEYSTORE_PATH, KEYSTORE_PASSWORD, KEYSTORE_KEY_ALIAS and KEYSTORE_KEY_PASSWORD " +
+                        "project properties! Using a keystore for testing!")
             }
         }
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             // Enables code shrinking, obfuscation, and optimization for only your project's release build type.
             minifyEnabled true
 

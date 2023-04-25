@@ -1,0 +1,21 @@
+when: << pipeline.parameters.run_prod_delivery >>
+jobs:
+  - build_android:
+      context:
+        - mattermost
+        - credentials-repo
+        - credentials-launcher
+        - tuerantuer-google-play
+  - deliver_android:
+      context:
+        - mattermost
+        - tuerantuer-google-play
+      production_delivery: true
+      requires:
+        - build_android
+  - notify_android:
+      context:
+        - mattermost
+      production_delivery: true
+      requires:
+        - deliver_android

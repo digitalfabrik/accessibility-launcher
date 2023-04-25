@@ -1,10 +1,16 @@
 *.iml
 .gradle
+gradle
 /local.properties
 /.idea/*
+.idea/*
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output

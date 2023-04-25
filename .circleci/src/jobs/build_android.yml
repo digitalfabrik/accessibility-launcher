@@ -1,0 +1,30 @@
+docker:
+  - image: cimg/android:2022.03.1-node
+resource_class: medium+
+environment:
+  TOTAL_CPUS: 3
+  FASTLANE_SKIP_UPDATE_CHECK: true
+shell: /bin/bash -eo pipefail
+steps:
+  - add_ssh_keys: # Needed for credentials repo
+      fingerprints:
+        - 24:1d:3b:b7:b3:49:69:d7:54:c3:93:a5:a2:d1:71:db
+  - checkout
+  - restore_ruby_cache
+  - prepare_workspace
+  - run:
+      name: '[FL] Prepare Android Keystore'
+      command: bundle exec fastlane keystore
+  - run:
+      name: '[FL] Build Android'
+      command: bundle exec fastlane build
+  - run:
+      name: Move aab
+      command: mkdir -p attached_workspace && mv app/build/outputs/bundle/release/app-release.aab attached_workspace/app-release.aab
+  - persist_to_workspace:
+      root: attached_workspace
+      paths:
+        - app-release.aab
+  - store_artifacts:
+      path: attached_workspace/app-release.aab
+  - notify

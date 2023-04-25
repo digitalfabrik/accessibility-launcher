@@ -1,0 +1,20 @@
+parameters:
+  production_delivery:
+    description: Whether to deliver the build to production.
+    type: boolean
+docker:
+  - image: cimg/android:2022.03.1-node
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+shell: /bin/bash -eo pipefail
+steps:
+  - checkout
+  - prepare_workspace
+  - restore_ruby_cache
+  - run:
+      name: Validate Play Store Key
+      command: bundle exec fastlane validate_play_store_key
+  - run:
+      name: PlayStore Upload
+      command: bundle exec fastlane upload_to_playstore production_delivery:"<< parameters.production_delivery >>"
+  - notify

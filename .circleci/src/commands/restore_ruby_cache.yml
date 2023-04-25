@@ -1,0 +1,13 @@
+description: Restores and saves fastlane cache of the passed directory.
+steps:
+  - restore_cache:
+      keys:
+        - 3-gems-{{ arch }}-{{ checksum "Gemfile.lock" }}
+        - 3-gems-{{ arch }}-
+  - run:
+      name: Install Fastlane
+      command: bundle check || bundle install
+  - save_cache:
+      key: 3-gems-{{ arch }}-{{ checksum "Gemfile.lock" }}
+      paths:
+        - /vendor/bundle
