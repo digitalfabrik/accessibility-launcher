@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
@@ -188,13 +190,25 @@ fun ColumnScope.SettingsAssistantScreen(
     SettingsHeader(R.string.settings, onGoBack)
     SettingsFrame {
         val settingsButtons = listOf(
-            SettingsButtonData(R.string.assistant_visual, icon = Icons.Outlined.Visibility) {
+            SettingsButtonData(
+                textRes = R.string.assistant_visual,
+                secondaryTextRes = R.string.assistant_visual_description,
+                icon = Icons.Outlined.Visibility,
+            ) {
                 onOpenSettingsPage(SettingsPage.VisualAssistant)
             },
-            SettingsButtonData(R.string.assistant_hearing, icon = Icons.Outlined.Hearing) {
+            SettingsButtonData(
+                textRes = R.string.assistant_hearing,
+                secondaryTextRes = R.string.assistant_hearing_description,
+                icon = Icons.Outlined.Hearing,
+            ) {
                 onOpenSettingsPage(SettingsPage.HearingAssistant)
             },
-            SettingsButtonData(R.string.assistant_speech, icon = Icons.Outlined.Message) {
+            SettingsButtonData(
+                textRes = R.string.assistant_speech,
+                secondaryTextRes = R.string.assistant_speech_description,
+                icon = Icons.Outlined.Message,
+            ) {
                 onOpenSettingsPage(SettingsPage.SpeechAssistant)
             },
         )
@@ -307,7 +321,12 @@ fun ColumnScope.DisplayTimeoutScreen(
     SettingsHeader(R.string.display_timeout, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.display_timeout_description)
-        SettingsFab(R.string.settings, Icons.Outlined.AppSettingsAlt, onOpenDisplaySettings)
+        SettingsFab(
+            R.string.system_settings,
+            Icons.Outlined.AppSettingsAlt,
+            onOpenDisplaySettings,
+            R.string.system_settings_description,
+        )
     }
     SettingsInfoCard()
 }
@@ -320,7 +339,12 @@ fun ColumnScope.NotificationsScreen(
     SettingsHeader(R.string.notifications, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.notifications_description)
-        SettingsFab(R.string.settings, Icons.Outlined.AppSettingsAlt, onOpenNotificationSettings)
+        SettingsFab(
+            R.string.system_settings,
+            Icons.Outlined.AppSettingsAlt,
+            onOpenNotificationSettings,
+            R.string.system_settings_description,
+        )
     }
     SettingsInfoCard()
 }
@@ -333,7 +357,12 @@ fun ColumnScope.InputDelayScreen(
     SettingsHeader(R.string.input_delay, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.input_delay_description)
-        SettingsFab(R.string.settings, Icons.Outlined.AppSettingsAlt, onOpenSystemSettings)
+        SettingsFab(
+            R.string.system_settings,
+            Icons.Outlined.AppSettingsAlt,
+            onOpenSystemSettings,
+            R.string.system_settings_description,
+        )
     }
     SettingsInfoCard()
 }
@@ -346,7 +375,12 @@ fun ColumnScope.NotificationSoundsScreen(
     SettingsHeader(R.string.notification_sounds, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.notification_sounds_description)
-        SettingsFab(R.string.settings, Icons.Outlined.AppSettingsAlt, onOpenSoundSettings)
+        SettingsFab(
+            R.string.system_settings,
+            Icons.Outlined.AppSettingsAlt,
+            onOpenSoundSettings,
+            R.string.system_settings_description,
+        )
     }
     SettingsInfoCard()
 }
@@ -359,7 +393,12 @@ fun ColumnScope.ScreenReaderScreen(
     SettingsHeader(R.string.screen_reader, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.screen_reader_description)
-        SettingsFab(R.string.settings, Icons.Outlined.AppSettingsAlt, onOpenAccessibilitySettings)
+        SettingsFab(
+            R.string.system_settings,
+            Icons.Outlined.AppSettingsAlt,
+            onOpenAccessibilitySettings,
+            R.string.system_settings_description,
+        )
     }
     SettingsInfoCard()
 }
@@ -372,7 +411,12 @@ fun ColumnScope.VoiceCommandsScreen(
     SettingsHeader(R.string.voice_commands, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.voice_commands_description)
-        SettingsFab(R.string.settings, Icons.Outlined.AppSettingsAlt, onOpenAccessibilitySettings)
+        SettingsFab(
+            R.string.system_settings,
+            Icons.Outlined.AppSettingsAlt,
+            onOpenAccessibilitySettings,
+            R.string.system_settings_description,
+        )
     }
     SettingsInfoCard()
 }
@@ -434,12 +478,19 @@ fun ColumnScope.UninstallLauncherScreen(
     SettingsHeader(R.string.uninstall_launcher, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.uninstall_launcher_description)
-        SettingsFab(R.string.uninstall_launcher, Icons.Outlined.Delete, onUninstallLauncher)
+        SettingsFab(
+            buttonTextRes = R.string.uninstall_launcher_button_yes,
+            imageVector = Icons.Outlined.Delete,
+            onClick = onUninstallLauncher,
+            secondaryTextRes = R.string.uninstall_launcher_buttons_description,
+        )
+        SettingsFab(R.string.uninstall_launcher_button_no, onClick = onGoBack)
     }
 }
 
 data class SettingsButtonData(
     @StringRes val textRes: Int,
+    @StringRes val secondaryTextRes: Int? = null,
     val icon: ImageVector? = null,
     val descriptionRes: Int? = null,
     val onClick: () -> Unit,
@@ -483,29 +534,46 @@ fun ColumnScope.SettingsFrame(
 
 @Composable
 fun SettingsFab(
-    textRes: Int,
-    imageVector: ImageVector,
+    buttonTextRes: Int,
+    imageVector: ImageVector? = null,
     onClick: () -> Unit,
+    secondaryTextRes: Int? = null,
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.Center,
     ) {
-        ExtendedFloatingActionButton(
-            onClick = onClick,
-            text = {
-                Text(text = stringResource(textRes))
-            },
-            icon = {
-                Icon(
-                    imageVector = imageVector,
-                    contentDescription = null,
-                )
-            },
-        )
+        if (secondaryTextRes != null) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center, text = stringResource(secondaryTextRes),
+            )
+            Spacer(modifier = Modifier.padding(8.dp))
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            ExtendedFloatingActionButton(
+                onClick = onClick,
+                text = {
+                    Text(text = stringResource(buttonTextRes))
+                },
+                icon = {
+                    if (imageVector != null) {
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = null,
+                        )
+                    }
+                },
+            )
+        }
     }
 }
 
@@ -542,13 +610,24 @@ fun SettingsButton(settingsButton: SettingsButtonData) {
                     contentDescription = null,
                 )
             }
-            Text(
+            Column(
                 modifier = Modifier
+                    .wrapContentSize()
                     .weight(1f)
-                    .padding(16.dp),
-                style = MaterialTheme.typography.labelLarge,
-                text = stringResource(settingsButton.textRes),
-            )
+                    .padding(vertical = 16.dp),
+            ) {
+                Text(
+                    style = MaterialTheme.typography.labelLarge,
+                    text = stringResource(settingsButton.textRes),
+                )
+                val secondaryTextRes = settingsButton.secondaryTextRes
+                if (secondaryTextRes != null) {
+                    Text(
+                        style = MaterialTheme.typography.labelMedium,
+                        text = stringResource(secondaryTextRes),
+                    )
+                }
+            }
             Icon(
                 modifier = Modifier
                     .padding(16.dp),

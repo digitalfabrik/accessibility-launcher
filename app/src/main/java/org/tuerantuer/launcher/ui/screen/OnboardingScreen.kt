@@ -101,6 +101,7 @@ fun OnboardingScreen(
         OnboardingPage.PROGRESS_EXPLANATION_1 -> R.string.setup_1
         OnboardingPage.PROGRESS_EXPLANATION_2 -> R.string.setup_2
         OnboardingPage.PROGRESS_EXPLANATION_3 -> R.string.setup_3
+        OnboardingPage.SETTINGS_INTRODUCTION -> R.string.setup_settings_intro
         OnboardingPage.SET_AS_DEFAULT_1 -> R.string.setup_4
         OnboardingPage.SET_AS_DEFAULT_2 -> R.string.setup_5
         OnboardingPage.SET_AS_DEFAULT_3 -> R.string.setup_6
