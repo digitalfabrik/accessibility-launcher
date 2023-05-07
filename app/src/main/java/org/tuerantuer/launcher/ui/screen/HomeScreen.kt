@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +32,7 @@ import org.tuerantuer.launcher.ui.data.HomeScreenItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
+import org.tuerantuer.launcher.util.extension.setShadow
 import java.util.Locale
 
 private const val DATE_PATTERN = "EEEE, MMMd"
@@ -56,7 +56,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(LauncherTheme.all.onWallpaperBackground),
     ) {
         val homeScreenItems = mutableListOf<HomeScreenItem>().apply {
             uiState.favorites.mapTo(this) { appItemInfo ->
@@ -127,7 +127,9 @@ fun Clock() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
+        val text = LauncherTheme.all.onWallpaperText
+        val textColor = text.color.toArgb()
+        val shadow = text.shadow
         Spacer(modifier = Modifier.height(32.dp))
         AndroidView(
             factory = { context ->
@@ -139,6 +141,9 @@ fun Clock() {
                     // (it's always big enough to be readable)
                     setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, 72f)
                     setTextColor(textColor)
+                    if (shadow != null) {
+                        setShadow(shadow)
+                    }
                 }
             },
         )
@@ -148,8 +153,15 @@ fun Clock() {
                     val format = getDateFormat(defaultLocale)
                     format12Hour = format
                     format24Hour = format
-                    setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18f)
+                    val fontSize = text.fontSize
+                    require(fontSize.isSp) {
+                        "If you change the unit type of the font, you must also change the line below "
+                    }
+                    setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, fontSize.value)
                     setTextColor(textColor)
+                    if (shadow != null) {
+                        setShadow(shadow)
+                    }
                 }
             },
         )

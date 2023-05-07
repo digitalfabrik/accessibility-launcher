@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -51,10 +49,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LauncherTheme {
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    LauncherApp(mainViewModel, screenTransitionManager)
-                }
+            val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
+            LauncherTheme(wallpaperType = uiState.settings.wallpaperType) {
+                LauncherApp(mainViewModel, screenTransitionManager, uiState)
             }
         }
     }
@@ -71,9 +68,9 @@ class MainActivity : ComponentActivity() {
 fun LauncherApp(
     mainViewModel: MainViewModel,
     screenTransitionManager: ScreenTransitionManager,
+    uiState: UiState,
 ) {
     val coroutinesScope = rememberCoroutineScope()
-    val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
     CustomMaterialMotion(
         targetState = uiState,
         animationForStateTransition = { old, new ->
@@ -139,6 +136,9 @@ fun Screens(
             onWriteFeedbackMail = mainViewModel::onWriteFeedbackMail,
             onOpenSettingsPage = mainViewModel::openSettingsPage,
             onSetIconSize = { appIconSize -> coroutinesScope.launch { mainViewModel.onSetIconSize(appIconSize) } },
+            onSetWallpaperType = { wallpaperType ->
+                coroutinesScope.launch { mainViewModel.onSetWallpaperType(wallpaperType) }
+            },
             onGoBack = mainViewModel::goBack,
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(

@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.data.datastore.WallpaperType
 import org.tuerantuer.launcher.ui.components.BottomSheetComponent
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
@@ -73,6 +74,7 @@ fun SettingsScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
     onGoBack: () -> Unit = {},
+    onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
 ) {
     val screenState = uiState.screenState
     require(screenState is ScreenState.SettingsState)
@@ -117,6 +119,7 @@ fun SettingsScreen(
             )
             SettingsPage.Wallpaper -> WallpaperScreen(
                 onGoBack = onGoBack,
+                onSetWallpaperType = onSetWallpaperType,
             )
             SettingsPage.DisplayTimeout -> DisplayTimeoutScreen(
                 onGoBack = onGoBack,
@@ -307,9 +310,22 @@ fun ColumnScope.IconSizeScreen(
 @Composable
 fun ColumnScope.WallpaperScreen(
     onGoBack: () -> Unit = {},
+    onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
 ) {
     SettingsHeader(R.string.wallpaper, onGoBack)
     SettingsFrame {
+        SettingsFab(
+            R.string.wallpaper_type_solid,
+            onClick = { onSetWallpaperType.invoke(WallpaperType.SOLID_COLOR) },
+        )
+        SettingsFab(
+            R.string.wallpaper_type_default,
+            onClick = { onSetWallpaperType.invoke(WallpaperType.CUSTOM_WALLPAPER) },
+        )
+        SettingsFab(
+            R.string.wallpaper_type_darkened,
+            onClick = { onSetWallpaperType.invoke(WallpaperType.DARKENED_CUSTOM_WALLPAPER) },
+        )
     }
 }
 

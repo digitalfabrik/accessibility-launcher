@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import org.tuerantuer.launcher.ui.data.HomeScreenItem
+import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
  * Visual representation of a [HomeScreenItem].
@@ -32,6 +33,7 @@ fun HomeScreenItemComponent(
     modifier: Modifier = Modifier,
     homeScreenItem: HomeScreenItem,
     iconSize: Dp,
+    useOnWallpaperStyle: Boolean = true,
 ) {
     Card(
         onClick = homeScreenItem.onClick,
@@ -47,13 +49,17 @@ fun HomeScreenItemComponent(
                 painter = rememberDrawablePainter(homeScreenItem.icon),
                 contentDescription = null,
             )
+            val textStyle = if (useOnWallpaperStyle) {
+                LauncherTheme.all.onWallpaperText
+            } else {
+                MaterialTheme.typography.labelLarge
+            }
             Text(
                 text = homeScreenItem.loadName(),
-                style = MaterialTheme.typography.labelLarge,
+                style = textStyle,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(vertical = 16.dp),
                 maxLines = 2,
-                color = MaterialTheme.colorScheme.onBackground,
             )
         }
     }

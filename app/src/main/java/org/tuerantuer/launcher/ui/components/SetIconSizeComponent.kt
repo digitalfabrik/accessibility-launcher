@@ -81,6 +81,7 @@ fun SetIconSizeComponent(
                         ),
                         homeScreenItem = homeScreenItem,
                         iconSize = animatedAppIconSize,
+                        useOnWallpaperStyle = false,
                     )
                 }
             }

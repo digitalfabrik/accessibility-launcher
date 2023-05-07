@@ -17,6 +17,7 @@ import org.tuerantuer.launcher.app.Apps
 import org.tuerantuer.launcher.app.appIdentifier.ComponentKey
 import org.tuerantuer.launcher.data.datastore.AppIconSize
 import org.tuerantuer.launcher.data.datastore.SettingsManager
+import org.tuerantuer.launcher.data.datastore.WallpaperType
 import org.tuerantuer.launcher.ui.data.OnboardingPage
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
@@ -123,6 +124,10 @@ class MainViewModelImpl(
 
     override suspend fun onSetIconSize(appIconSize: AppIconSize) {
         settingsManager.setAppIconSize(appIconSize)
+    }
+
+    override suspend fun onSetWallpaperType(wallpaperType: WallpaperType) {
+        settingsManager.setWallpaperType(wallpaperType)
     }
 
     override fun onGoToNextOnboardingStep() {

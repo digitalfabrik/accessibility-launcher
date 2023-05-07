@@ -17,4 +17,9 @@ data class Settings(
      * Whether the user has tapped through all the onboarding screens and therefore accepted the terms and conditions.
      */
     val isUserOnboarded: Boolean = true,
+
+    /**
+     * @see WallpaperType
+     */
+    val wallpaperType: WallpaperType = WallpaperType.SOLID_COLOR,
 )

@@ -79,6 +79,9 @@
 
     <string name="display_scale">Anzeige-Größe</string>
     <string name="wallpaper">Hintergrund-Bild</string>
+    <string name="wallpaper_type_solid">Einfarbiger Hintergrund</string>
+    <string name="wallpaper_type_default">Eigenes Hintergrund-Bild</string>
+    <string name="wallpaper_type_darkened">Eigenes abgedunkeltes Hintergrund-Bild</string>
     <string name="display_timeout">Bildschirm abdunkeln</string>
     <string name="display_timeout_description">Dein Bildschirm wird nach einiger Zeit schwarz.\nZum Beispiel, wenn du den Bildschirm nicht berührt hast.\nDann ist manchmal der Bildschirm gesperrt.\nSollen dein Bildschirm nicht gesperrt werden?\nDann kannst du das bei den Geräte-Einstellungen ändern.</string>
     <string name="notifications">Benachrichtigungen</string>

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.StateFlow
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.data.datastore.WallpaperType
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
 
@@ -48,4 +49,5 @@ interface MainViewModel {
 
     suspend fun onSetFavorites(newFavorites: List<AppItemInfo>)
     suspend fun onSetIconSize(appIconSize: AppIconSize)
+    suspend fun onSetWallpaperType(wallpaperType: WallpaperType)
 }

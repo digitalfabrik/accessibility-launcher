@@ -16,7 +16,18 @@ interface SettingsManager {
 
     val settings: Flow<Settings>
 
+    /**
+     * @see Settings.appIconSize
+     */
     suspend fun setAppIconSize(size: AppIconSize)
 
+    /**
+     * @see Settings.isUserOnboarded
+     */
     suspend fun setIsUserOnboarded(isOnboarded: Boolean)
+
+    /**
+     * @see Settings.wallpaperType
+     */
+    suspend fun setWallpaperType(type: WallpaperType)
 }
