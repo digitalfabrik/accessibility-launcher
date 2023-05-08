@@ -26,8 +26,6 @@ import org.tuerantuer.launcher.util.FrameworkActionsManager
 
 /**
  * Default implementation of [MainViewModel].
- *
- * @author Peter Huber
  */
 class MainViewModelImpl(
     private val appActivityRepository: AppActivityRepository,

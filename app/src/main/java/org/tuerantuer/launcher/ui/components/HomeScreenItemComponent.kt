@@ -23,9 +23,6 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
  * Visual representation of a [HomeScreenItem].
- *
- * @author Peter Huber
- * Created on 27/03/2023
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -22,9 +22,6 @@ import java.util.Collections
 
 /**
  * Default implementation of [CustomLauncherApps].
- *
- * @author Peter Huber
- * Created on 24/05/2017
  */
 class CustomLauncherAppsImpl(
     private val userManager: UserManager,

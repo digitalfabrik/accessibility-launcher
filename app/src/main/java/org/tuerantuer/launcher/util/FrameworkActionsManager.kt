@@ -13,9 +13,6 @@ import org.tuerantuer.launcher.util.extension.launchAppActivityInNewState
 
 /**
  * To interact with the Android framework, e.g. to open the default launcher chooser or to open a share dialog.
- *
- * @author Peter Huber
- * Created on 07/03/2023
  */
 class FrameworkActionsManager(private val context: Context) {
 

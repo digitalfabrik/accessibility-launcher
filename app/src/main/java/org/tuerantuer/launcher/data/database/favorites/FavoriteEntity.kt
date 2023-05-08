@@ -12,9 +12,6 @@ import org.tuerantuer.launcher.data.database.favorites.FavoriteEntity.Key.USER
 
 /**
  * A favorite is an app that the user has pinned to the home screen.
- *
- * @author Peter Huber
- * Created on 03/04/2023
  */
 @Entity(
     tableName = TABLE_NAME,

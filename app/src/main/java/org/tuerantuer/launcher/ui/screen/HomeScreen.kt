@@ -40,9 +40,6 @@ private const val TIME_PATTERN = "HH:mm"
 
 /**
  * The main screen of the launcher. Here, the user can see the clock, the favorites and can access other screens.
- *
- * @author Peter Huber
- * Created on 06/03/2023
  */
 @Composable
 fun HomeScreen(

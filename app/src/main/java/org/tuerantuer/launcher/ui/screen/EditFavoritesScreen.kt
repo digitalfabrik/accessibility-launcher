@@ -60,9 +60,6 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
  * The place where the user can edit their favorites.
- *
- * @author Peter Huber
- * Created on 27/03/2023
  */
 @Composable
 fun EditFavoritesScreen(

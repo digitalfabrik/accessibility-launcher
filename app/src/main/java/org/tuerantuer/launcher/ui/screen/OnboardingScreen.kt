@@ -74,9 +74,6 @@ val sharedXMotionSpecReverse =
 
 /**
  * The screen where the user can set up the launcher. The screen shows up the first time the launcher is started.
- *
- * @author Peter Huber
- * Created on 07/03/2023
  */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

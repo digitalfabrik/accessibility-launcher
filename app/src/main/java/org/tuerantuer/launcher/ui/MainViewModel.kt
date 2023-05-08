@@ -13,8 +13,6 @@ import org.tuerantuer.launcher.ui.data.UiState
  * broken with launchers (doing the home gesture the first time recreates the view model). Since our [MainActivity]
  * lives as long as the launcher is running if the launcher is set as default, it's okay that our [MainViewModelImpl] lives
  * as long as the launcher is running.
- *
- * @author Peter Huber
  */
 interface MainViewModel {
     /**

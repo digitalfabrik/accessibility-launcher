@@ -7,9 +7,6 @@ import androidx.compose.ui.Modifier
 
 /**
  * Wrapper for [LazyColumn] that only allows one item.
- *
- * @author Peter Huber
- * Created on 22/04/2023
  */
 @Composable
 fun ScrollableColumn(

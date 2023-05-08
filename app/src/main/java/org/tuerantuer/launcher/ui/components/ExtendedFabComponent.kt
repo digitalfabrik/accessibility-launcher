@@ -12,9 +12,6 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Shorthand for adding a [ExtendedFloatingActionButton] to the UI.
- *
- * @author Peter Huber
- * Created on 24/04/2023
  */
 @Composable
 fun ExtendedFabComponent(

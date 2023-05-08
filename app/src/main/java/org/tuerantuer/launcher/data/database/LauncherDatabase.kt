@@ -9,9 +9,6 @@ import org.tuerantuer.launcher.data.database.favorites.FavoriteEntity
 
 /**
  *  The Room Database that contains the favorites table.
- *
- * @author Peter Huber
- * Created on 03/04/2023
  */
 @Database(
     entities = [FavoriteEntity::class],

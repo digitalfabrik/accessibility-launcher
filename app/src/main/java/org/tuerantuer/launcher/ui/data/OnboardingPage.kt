@@ -2,9 +2,6 @@ package org.tuerantuer.launcher.ui.data
 
 /**
  * An enum class that represents the different pages of the onboarding screen.
- *
- * @author Peter Huber
- * Created on 04/04/2023
  */
 enum class OnboardingPage {
     INTRODUCTION_1,

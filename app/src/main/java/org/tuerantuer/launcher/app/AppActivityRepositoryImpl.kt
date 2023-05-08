@@ -27,9 +27,6 @@ import org.tuerantuer.launcher.util.CustomInsetDrawable
 
 /**
  * Default implementation of [AppActivityRepository].
- *
- * @author Peter Huber
- * Created on 06/03/2023
  */
 class AppActivityRepositoryImpl(
     private val customLauncherApps: CustomLauncherApps,

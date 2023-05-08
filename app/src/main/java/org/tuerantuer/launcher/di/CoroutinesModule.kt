@@ -11,9 +11,6 @@ import javax.inject.Qualifier
 /**
  * This module provides the Coroutine dispatchers that are used in the app. You can inject them with the annotations
  * [DefaultDispatcher], [IoDispatcher] and [MainDispatcher].
- *
- * @author Peter Huber
- * Created on 07/03/2023
  */
 @Module
 @InstallIn(SingletonComponent::class)

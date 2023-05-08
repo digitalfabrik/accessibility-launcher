@@ -6,9 +6,6 @@ import org.tuerantuer.launcher.data.datastore.Settings
 
 /**
  * Dictates what should be displayed to the user.
- *
- * @author Peter Huber
- * Created on 03/04/2023
  */
 data class UiState(
     val screenState: ScreenState,

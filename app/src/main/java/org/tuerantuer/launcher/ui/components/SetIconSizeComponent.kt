@@ -35,9 +35,6 @@ import org.tuerantuer.launcher.ui.data.UiState
 
 /**
  * A component that allows the user to change the size of the app icons and see the result in a live preview.
- *
- * @author Peter Huber
- * Created on 24/04/2023
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

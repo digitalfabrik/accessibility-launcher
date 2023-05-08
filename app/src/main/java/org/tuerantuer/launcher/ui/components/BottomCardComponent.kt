@@ -16,9 +16,6 @@ import androidx.compose.ui.unit.dp
 
 /**
  * A static bottom sheet component that can be used to display content inside.
- *
- * @author Peter Huber
- * Created on 10/04/2023
  */
 @Composable
 fun BottomSheetComponent(

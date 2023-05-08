@@ -14,8 +14,6 @@ private const val ANIMATION_ALPHA_END = 1f
  * This class handles all screen transitions and in-screen transitions. Because each screen has its
  * own [ScreenState], we determine the transition animation by looking at the last and current
  * [ScreenState].
- *
- * @author Peter Huber
  */
 class ScreenTransitionManager {
 

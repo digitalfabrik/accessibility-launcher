@@ -7,9 +7,6 @@ import org.tuerantuer.launcher.ui.screen.HomeScreen
 
 /**
  * Determines the background of the [HomeScreen] and [AllAppsScreen].
- *
- * @author Peter Huber
- * Created on 07/05/2023
  */
 enum class WallpaperType(val key: String) {
     /**

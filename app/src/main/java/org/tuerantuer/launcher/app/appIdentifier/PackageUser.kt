@@ -11,8 +11,5 @@ import org.tuerantuer.launcher.app.UserManager
  * [UserManager].
  *
  * @see PackageUserSer
- *
- * @author Peter Huber
- * Created on 04/10/2018
  */
 data class PackageUser(val packageName: String, val userHandle: UserHandle?)

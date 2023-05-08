@@ -29,9 +29,6 @@ import javax.inject.Singleton
 
 /**
  * This module contains singletons that are allowed to live for the whole lifecycle of the app.
- *
- * @author Peter Huber
- * Created on 06/03/2023
  */
 @Module
 @InstallIn(SingletonComponent::class)

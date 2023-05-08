@@ -6,9 +6,6 @@ import androidx.annotation.RequiresApi
 
 /**
  * Utility class for controlling app launch animations.
- *
- * @author Peter Huber
- * Created on 20/03/2023
  */
 object LaunchAnimationUtil {
 

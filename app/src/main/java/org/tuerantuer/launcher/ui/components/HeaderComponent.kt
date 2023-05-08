@@ -20,9 +20,6 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Title of a screen with a back button and wrapped in a [Surface] with rounded bottom corners and elevation.
- *
- * @author Peter Huber
- * Created on 11/04/2023
  */
 @Composable
 fun HeaderComponent(

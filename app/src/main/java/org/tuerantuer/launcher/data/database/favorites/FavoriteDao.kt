@@ -10,9 +10,6 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  *  Data Access Object for the [FavoriteEntity] table.
- *
- * @author Peter Huber
- * Created on 03/04/2023
  */
 @Dao
 interface FavoriteDao {

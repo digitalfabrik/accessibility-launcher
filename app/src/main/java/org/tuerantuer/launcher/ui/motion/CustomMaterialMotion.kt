@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 /**
  * This component applies a transition animation (passed through [animationForStateTransition]) to
  * its [content].
- *
- * @author Peter Huber
  */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

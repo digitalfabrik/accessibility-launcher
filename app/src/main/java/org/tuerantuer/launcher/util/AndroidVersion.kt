@@ -4,9 +4,6 @@ import android.os.Build
 
 /**
  * Shortcuts to check if the user's device is running at a specific or newer Android version.
- *
- * @author Peter Huber
- * Created on 06/03/2023
  */
 @Suppress("unused")
 object AndroidVersion {

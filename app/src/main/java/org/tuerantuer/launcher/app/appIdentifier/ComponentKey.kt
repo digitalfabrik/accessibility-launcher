@@ -11,9 +11,6 @@ import org.tuerantuer.launcher.app.UserManager
  * @param componentName identifies an activity within the same user profile.
  * @param userHandle identifies a user profile on the device. Usually only one user is registered on one device, see
  * [UserManager].
- *
- * @author Peter Huber
- * Created on 03/10/2018
  */
 data class ComponentKey(val componentName: ComponentName, val userHandle: UserHandle?) {
 

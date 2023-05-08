@@ -8,9 +8,6 @@ import kotlinx.parcelize.Parcelize
 
 /**
  * Either an app or a button on the home screen.
- *
- * @author Peter Huber
- * Created on 08/04/2023
  */
 interface HomeScreenItem {
 

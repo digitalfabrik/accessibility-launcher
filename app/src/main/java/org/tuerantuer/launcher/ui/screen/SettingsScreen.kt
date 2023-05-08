@@ -55,9 +55,6 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
  * The screen where the user can change the launcher settings.
- *
- * @author Peter Huber
- * Created on 27/03/2023
  */
 @Composable
 fun SettingsScreen(

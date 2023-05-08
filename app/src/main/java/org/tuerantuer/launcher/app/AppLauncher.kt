@@ -10,9 +10,6 @@ import org.tuerantuer.launcher.util.AndroidVersion
 
 /**
  * This class is responsible for launching apps.
- *
- * @author Peter Huber
- * Created on 06/03/2023
  */
 class AppLauncher(
     private val context: Context,

@@ -8,9 +8,6 @@ import org.tuerantuer.launcher.app.AppItemInfo
 
 /**
  * Represents an app on the home screen.
- *
- * @author Peter Huber
- * Created on 08/04/2023
  */
 class AppHomeScreenItem(
     private val appItemInfo: AppItemInfo,

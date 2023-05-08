@@ -13,9 +13,6 @@ import org.tuerantuer.launcher.R
 
 /**
  * Shows as long as the app is loading.
- *
- * @author Peter Huber
- * Created on 11/04/2023
  */
 @Composable
 fun LoadingScreen() {

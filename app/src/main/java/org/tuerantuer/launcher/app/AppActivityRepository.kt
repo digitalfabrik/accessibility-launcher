@@ -5,9 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Here you can query the users favorites and all apps.
- *
- * @author Peter Huber
- * Created on 06/03/2023
  */
 interface AppActivityRepository {
     /**

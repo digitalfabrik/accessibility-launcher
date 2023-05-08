@@ -12,9 +12,6 @@ import javax.inject.Singleton
 
 /**
  * Provides the database and its data access objects.
- *
- * @author Peter Huber
- * Created on 03/04/2023
  */
 @Module
 @InstallIn(SingletonComponent::class)

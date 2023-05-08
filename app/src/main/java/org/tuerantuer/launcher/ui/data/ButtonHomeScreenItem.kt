@@ -16,9 +16,6 @@ import org.tuerantuer.launcher.util.CustomInsetDrawable
 
 /**
  * A button on the home screen (e.g. to open the launcher settings) that shows up like an app.
- *
- * @author Peter Huber
- * Created on 09/04/2023
  */
 class ButtonHomeScreenItem(
     @StringRes val nameRes: Int,

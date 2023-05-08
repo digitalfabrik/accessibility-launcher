@@ -11,9 +11,6 @@ import org.tuerantuer.launcher.util.ActivityLaunchFailedException
 /**
  * Wrapper class for [android.content.pm.LauncherApps], which is Android's API for third-party launchers. It mainly lets
  * us query for app activities and shortcuts.
- *
- * @author Peter Huber
- * Created on 25/04/2022
  */
 interface CustomLauncherApps {
     enum class AppChangeType {

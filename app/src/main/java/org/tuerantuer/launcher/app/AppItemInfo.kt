@@ -7,9 +7,6 @@ import org.tuerantuer.launcher.app.appIdentifier.ComponentKeySer
 /**
  * The metadata of an app activity. Two [AppItemInfo]s are considered to be the same if they have the same
  * [componentKey].
- *
- * @author Peter Huber
- * Created on 06/03/2023
  */
 data class AppItemInfo(
     val name: String,

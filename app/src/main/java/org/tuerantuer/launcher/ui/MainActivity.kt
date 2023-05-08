@@ -35,7 +35,6 @@ import javax.inject.Inject
 
 /**
  * Main UI entry point of the app.
- * @author Peter Huber
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

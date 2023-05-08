@@ -23,9 +23,6 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
  * The screen that shows all installed apps.
- *
- * @author Peter Huber
- * Created on 27/03/2023
  */
 @Composable
 fun AllAppsScreen(

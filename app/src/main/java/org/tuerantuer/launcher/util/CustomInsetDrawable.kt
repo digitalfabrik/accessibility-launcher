@@ -9,9 +9,6 @@ import kotlin.math.roundToInt
 /**
  * This is a custom and very lightweight (but also unsafe) implementation of
  * [android.graphics.drawable.InsetDrawable]
- *
- * @author Peter Huber
- * Created on 07/03/2023
  */
 open class CustomInsetDrawable(
     drawable: Drawable,

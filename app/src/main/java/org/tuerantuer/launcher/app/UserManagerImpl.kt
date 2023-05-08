@@ -10,9 +10,6 @@ import android.os.UserManager as AndroidUserManager
 
 /**
  * Default implementation of [UserManager].
- *
- * @author Peter Huber
- * Created on 06/03/2023
  */
 class UserManagerImpl(
     context: Context,

@@ -14,9 +14,6 @@ import java.io.IOException
 
 /**
  * Default implementation of [SettingsManager].
- *
- * @author Peter Huber
- * Created on 09/04/2023
  */
 class SettingsManagerImpl(
     private val dataStore: DataStore<Preferences>,

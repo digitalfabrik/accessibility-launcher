@@ -13,8 +13,5 @@ import org.tuerantuer.launcher.app.UserManager
  * device, see [UserManager].
  *
  * @see PackageUser
- *
- * @author Peter Huber
- * Created on 05/10/2018
  */
 data class PackageUserSer(val packageName: String, val userHandleSerialized: Long)
