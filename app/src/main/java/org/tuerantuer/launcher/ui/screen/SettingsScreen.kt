@@ -187,7 +187,7 @@ fun ColumnScope.SettingsAssistantScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.settings, onGoBack)
+    SettingsHeader(R.string.assistant, onGoBack)
     SettingsFrame {
         val settingsButtons = listOf(
             SettingsButtonData(
@@ -614,6 +614,7 @@ fun SettingsButton(settingsButton: SettingsButtonData) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = 16.dp)
                 .clickable(onClick = settingsButton.onClick),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -621,7 +622,7 @@ fun SettingsButton(settingsButton: SettingsButtonData) {
             if (icon != null) {
                 Icon(
                     modifier = Modifier
-                        .padding(16.dp),
+                        .padding(end = 16.dp, top = 16.dp, bottom = 16.dp),
                     imageVector = icon,
                     contentDescription = null,
                 )
@@ -633,12 +634,16 @@ fun SettingsButton(settingsButton: SettingsButtonData) {
                     .padding(vertical = 16.dp),
             ) {
                 Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     style = MaterialTheme.typography.labelLarge,
                     text = stringResource(settingsButton.textRes),
                 )
                 val secondaryTextRes = settingsButton.secondaryTextRes
                 if (secondaryTextRes != null) {
                     Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
                         style = MaterialTheme.typography.labelMedium,
                         text = stringResource(secondaryTextRes),
                     )
