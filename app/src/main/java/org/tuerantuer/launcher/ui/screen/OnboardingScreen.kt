@@ -3,7 +3,6 @@ package org.tuerantuer.launcher.ui.screen
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -59,18 +58,9 @@ import org.tuerantuer.launcher.ui.data.OnboardingPage
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.motion.CustomMaterialMotion
-import org.tuerantuer.launcher.ui.motion.DefaultSlideDistance
-import org.tuerantuer.launcher.ui.motion.materialSharedAxisXIn
-import org.tuerantuer.launcher.ui.motion.materialSharedAxisXOut
-import org.tuerantuer.launcher.ui.motion.with
+import org.tuerantuer.launcher.ui.motion.sharedXMotionSpec
+import org.tuerantuer.launcher.ui.motion.sharedXMotionSpecReverse
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
-
-@ExperimentalAnimationApi
-val sharedXMotionSpec = materialSharedAxisXIn() with materialSharedAxisXOut()
-
-@ExperimentalAnimationApi
-val sharedXMotionSpecReverse =
-    materialSharedAxisXIn(-DefaultSlideDistance) with materialSharedAxisXOut(-DefaultSlideDistance)
 
 /**
  * The screen where the user can set up the launcher. The screen shows up the first time the launcher is started.
@@ -304,7 +294,6 @@ fun SheetButtons(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColumnScope.MainContent(
     uiState: UiState,

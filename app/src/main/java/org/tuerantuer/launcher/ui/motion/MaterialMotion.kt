@@ -30,6 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 
+@ExperimentalAnimationApi
+val sharedXMotionSpec = materialSharedAxisXIn() with materialSharedAxisXOut()
+
+@ExperimentalAnimationApi
+val sharedXMotionSpecReverse =
+    materialSharedAxisXIn(-DefaultSlideDistance) with materialSharedAxisXOut(-DefaultSlideDistance)
+
+
 /**
  * [MaterialMotion] allows to switch between two layouts with a material motion animation.
  *

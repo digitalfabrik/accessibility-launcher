@@ -18,13 +18,6 @@ private const val ANIMATION_ALPHA_END = 1f
 class ScreenTransitionManager {
 
     @ExperimentalAnimationApi
-    val sharedXMotionSpec = materialSharedAxisXIn() with materialSharedAxisXOut()
-
-    @ExperimentalAnimationApi
-    val sharedXMotionSpecReverse =
-        materialSharedAxisXIn(-DefaultSlideDistance) with materialSharedAxisXOut(-DefaultSlideDistance)
-
-    @ExperimentalAnimationApi
     val fadeThroughMotionSpec =
         materialElevationScaleIn(
             initialAlpha = ANIMATION_ALPHA_START,
@@ -52,19 +45,9 @@ class ScreenTransitionManager {
         }
 
         if (oldState.screenState.javaClass == newState.screenState.javaClass) {
-            val oldScreenState = oldState.screenState
-            val newScreenState = newState.screenState
-            val comparison = when (oldScreenState) {
-                is ScreenState.SettingsState -> {
-                    require(newScreenState is ScreenState.SettingsState)
-                    oldScreenState.settingsPage.compareTo(newScreenState.settingsPage)
-                }
-                else -> 0
-            }
-            when {
-                comparison > 0 -> return sharedXMotionSpecReverse
-                comparison < 0 -> return sharedXMotionSpec
-            }
+            // Screen has changed, but it's the same type of screen, so we don't animate here, screen will animate by
+            // itself
+            return null
         }
 
         val depthComparison = getDepthLevelForState(newState)

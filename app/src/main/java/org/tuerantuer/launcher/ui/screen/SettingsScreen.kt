@@ -1,6 +1,7 @@
 package org.tuerantuer.launcher.ui.screen
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -51,11 +52,15 @@ import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
+import org.tuerantuer.launcher.ui.motion.CustomMaterialMotion
+import org.tuerantuer.launcher.ui.motion.sharedXMotionSpec
+import org.tuerantuer.launcher.ui.motion.sharedXMotionSpecReverse
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
  * The screen where the user can change the launcher settings.
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SettingsScreen(
     uiState: UiState,
@@ -73,88 +78,147 @@ fun SettingsScreen(
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
 ) {
-    val screenState = uiState.screenState
-    require(screenState is ScreenState.SettingsState)
     Column(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
-        when (screenState.settingsPage) {
-            SettingsPage.Overview -> SettingsOverviewScreen(
-                onOpenSettingsPage = onOpenSettingsPage,
-                onGoBack = onGoBack,
-            )
-            SettingsPage.Assistant -> SettingsAssistantScreen(
-                onOpenSettingsPage = onOpenSettingsPage,
-                onGoBack = onGoBack,
-            )
-            SettingsPage.SetDefaultLauncher -> SetDefaultLauncherScreen(
-                onSetDefaultLauncher = onSetDefaultLauncher,
-                onGoBack = onGoBack,
-            )
-            SettingsPage.ShareLauncher -> ShareLauncherScreen(
-                onShareLauncher = onShareLauncher,
-                onGoBack = onGoBack,
-            )
-            SettingsPage.Feedback -> FeedbackScreen(
-                onGoBack = onGoBack,
-                onWriteFeedbackMail = onWriteFeedbackMail,
-            )
-            SettingsPage.SystemSettings -> SystemSettingsScreen(
-                onOpenSystemSettings = onOpenSystemSettings,
-                onGoBack = onGoBack,
-            )
-            SettingsPage.UninstallLauncher -> UninstallLauncherScreen(
-                onUninstallLauncher = onUninstallLauncher,
-                onGoBack = onGoBack,
-            )
-            SettingsPage.IconSize -> IconSizeScreen(
-                uiState = uiState,
-                onSetIconSize = onSetIconSize,
-                onGoBack = onGoBack,
-            )
-            SettingsPage.Wallpaper -> WallpaperScreen(
-                onGoBack = onGoBack,
-                onSetWallpaperType = onSetWallpaperType,
-            )
-            SettingsPage.DisplayTimeout -> DisplayTimeoutScreen(
-                onGoBack = onGoBack,
-                onOpenDisplaySettings = onOpenDisplaySettings,
-            )
-            SettingsPage.Notifications -> NotificationsScreen(
-                onGoBack = onGoBack,
-                onOpenNotificationSettings = onOpenNotificationSettings,
-            )
-            SettingsPage.InputDelay -> InputDelayScreen(
-                onGoBack = onGoBack,
-            )
-            SettingsPage.NotificationSounds -> NotificationSoundsScreen(
-                onGoBack = onGoBack,
-                onOpenSoundSettings = onOpenSoundSettings,
-            )
-            SettingsPage.ScreenReader -> ScreenReaderScreen(
-                onGoBack = onGoBack,
-                onOpenAccessibilitySettings = onOpenAccessibilitySettings,
-            )
-            SettingsPage.VoiceCommands -> VoiceCommandsScreen(
-                onGoBack = onGoBack,
-                onOpenAccessibilitySettings = onOpenAccessibilitySettings,
-            )
-            SettingsPage.HearingAssistant -> HearingAssistantScreen(
-                onGoBack = onGoBack,
-                onOpenSettingsPage = onOpenSettingsPage,
-            )
-            SettingsPage.SpeechAssistant -> SpeechAssistantScreen(
-                onGoBack = onGoBack,
-                onOpenSettingsPage = onOpenSettingsPage,
-            )
-            SettingsPage.VisualAssistant -> VisualAssistantScreen(
-                onGoBack = onGoBack,
-                onOpenSettingsPage = onOpenSettingsPage,
-            )
-            SettingsPage.UninstallApps -> {}
+        CustomMaterialMotion(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            targetState = uiState,
+            animationForStateTransition = { old, new ->
+                val oldPage = (old.screenState as? ScreenState.SettingsState)?.settingsPage
+                    ?: return@CustomMaterialMotion null
+                val newPage = (new.screenState as? ScreenState.SettingsState)?.settingsPage
+                    ?: return@CustomMaterialMotion null
+                val comparison = oldPage.compareTo(newPage)
+                when {
+                    comparison > 0 -> sharedXMotionSpecReverse
+                    comparison < 0 -> sharedXMotionSpec
+                    else -> null
+                }
+            },
+        ) { animatedUiState ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+            ) {
+                MainContent(
+                    uiState = animatedUiState,
+                    onSetDefaultLauncher = onSetDefaultLauncher,
+                    onShareLauncher = onShareLauncher,
+                    onOpenSystemSettings = onOpenSystemSettings,
+                    onOpenAccessibilitySettings = onOpenAccessibilitySettings,
+                    onOpenDisplaySettings = onOpenDisplaySettings,
+                    onOpenNotificationSettings = onOpenNotificationSettings,
+                    onOpenSoundSettings = onOpenSoundSettings,
+                    onUninstallLauncher = onUninstallLauncher,
+                    onWriteFeedbackMail = onWriteFeedbackMail,
+                    onOpenSettingsPage = onOpenSettingsPage,
+                    onSetIconSize = onSetIconSize,
+                    onGoBack = onGoBack,
+                    onSetWallpaperType = onSetWallpaperType,
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun ColumnScope.MainContent(
+    uiState: UiState,
+    onSetDefaultLauncher: () -> Unit = {},
+    onShareLauncher: () -> Unit = {},
+    onOpenSystemSettings: () -> Unit = {},
+    onOpenAccessibilitySettings: () -> Unit = {},
+    onOpenDisplaySettings: () -> Unit = {},
+    onOpenNotificationSettings: () -> Unit = {},
+    onOpenSoundSettings: () -> Unit = {},
+    onUninstallLauncher: () -> Unit = {},
+    onWriteFeedbackMail: () -> Unit = {},
+    onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
+    onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
+    onGoBack: () -> Unit = {},
+    onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
+) {
+    val screenState = uiState.screenState
+    require(screenState is ScreenState.SettingsState)
+    when (screenState.settingsPage) {
+        SettingsPage.Overview -> SettingsOverviewScreen(
+            onOpenSettingsPage = onOpenSettingsPage,
+            onGoBack = onGoBack,
+        )
+        SettingsPage.Assistant -> SettingsAssistantScreen(
+            onOpenSettingsPage = onOpenSettingsPage,
+            onGoBack = onGoBack,
+        )
+        SettingsPage.SetDefaultLauncher -> SetDefaultLauncherScreen(
+            onSetDefaultLauncher = onSetDefaultLauncher,
+            onGoBack = onGoBack,
+        )
+        SettingsPage.ShareLauncher -> ShareLauncherScreen(
+            onShareLauncher = onShareLauncher,
+            onGoBack = onGoBack,
+        )
+        SettingsPage.Feedback -> FeedbackScreen(
+            onGoBack = onGoBack,
+            onWriteFeedbackMail = onWriteFeedbackMail,
+        )
+        SettingsPage.SystemSettings -> SystemSettingsScreen(
+            onOpenSystemSettings = onOpenSystemSettings,
+            onGoBack = onGoBack,
+        )
+        SettingsPage.UninstallLauncher -> UninstallLauncherScreen(
+            onUninstallLauncher = onUninstallLauncher,
+            onGoBack = onGoBack,
+        )
+        SettingsPage.IconSize -> IconSizeScreen(
+            uiState = uiState,
+            onSetIconSize = onSetIconSize,
+            onGoBack = onGoBack,
+        )
+        SettingsPage.Wallpaper -> WallpaperScreen(
+            onGoBack = onGoBack,
+            onSetWallpaperType = onSetWallpaperType,
+        )
+        SettingsPage.DisplayTimeout -> DisplayTimeoutScreen(
+            onGoBack = onGoBack,
+            onOpenDisplaySettings = onOpenDisplaySettings,
+        )
+        SettingsPage.Notifications -> NotificationsScreen(
+            onGoBack = onGoBack,
+            onOpenNotificationSettings = onOpenNotificationSettings,
+        )
+        SettingsPage.InputDelay -> InputDelayScreen(
+            onGoBack = onGoBack,
+        )
+        SettingsPage.NotificationSounds -> NotificationSoundsScreen(
+            onGoBack = onGoBack,
+            onOpenSoundSettings = onOpenSoundSettings,
+        )
+        SettingsPage.ScreenReader -> ScreenReaderScreen(
+            onGoBack = onGoBack,
+            onOpenAccessibilitySettings = onOpenAccessibilitySettings,
+        )
+        SettingsPage.VoiceCommands -> VoiceCommandsScreen(
+            onGoBack = onGoBack,
+            onOpenAccessibilitySettings = onOpenAccessibilitySettings,
+        )
+        SettingsPage.HearingAssistant -> HearingAssistantScreen(
+            onGoBack = onGoBack,
+            onOpenSettingsPage = onOpenSettingsPage,
+        )
+        SettingsPage.SpeechAssistant -> SpeechAssistantScreen(
+            onGoBack = onGoBack,
+            onOpenSettingsPage = onOpenSettingsPage,
+        )
+        SettingsPage.VisualAssistant -> VisualAssistantScreen(
+            onGoBack = onGoBack,
+            onOpenSettingsPage = onOpenSettingsPage,
+        )
+        SettingsPage.UninstallApps -> {}
     }
 }
 
