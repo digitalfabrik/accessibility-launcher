@@ -1,0 +1,14 @@
+version: 2.1
+
+parameters:
+  run_dev_delivery:
+    default: false
+    type: boolean
+
+  run_prod_delivery:
+    default: false
+    type: boolean
+
+  run_promote:
+    default: false
+    type: boolean
