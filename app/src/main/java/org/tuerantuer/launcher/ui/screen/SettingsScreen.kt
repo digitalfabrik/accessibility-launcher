@@ -512,7 +512,8 @@ data class SettingsButtonData(
 @Composable
 fun SettingsHeader(textRes: Int, onGoBack: () -> Unit) {
     HeaderComponent(
-        modifier = Modifier.padding(bottom = 16.dp),
+        modifier = Modifier
+            .padding(bottom = 16.dp),
         text = stringResource(textRes),
         onGoBack = onGoBack,
     )
@@ -527,6 +528,8 @@ fun ColumnScope.SettingsBody(textRes: Int) {
             .padding(horizontal = 16.dp, vertical = 16.dp),
     ) {
         Text(
+            modifier = Modifier
+                .fillMaxWidth(),
             text = stringResource(textRes),
             textAlign = TextAlign.Center,
         )
@@ -655,6 +658,8 @@ fun SettingsButton(settingsButton: SettingsButtonData) {
 fun SettingsInfoCard() {
     BottomSheetComponent {
         Text(
+            modifier = Modifier
+                .fillMaxWidth(),
             text = stringResource(R.string.settings_info),
             textAlign = TextAlign.Center,
         )
