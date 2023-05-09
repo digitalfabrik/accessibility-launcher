@@ -60,7 +60,9 @@ fun LauncherTheme(
     val colorScheme = LightColorScheme
 
     val onWallpaperText = when (wallpaperType) {
-        WallpaperType.SOLID_COLOR -> MaterialTheme.typography.labelLarge
+        WallpaperType.SOLID_COLOR -> MaterialTheme.typography.labelLarge.copy(
+            color = almostBlack,
+        )
         WallpaperType.CUSTOM_WALLPAPER,
         WallpaperType.DARKENED_CUSTOM_WALLPAPER,
         -> MaterialTheme.typography.labelLarge.copy(
