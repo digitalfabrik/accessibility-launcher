@@ -1,6 +1,7 @@
 package org.tuerantuer.launcher.ui.screen
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -62,6 +63,7 @@ import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
+import org.tuerantuer.launcher.ui.components.SettingSwitchItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
@@ -230,6 +232,7 @@ fun ColumnScope.MainContent(
             onGoBack = onGoBack,
         )
         SettingsPage.Wallpaper -> WallpaperScreen(
+            uiState = uiState,
             onSetWallpaperType = onSetWallpaperType,
             onSetWallpaper = onSetWallpaper,
         )
@@ -402,29 +405,49 @@ fun ColumnScope.IconSizeScreen(
 
 @Composable
 fun ColumnScope.WallpaperScreen(
+    uiState: UiState,
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
 ) {
     SettingsFrame {
-        SettingsFab(
-            R.string.wallpaper_type_solid,
-            onClick = { onSetWallpaperType.invoke(WallpaperType.SOLID_COLOR) },
+        val wallpaperType = uiState.settings.wallpaperType
+        val showCustomWallpaper = wallpaperType != WallpaperType.SOLID_COLOR
+        SettingSwitchItem(
+            title = stringResource(R.string.enable_custom_wallpaper),
+            checked = showCustomWallpaper,
+            onCheckedChange = { checked ->
+                onSetWallpaperType(if (checked) WallpaperType.CUSTOM_WALLPAPER else WallpaperType.SOLID_COLOR)
+            },
         )
-        SettingsFab(
-            R.string.wallpaper_type_default,
-            onClick = { onSetWallpaperType.invoke(WallpaperType.CUSTOM_WALLPAPER) },
-        )
-        SettingsFab(
-            R.string.wallpaper_type_darkened,
-            onClick = { onSetWallpaperType.invoke(WallpaperType.DARKENED_CUSTOM_WALLPAPER) },
-        )
-        val images = listOf(R.raw.wp_1, R.raw.wp_2, R.raw.wp_3, R.raw.wp_4, R.raw.wp_5, R.raw.wp_6)
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(128.dp),
-            contentPadding = PaddingValues(16.dp),
-        ) {
-            items(images) { imageRes ->
-                WallpaperItem(imageRes = imageRes, onClick = { onSetWallpaper(imageRes) })
+        AnimatedVisibility(visible = showCustomWallpaper) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+            ) {
+                SettingSwitchItem(
+                    title = stringResource(R.string.darken_custom_wallpaper),
+                    description = stringResource(R.string.darken_custom_wallpaper_description),
+                    checked = wallpaperType == WallpaperType.DARKENED_CUSTOM_WALLPAPER,
+                    onCheckedChange = { checked ->
+                        val newWallpaperType =
+                            if (checked) WallpaperType.DARKENED_CUSTOM_WALLPAPER else WallpaperType.CUSTOM_WALLPAPER
+                        onSetWallpaperType(newWallpaperType)
+                    },
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                    text = stringResource(R.string.tap_to_apply_wallpaper),
+                )
+                val images = listOf(R.raw.wp_1, R.raw.wp_2, R.raw.wp_3, R.raw.wp_4, R.raw.wp_5, R.raw.wp_6)
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(128.dp),
+                    contentPadding = PaddingValues(16.dp),
+                ) {
+                    items(images) { imageRes ->
+                        WallpaperItem(imageRes = imageRes, onClick = { onSetWallpaper(imageRes) })
+                    }
+                }
             }
         }
     }
