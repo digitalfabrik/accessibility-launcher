@@ -165,6 +165,7 @@ fun Screens(
             onSetWallpaperType = { wallpaperType ->
                 coroutinesScope.launch { mainViewModel.onSetWallpaperType(wallpaperType) }
             },
+            onSetWallpaper = { wallpaperRes -> coroutinesScope.launch { mainViewModel.onSetWallpaper(wallpaperRes) } },
             onGoBack = mainViewModel::goBack,
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(

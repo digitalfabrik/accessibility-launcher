@@ -2,13 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- for showing the uninstall dialog since Android 9/P -->
+    <!-- For showing the uninstall dialog since Android 9/P -->
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
     <!-- Needed since Android R/11 to query all installed apps -->
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
+
+    <!-- To allow the user to change their their wallpaper through our app -->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
         android:name=".LauncherApplication"

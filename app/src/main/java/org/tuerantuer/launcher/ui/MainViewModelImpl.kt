@@ -200,4 +200,9 @@ class MainViewModelImpl(
     override suspend fun onSetFavorites(newFavorites: List<AppItemInfo>) {
         appActivityRepository.setFavorites(newFavorites)
     }
+
+    override suspend fun onSetWallpaper(wallpaperRes: Int) {
+        frameworkActionsManager.setWallpaper(wallpaperRes)
+        loadHomeScreen()
+    }
 }

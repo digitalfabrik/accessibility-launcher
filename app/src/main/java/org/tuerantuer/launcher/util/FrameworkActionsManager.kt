@@ -1,5 +1,6 @@
 package org.tuerantuer.launcher.util
 
+import androidx.annotation.RawRes
 import org.tuerantuer.launcher.app.appIdentifier.ComponentKey
 
 /**
@@ -53,4 +54,9 @@ interface FrameworkActionsManager {
      * Allows the user to send us feedback via email.
      */
     fun sendFeedbackMail()
+
+    /**
+     * Sets the wallpaper of the users home and lock screen to the given [drawableRes].
+     */
+    suspend fun setWallpaper(@RawRes drawableRes: Int)
 }

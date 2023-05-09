@@ -85,7 +85,8 @@ class AppModule {
     @Provides
     fun provideFrameworkActionsManager(
         @ApplicationContext context: Context,
-    ): FrameworkActionsManager = FrameworkActionsManagerImpl(context)
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+    ): FrameworkActionsManager = FrameworkActionsManagerImpl(context, ioDispatcher)
 
     @Singleton
     @Provides

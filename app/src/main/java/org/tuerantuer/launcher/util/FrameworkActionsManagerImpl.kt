@@ -1,20 +1,32 @@
 package org.tuerantuer.launcher.util
 
+import android.app.WallpaperManager
 import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import org.tuerantuer.launcher.BuildConfig
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.appIdentifier.ComponentKey
+import org.tuerantuer.launcher.di.IoDispatcher
 import org.tuerantuer.launcher.util.extension.launchAppActivityInNewState
+import java.io.IOException
+
 
 /**
  * Default implementation of [FrameworkActionsManager].
  */
-class FrameworkActionsManagerImpl(private val context: Context) : FrameworkActionsManager {
+class FrameworkActionsManagerImpl(
+    private val context: Context,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+) : FrameworkActionsManager {
 
     companion object {
         /**
@@ -133,5 +145,34 @@ class FrameworkActionsManagerImpl(private val context: Context) : FrameworkActio
         } catch (e: ActivityLaunchFailedException) {
             showLongToast(R.string.action_not_supported)
         }
+    }
+
+    override suspend fun setWallpaper(@RawRes drawableRes: Int) {
+        try {
+            withContext(ioDispatcher) {
+                val wallpaperManager = WallpaperManager.getInstance(context)
+                wallpaperManager.setResource(drawableRes)
+            }
+        } catch (e: IOException) {
+            showLongToast(R.string.action_not_supported)
+        }
+    }
+
+    /**
+     * Generates a URI from a drawable resource ID.
+     * @param context - context
+     * @param drawableId - drawable res id
+     * @return - uri
+     */
+    fun getUriFromDrawable(
+        context: Context,
+        @DrawableRes drawableId: Int,
+    ): Uri {
+        return Uri.parse(
+            ContentResolver.SCHEME_ANDROID_RESOURCE
+                    + "://" + context.resources.getResourcePackageName(drawableId)
+                    + '/' + context.resources.getResourceTypeName(drawableId)
+                    + '/' + context.resources.getResourceEntryName(drawableId),
+        )
     }
 }

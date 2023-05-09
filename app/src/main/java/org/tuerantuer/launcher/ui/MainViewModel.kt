@@ -1,5 +1,6 @@
 package org.tuerantuer.launcher.ui
 
+import androidx.annotation.RawRes
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.StateFlow
 import org.tuerantuer.launcher.app.AppItemInfo
@@ -48,4 +49,5 @@ interface MainViewModel {
     suspend fun onSetFavorites(newFavorites: List<AppItemInfo>)
     suspend fun onSetIconSize(appIconSize: AppIconSize)
     suspend fun onSetWallpaperType(wallpaperType: WallpaperType)
+    suspend fun onSetWallpaper(@RawRes wallpaperRes: Int)
 }
