@@ -24,6 +24,7 @@ import org.tuerantuer.launcher.ui.MainViewModel
 import org.tuerantuer.launcher.ui.MainViewModelImpl
 import org.tuerantuer.launcher.ui.motion.ScreenTransitionManager
 import org.tuerantuer.launcher.util.FrameworkActionsManager
+import org.tuerantuer.launcher.util.FrameworkActionsManagerImpl
 import org.tuerantuer.launcher.util.extension.dataStore
 import javax.inject.Singleton
 
@@ -82,9 +83,9 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideDefaultLauncherChooser(
+    fun provideFrameworkActionsManager(
         @ApplicationContext context: Context,
-    ): FrameworkActionsManager = FrameworkActionsManager(context)
+    ): FrameworkActionsManager = FrameworkActionsManagerImpl(context)
 
     @Singleton
     @Provides
