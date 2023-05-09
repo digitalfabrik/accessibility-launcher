@@ -83,6 +83,10 @@ fun SettingsScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
+        Header(
+            uiState,
+            onGoBack = onGoBack,
+        )
         CustomMaterialMotion(
             modifier = Modifier
                 .fillMaxWidth()
@@ -127,6 +131,42 @@ fun SettingsScreen(
 }
 
 @Composable
+fun Header(
+    uiState: UiState,
+    onGoBack: () -> Unit = {},
+) {
+    val screenState = uiState.screenState
+    require(screenState is ScreenState.SettingsState)
+    val textRes = when (screenState.settingsPage) {
+        SettingsPage.Overview -> R.string.settings
+        SettingsPage.Assistant -> R.string.assistant
+        SettingsPage.VisualAssistant -> R.string.assistant_visual
+        SettingsPage.HearingAssistant -> R.string.assistant_hearing
+        SettingsPage.SpeechAssistant -> R.string.assistant_speech
+        SettingsPage.IconSize -> R.string.display_scale
+        SettingsPage.Wallpaper -> R.string.wallpaper
+        SettingsPage.DisplayTimeout -> R.string.display_timeout
+        SettingsPage.Notifications -> R.string.notifications
+        SettingsPage.InputDelay -> R.string.input_delay
+        SettingsPage.NotificationSounds -> R.string.notification_sounds
+        SettingsPage.ScreenReader -> R.string.screen_reader
+        SettingsPage.VoiceCommands -> R.string.voice_commands
+        SettingsPage.SetDefaultLauncher -> R.string.set_this_launcher_as_default
+        SettingsPage.Feedback -> R.string.get_feedback_contact
+        SettingsPage.SystemSettings -> R.string.open_system_settings
+        SettingsPage.ShareLauncher -> R.string.share_launcher
+        SettingsPage.UninstallLauncher -> R.string.uninstall_launcher
+        SettingsPage.UninstallApps -> R.string.uninstall_apps
+    }
+    HeaderComponent(
+        modifier = Modifier
+            .padding(bottom = 16.dp),
+        text = stringResource(textRes),
+        onGoBack = onGoBack,
+    )
+}
+
+@Composable
 fun ColumnScope.MainContent(
     uiState: UiState,
     onSetDefaultLauncher: () -> Unit = {},
@@ -148,27 +188,21 @@ fun ColumnScope.MainContent(
     when (screenState.settingsPage) {
         SettingsPage.Overview -> SettingsOverviewScreen(
             onOpenSettingsPage = onOpenSettingsPage,
-            onGoBack = onGoBack,
         )
         SettingsPage.Assistant -> SettingsAssistantScreen(
             onOpenSettingsPage = onOpenSettingsPage,
-            onGoBack = onGoBack,
         )
         SettingsPage.SetDefaultLauncher -> SetDefaultLauncherScreen(
             onSetDefaultLauncher = onSetDefaultLauncher,
-            onGoBack = onGoBack,
         )
         SettingsPage.ShareLauncher -> ShareLauncherScreen(
             onShareLauncher = onShareLauncher,
-            onGoBack = onGoBack,
         )
         SettingsPage.Feedback -> FeedbackScreen(
-            onGoBack = onGoBack,
             onWriteFeedbackMail = onWriteFeedbackMail,
         )
         SettingsPage.SystemSettings -> SystemSettingsScreen(
             onOpenSystemSettings = onOpenSystemSettings,
-            onGoBack = onGoBack,
         )
         SettingsPage.UninstallLauncher -> UninstallLauncherScreen(
             onUninstallLauncher = onUninstallLauncher,
@@ -180,42 +214,32 @@ fun ColumnScope.MainContent(
             onGoBack = onGoBack,
         )
         SettingsPage.Wallpaper -> WallpaperScreen(
-            onGoBack = onGoBack,
             onSetWallpaperType = onSetWallpaperType,
         )
         SettingsPage.DisplayTimeout -> DisplayTimeoutScreen(
-            onGoBack = onGoBack,
             onOpenDisplaySettings = onOpenDisplaySettings,
         )
         SettingsPage.Notifications -> NotificationsScreen(
-            onGoBack = onGoBack,
             onOpenNotificationSettings = onOpenNotificationSettings,
         )
         SettingsPage.InputDelay -> InputDelayScreen(
-            onGoBack = onGoBack,
         )
         SettingsPage.NotificationSounds -> NotificationSoundsScreen(
-            onGoBack = onGoBack,
             onOpenSoundSettings = onOpenSoundSettings,
         )
         SettingsPage.ScreenReader -> ScreenReaderScreen(
-            onGoBack = onGoBack,
             onOpenAccessibilitySettings = onOpenAccessibilitySettings,
         )
         SettingsPage.VoiceCommands -> VoiceCommandsScreen(
-            onGoBack = onGoBack,
             onOpenAccessibilitySettings = onOpenAccessibilitySettings,
         )
         SettingsPage.HearingAssistant -> HearingAssistantScreen(
-            onGoBack = onGoBack,
             onOpenSettingsPage = onOpenSettingsPage,
         )
         SettingsPage.SpeechAssistant -> SpeechAssistantScreen(
-            onGoBack = onGoBack,
             onOpenSettingsPage = onOpenSettingsPage,
         )
         SettingsPage.VisualAssistant -> VisualAssistantScreen(
-            onGoBack = onGoBack,
             onOpenSettingsPage = onOpenSettingsPage,
         )
         SettingsPage.UninstallApps -> {}
@@ -225,9 +249,7 @@ fun ColumnScope.MainContent(
 @Composable
 fun ColumnScope.SettingsOverviewScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
-    onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.settings, onGoBack)
     SettingsFrame {
         val settingsButtons = listOf(
             SettingsButtonData(R.string.assistant, icon = Icons.Outlined.SettingsSuggest) {
@@ -249,9 +271,7 @@ fun ColumnScope.SettingsOverviewScreen(
 @Composable
 fun ColumnScope.SettingsAssistantScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
-    onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.assistant, onGoBack)
     SettingsFrame {
         val settingsButtons = listOf(
             SettingsButtonData(
@@ -283,9 +303,7 @@ fun ColumnScope.SettingsAssistantScreen(
 @Composable
 fun ColumnScope.VisualAssistantScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
-    onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.assistant_visual, onGoBack)
     SettingsFrame {
         val settingsButtons = listOf(
             SettingsButtonData(R.string.display_scale) {
@@ -311,9 +329,7 @@ fun ColumnScope.VisualAssistantScreen(
 @Composable
 fun ColumnScope.HearingAssistantScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
-    onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.assistant_hearing, onGoBack)
     SettingsFrame {
         val settingsButtons = listOf(
             SettingsButtonData(R.string.notification_sounds) {
@@ -330,9 +346,7 @@ fun ColumnScope.HearingAssistantScreen(
 @Composable
 fun ColumnScope.SpeechAssistantScreen(
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
-    onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.assistant_speech, onGoBack)
     SettingsFrame {
         val settingsButtons = listOf(
             SettingsButtonData(R.string.voice_commands) {
@@ -349,9 +363,10 @@ fun ColumnScope.IconSizeScreen(
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.display_scale, onGoBack)
     SetIconSizeComponent(
-        modifier = Modifier.fillMaxSize().weight(1f),
+        modifier = Modifier
+            .fillMaxSize()
+            .weight(1f),
         uiState = uiState,
         onSetIconSize = onSetIconSize,
     )
@@ -370,10 +385,8 @@ fun ColumnScope.IconSizeScreen(
 
 @Composable
 fun ColumnScope.WallpaperScreen(
-    onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
 ) {
-    SettingsHeader(R.string.wallpaper, onGoBack)
     SettingsFrame {
         SettingsFab(
             R.string.wallpaper_type_solid,
@@ -392,10 +405,8 @@ fun ColumnScope.WallpaperScreen(
 
 @Composable
 fun ColumnScope.DisplayTimeoutScreen(
-    onGoBack: () -> Unit = {},
     onOpenDisplaySettings: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.display_timeout, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.display_timeout_description)
         SettingsFab(
@@ -410,10 +421,8 @@ fun ColumnScope.DisplayTimeoutScreen(
 
 @Composable
 fun ColumnScope.NotificationsScreen(
-    onGoBack: () -> Unit = {},
     onOpenNotificationSettings: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.notifications, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.notifications_description)
         SettingsFab(
@@ -428,10 +437,8 @@ fun ColumnScope.NotificationsScreen(
 
 @Composable
 fun ColumnScope.InputDelayScreen(
-    onGoBack: () -> Unit = {},
     onOpenSystemSettings: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.input_delay, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.input_delay_description)
         SettingsFab(
@@ -446,10 +453,8 @@ fun ColumnScope.InputDelayScreen(
 
 @Composable
 fun ColumnScope.NotificationSoundsScreen(
-    onGoBack: () -> Unit = {},
     onOpenSoundSettings: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.notification_sounds, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.notification_sounds_description)
         SettingsFab(
@@ -464,10 +469,8 @@ fun ColumnScope.NotificationSoundsScreen(
 
 @Composable
 fun ColumnScope.ScreenReaderScreen(
-    onGoBack: () -> Unit = {},
     onOpenAccessibilitySettings: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.screen_reader, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.screen_reader_description)
         SettingsFab(
@@ -482,10 +485,8 @@ fun ColumnScope.ScreenReaderScreen(
 
 @Composable
 fun ColumnScope.VoiceCommandsScreen(
-    onGoBack: () -> Unit = {},
     onOpenAccessibilitySettings: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.voice_commands, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.voice_commands_description)
         SettingsFab(
@@ -501,9 +502,7 @@ fun ColumnScope.VoiceCommandsScreen(
 @Composable
 fun ColumnScope.SetDefaultLauncherScreen(
     onSetDefaultLauncher: () -> Unit = {},
-    onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.set_this_launcher_as_default, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.set_this_launcher_as_default_description)
         SettingsFab(R.string.set_this_launcher_as_default, Icons.Outlined.Home, onSetDefaultLauncher)
@@ -512,10 +511,8 @@ fun ColumnScope.SetDefaultLauncherScreen(
 
 @Composable
 fun ColumnScope.FeedbackScreen(
-    onGoBack: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.get_feedback_contact, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.get_feedback_contact_description)
         SettingsFab(R.string.write_email, Icons.Outlined.Mail, onWriteFeedbackMail)
@@ -525,9 +522,7 @@ fun ColumnScope.FeedbackScreen(
 @Composable
 fun ColumnScope.SystemSettingsScreen(
     onOpenSystemSettings: () -> Unit = {},
-    onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.open_system_settings, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.open_system_settings_description)
         SettingsFab(R.string.open_system_settings, Icons.Outlined.AppSettingsAlt, onOpenSystemSettings)
@@ -537,9 +532,7 @@ fun ColumnScope.SystemSettingsScreen(
 @Composable
 fun ColumnScope.ShareLauncherScreen(
     onShareLauncher: () -> Unit = {},
-    onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.share_launcher, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.share_launcher_description)
         SettingsFab(R.string.share_launcher, Icons.Outlined.Share, onShareLauncher)
@@ -552,7 +545,6 @@ fun ColumnScope.UninstallLauncherScreen(
     onUninstallLauncher: () -> Unit = {},
     onGoBack: () -> Unit = {},
 ) {
-    SettingsHeader(R.string.uninstall_launcher, onGoBack)
     SettingsFrame {
         SettingsBody(R.string.uninstall_launcher_description)
         SettingsFab(
@@ -572,16 +564,6 @@ data class SettingsButtonData(
     val descriptionRes: Int? = null,
     val onClick: () -> Unit,
 )
-
-@Composable
-fun SettingsHeader(textRes: Int, onGoBack: () -> Unit) {
-    HeaderComponent(
-        modifier = Modifier
-            .padding(bottom = 16.dp),
-        text = stringResource(textRes),
-        onGoBack = onGoBack,
-    )
-}
 
 @Composable
 fun ColumnScope.SettingsBody(textRes: Int) {
