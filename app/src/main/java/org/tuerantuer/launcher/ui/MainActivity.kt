@@ -1,5 +1,6 @@
 package org.tuerantuer.launcher.ui
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,15 +8,21 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.tuerantuer.launcher.data.datastore.WallpaperType
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
@@ -59,6 +66,33 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun StatusAndNavigationBars(
+    uiState: UiState,
+) {
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        val useTransparentBars = uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
+                && uiState.screenState is ScreenState.HomeScreenState
+        val backgroundColor = if (useTransparentBars) {
+            LauncherTheme.all.onWallpaperBackground
+        } else {
+            MaterialTheme.colorScheme.background
+        }.toArgb()
+        SideEffect {
+            (view.context as Activity).window.apply {
+                statusBarColor = backgroundColor
+                navigationBarColor = backgroundColor
+            }
+            ViewCompat.getWindowInsetsController(view)?.apply {
+                val useLightBars = !useTransparentBars
+                isAppearanceLightStatusBars = useLightBars
+                isAppearanceLightNavigationBars = useLightBars
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LauncherApp(
@@ -67,6 +101,7 @@ fun LauncherApp(
     uiState: UiState,
 ) {
     val coroutinesScope = rememberCoroutineScope()
+    StatusAndNavigationBars(uiState)
     CustomMaterialMotion(
         targetState = uiState,
         animationForStateTransition = { old, new ->
