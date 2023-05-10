@@ -7,8 +7,8 @@ import org.tuerantuer.launcher.ui.data.UiState
 private const val ANIMATION_SCALE_START = 0.92f
 private const val ANIMATION_SCALE_END = 1f / ANIMATION_SCALE_START
 
-private const val ANIMATION_ALPHA_START = 0.9f
-private const val ANIMATION_ALPHA_END = 1f
+private const val ANIMATION_ALPHA_START = 0.0f
+private const val ANIMATION_ALPHA_END = 0.0f
 
 /**
  * This class handles all screen transitions and in-screen transitions. Because each screen has its

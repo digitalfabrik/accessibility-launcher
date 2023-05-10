@@ -73,7 +73,7 @@ fun LauncherTheme(
     val onWallpaperBackground = when (wallpaperType) {
         WallpaperType.SOLID_COLOR -> MaterialTheme.colorScheme.background
         WallpaperType.CUSTOM_WALLPAPER -> Color.Transparent
-        WallpaperType.DARKENED_CUSTOM_WALLPAPER -> Color.Black.copy(alpha = 0.5f)
+        WallpaperType.DARKENED_CUSTOM_WALLPAPER -> wallpaperScrim
     }
 
     val themeExtension = ThemeExtension(

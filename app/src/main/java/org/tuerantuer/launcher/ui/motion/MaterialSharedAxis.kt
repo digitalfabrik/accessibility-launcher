@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 val DefaultSlideDistance: Dp = 60.dp
 const val InitialSlideAlpha: Float = 0.8f
 
-private const val ProgressThreshold = 0.35f
+private const val ProgressThreshold = 0.1f
 
 private val Int.ForOutgoing: Int
     get() = (this * ProgressThreshold).toInt()
