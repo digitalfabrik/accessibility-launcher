@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Carikom Launcher</string>
+    <string name="app_name">CariKom Launcher</string>
     <string name="settings">Einstellungen</string>
     <string name="system_settings">Geräte-Einstellungen</string>
     <string name="system_settings_description">Hier kommst du zu den Geräte-Einstellungen:</string>
