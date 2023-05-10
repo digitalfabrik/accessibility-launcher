@@ -3,6 +3,8 @@ package org.tuerantuer.launcher.ui.screen
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,9 +45,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -455,6 +460,11 @@ fun ColumnScope.WallpaperScreen(
 
 @Composable
 fun WallpaperItem(imageRes: Int, onClick: () -> Unit) {
+    val animatedScrimColor by animateColorAsState(
+        targetValue = LauncherTheme.all.onWallpaperBackground,
+        animationSpec = TweenSpec(durationMillis = 300),
+    )
+    val cornerRadius = 8.dp
     Box(
         modifier = Modifier
             .padding(4.dp)
@@ -464,7 +474,16 @@ fun WallpaperItem(imageRes: Int, onClick: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1.0f)
-                .clip(RoundedCornerShape(8.dp)),
+                .clip(RoundedCornerShape(cornerRadius))
+                .drawWithCache {
+                    onDrawWithContent {
+                        drawContent()
+                        drawRoundRect(
+                            color = animatedScrimColor,
+                            cornerRadius = CornerRadius(cornerRadius.toPx()),
+                        )
+                    }
+                },
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageRes)
                 .crossfade(true)
