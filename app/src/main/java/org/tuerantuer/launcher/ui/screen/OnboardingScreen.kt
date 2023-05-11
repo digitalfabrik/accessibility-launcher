@@ -100,7 +100,6 @@ fun OnboardingScreen(
         OnboardingPage.SET_AS_DEFAULT_2 -> R.string.setup_5
         OnboardingPage.SET_AS_DEFAULT_3 -> R.string.setup_6
         OnboardingPage.PRIVACY_POLICY -> R.string.setup_7
-        OnboardingPage.TERMS_OF_SERVICE -> R.string.setup_8
         OnboardingPage.SET_SIZE_INTRO -> R.string.setup_9
         OnboardingPage.SET_SIZE_MAIN -> null
         OnboardingPage.SET_FAVORITES_INTRO_1 -> R.string.setup_10
@@ -258,7 +257,7 @@ fun SheetButtons(
                     }
                 }
             }
-            OnboardingPage.PRIVACY_POLICY, OnboardingPage.TERMS_OF_SERVICE -> {
+            OnboardingPage.PRIVACY_POLICY -> {
                 ExtendedFabComponent(
                     onClick = onGoToNextStep,
                     textRes = R.string.button_accept,
@@ -309,16 +308,11 @@ fun ColumnScope.MainContent(
 ) {
     val screenState = uiState.screenState as ScreenState.OnboardingState
     when (val page = screenState.onboardingPage) {
-        in setOf(OnboardingPage.PRIVACY_POLICY, OnboardingPage.TERMS_OF_SERVICE) -> {
-            val textRes = when (page) {
-                OnboardingPage.PRIVACY_POLICY -> R.string.privacy_policy_text
-                OnboardingPage.TERMS_OF_SERVICE -> R.string.terms_of_service_text
-                else -> error("Invalid page: $page")
-            }
+        OnboardingPage.PRIVACY_POLICY -> {
             ScrollableHtmlText(
                 modifier = Modifier
                     .weight(1f),
-                text = stringResource(textRes),
+                text = stringResource(R.string.privacy_policy_text),
             )
         }
         OnboardingPage.SET_SIZE_MAIN -> {

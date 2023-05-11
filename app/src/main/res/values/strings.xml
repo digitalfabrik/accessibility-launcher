@@ -26,9 +26,8 @@
     <string name="setup_5">Wir empfehlen dir:\nStelle CariKom als Standard ein. So kannst du CariKom am besten nutzen</string>
     <string name="setup_6">Möchtest du CariKom als Standard einstellen?</string>
     <string name="setup_7">2. Schritt: Bitte stimme der Datenschutzerklärung zu</string>
-    <string name="setup_8">3. Schritt: Bitte stimme den Nutzungsbedingungen zu</string>
-    <string name="setup_9">4. Schritt: Du kannst die Größe von deinen Bildschirm-Symbolen einstellen</string>
-    <string name="setup_10">5. Schritt: Du kannst deine Lieblings-Apps auswählen.</string>
+    <string name="setup_9">3. Schritt: Du kannst die Größe von deinen Bildschirm-Symbolen einstellen</string>
+    <string name="setup_10">4. Schritt: Du kannst deine Lieblings-Apps auswählen.</string>
     <string name="setup_11">Deine Lieblings-Apps werden dann ganz oben in deinem Start-Bildschirm angezeigt.</string>
     <string name="setup_12">Wähle deine Lieblings-Apps aus. Zum Beispiel Apps, die du oft brauchst.\nSo kannst du Apps auswählen:\nTippe auf die App.</string>
     <string name="setup_13">Die Einstellungen kannst du später wieder ändern.</string>
@@ -99,16 +98,4 @@
     <string name="support_mail_address">example@example.org</string>
     <string name="feedback_mail_subject">[SUBJECT_PLACEHOLDER]</string>
     <string name="feedback_mail_body">[BODY_PLACEHOLDER]</string>
-    <string name="terms_of_service_text">Dies ist ein Platzhaltertext.
-Wir haben Regeln für die Nutzung unserer App. Bitte lesen Sie diese Regeln sorgfältig durch, bevor Sie unsere App herunterladen und nutzen.
-Unsere App ist nur für den persönlichen Gebrauch bestimmt und darf nicht für geschäftliche Zwecke verwendet werden.
-Wir können unsere App ändern oder Funktionen hinzufügen oder entfernen, ohne Sie im Voraus zu informieren.
-Wir sind nicht für die Inhalte oder Informationen verantwortlich, die andere Personen in der App teilen.
-Sie müssen sicherstellen, dass Ihre Anmeldeinformationen sicher sind und nicht an andere Personen weitergegeben werden.
-Wir können Ihr Benutzerkonto jederzeit deaktivieren oder löschen, wenn Sie gegen unsere Regeln verstoßen.
-Die Nutzung unserer App geschieht auf eigene Gefahr. Wir haften nicht für Schäden oder Verluste, die durch die Nutzung unserer App entstehen.
-Bitte stellen Sie sicher, dass die Inhalte, die Sie in der App teilen, nicht illegal, beleidigend oder obszön sind.
-Wir können unsere Regeln jederzeit ändern. Wir werden Sie jedoch im Voraus darüber informieren.
-Wenn Sie unsere App nutzen, stimmen Sie unseren Regeln zu. Wir werden Ihre Daten gemäß unserer Datenschutzerklärung schützen.
-Wenn Sie Fragen haben, kontaktieren Sie uns bitte.</string>
 </resources>

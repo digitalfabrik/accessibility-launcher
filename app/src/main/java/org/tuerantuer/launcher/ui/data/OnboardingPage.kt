@@ -16,7 +16,6 @@ enum class OnboardingPage {
     SET_AS_DEFAULT_2,
     SET_AS_DEFAULT_3,
     PRIVACY_POLICY,
-    TERMS_OF_SERVICE,
     SET_SIZE_INTRO,
     SET_SIZE_MAIN,
     SET_FAVORITES_INTRO_1,
