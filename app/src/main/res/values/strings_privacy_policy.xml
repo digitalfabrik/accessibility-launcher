@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_policy_text"><![CDATA[<p>Datenschutzerklärung für die Nutzung der App Carikom – inklusiver Launcher</p>
+<p><strong>1. Kontakt</strong></p>
+<p>Ein Verein wollte die App Carikom entwickeln.</p>
+<p>Der Verein heißt:</p>
+<p>Caritasverband für die Diözese Augsburg e. V.\
+Auf dem Kreuz 41\
+86152 Augsburg</p>
+<p>Der Verein selbst kann aber keine Apps entwickeln. Deshalb hat der Verein uns gefragt.</p>
+<p>Wir sind eine Organisation, die sich mit Apps gut auskennt.</p>
+<p>Das sind der Name und die Adresse von unserer Organisation:</p>
+<p>Tür an Tür – Digitalfabrik gemeinnützige GmbH\
+Wertachstr. 29\
+86153 Augsburg</p>
+<p>Wir können über die App Carikom manche Daten sehen. Diese Daten können von Personen sein.</p>
+<p>In diesem Text sprechen wir viel über Daten. Daten sind zum Beispiel:</p>
+<ul>
+<li><p>Orte</p>
+</li>
+<li><p>Informationen über das eigene Handy</p>
+</li>
+</ul>
+<p>Wir möchten diese Daten von Personen schützen. Das ist uns sehr wichtig. Dafür gibt es auch Gesetze. An diese Gesetze halten wir uns.</p>
+<p>Die App Carikom besteht aus Programmcode. Alle können diesen Programmcode sehen. Klicken Sie dafür auf diesen Link: <a href="https://github.com/digitalfabrik/accessibility-launcher">https://github.com/digitalfabrik/accessibility-launcher</a></p>
+<p>Alle sollen diesen Programmcode sehen können. Wir möchten unsere Arbeit offen zeigen. Die Arbeit soll transparent sein. Andere sollen sehen, was wir bei der App Carikom gemacht haben. Dieser offene Programmcode hat einen eigenen Namen: Open Source.</p>
+<p>Haben Sie noch Fragen, was wir mit den persönlichen Daten machen?</p>
+<p>Dann schreiben Sie uns eine E-Mail an <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#100;&#x69;&#x67;&#x69;&#116;&#97;&#108;&#x66;&#97;&#x62;&#x72;&#105;&#x6b;&#x40;&#116;&#117;&#x65;&#x72;&#97;&#110;&#x74;&#117;&#x65;&#114;&#x2e;&#100;&#101;">&#100;&#x69;&#x67;&#x69;&#116;&#97;&#108;&#x66;&#97;&#x62;&#x72;&#105;&#x6b;&#x40;&#116;&#117;&#x65;&#x72;&#97;&#110;&#x74;&#117;&#x65;&#114;&#x2e;&#100;&#101;</a>.</p>
+<p><strong>2. Das passiert mit den Daten in der App Carikom</strong></p>
+<p>Wir sammeln in der App Carikom Daten. Wir verbinden diese Daten miteinander. Und wir entfernen persönliche Daten wie zum Beispiel Namen aus den Daten. Danach können wir nicht mehr sagen, von welcher Person diese Daten kommen. Die Daten sind dann anonym. Jetzt können wir die Daten benutzen.</p>
+<p><strong>Das machen wir mit den Daten:</strong></p>
+<ol>
+<li><p>Wir möchten die Carikom App besser machen. Dafür prüfen wir manche Daten in der App Carikom. Oft sagen uns die Daten, was wir besser machen müssen.</p>
+</li>
+<li><p>Wie viele Menschen nutzen die App Carikom? Das sehen wir auch an den Daten.</p>
+</li>
+</ol>
+<p>In der App Carikom gibt es keine Werbung. Wir benutzen deshalb auch keine Daten von Personen für Werbungen für diese Personen.</p>
+<p><strong>3. Diese Daten sammeln wir</strong></p>
+<p>In der App Carikom sehen wir manche Daten von Personen. Vielleicht sehen wir die Daten automatisch, wenn ein Handy das Internet benutzt.</p>
+<p>Diese Daten von Personen sehen wir:</p>
+<ul>
+<li><p>Eindeutige Nummern und Namen von dem Handy. Dazu gehören:</p>
+<ul>
+<li><p>das Modell von Handy</p>
+</li>
+<li><p>die Version von der Software auf dem Handy oder Computer</p>
+</li>
+<li><p>der Name von dem Handy oder dem Computer</p>
+</li>
+<li><p>die eigene Nummer von dem Handy oder Computer. Die Nummer heißt Identifikationsnummer</p>
+</li>
+</ul>
+</li>
+<li><p>Ungefährer Ort, der genaue Name dafür heißt: Stadtebene</p>
+</li>
+<li><p>Identifikationsnummern von anderen Apps auf dem Handy. Diese Nummern heißen: Paketnamen</p>
+</li>
+<li><p>Wie wird die App Carikom benutzt?</p>
+<ul>
+<li><p>An welchem Tag haben Sie die App benutzt?</p>
+</li>
+<li><p>Zu welcher Zeit haben Sie die App benutzt?</p>
+</li>
+<li><p>Was haben Sie mit der App gemacht? Wir haben Namen für die Dinge, die man in der App machen kann. Diese Namen können wir sehen.</p>
+</li>
+<li><p>Wie viele Daten haben Sie von der App Carikom selbst benutzt?</p>
+</li>
+<li><p>Haben Sie in der App Carikom das gesehen, was Sie auch sehen wollten? Oder gab es einen Fehler?</p>
+</li>
+</ul>
+</li>
+<li><p>Gibt es Cookies auf dem Handy? Cookies sind kleine Pakete mit Daten. Diese kleinen Pakete mit Daten sind auf Handy gespeichert.</p>
+</li>
+</ul>
+<p>Wir sammeln nur diese Daten. Diese Daten speichern wir. Der Speicherplatz dafür heißt: Server. Wir sammeln keine anderen Daten von Personen automatisch. Wir speichern auch keine anderen Daten.</p>
+<p>Wir sammeln so wenig Daten, wie es geht. Ohne manche Daten würde unsere App nicht funktionieren. Deshalb brauchen wir diese Daten. Wir sammeln aber nur die Daten, die wir wirklich brauchen. Das ist uns wichtig.</p>
+<p>Wir halten uns an 3 Regeln beim Daten sammeln:</p>
+<p>1. Die Regel Datenvermeidung: Wir möchten keine Daten sammeln. Wir sammeln Daten nur, wenn wir wirklich müssen.</p>
+<p>2. Die Regel Datensparsamkeit: Wenn wir Daten sammeln müssen, versuchen wir so wenig wie möglich zu sammeln.</p>
+<p>3. Die Regel der anonymen und pseudonymen Nutzung: Wir sammeln Daten. Wir speichern aber nicht, von welcher Person die Daten sind.</p>
+<p>Wir trennen die Informationen von den Personen. Das können wir danach auch nicht mehr ändern. Wir können danach keine Informationen von bestimmten Personen mehr herausfinden.</p>
+<p>Wir speichern auch nicht, wie viel eine Person die App Carikom benutzt. Oder was genau die Person mit der App Carikom macht. Das alles speichern wir nicht.</p>
+<p><strong>4. Geben wir Daten an andere weiter?</strong></p>
+<p>Wenn Sie die App Carikom benutzen, speichern wir Daten. Diese Daten geben wir nur mit einem wichtigen Grund an andere weiter. Wir geben keine Daten von Personen an andere Weiter. Wir geben die Daten nur anonym weiter.</p>
+<p>Das können wichtige Gründe sein:</p>
+<ul>
+<li><p>Wir müssen die Daten weitergeben, weil ein Gesetz das sagt. Oder wir müssen die Daten weitergeben, weil ein Richter oder eine Richterin oder die Staatsanwälte das sagen.</p>
+</li>
+<li><p>Wir geben die Daten weiter, falls die Daten der Polizei helfen. Das machen wir nur, wenn uns jemand im Internet angreift. Vielleicht können die Daten der Polizei danach helfen. Vielleicht wissen wir danach, wer uns angegriffen hat.</p>
+</li>
+</ul>
+<p>Wir verkaufen die Daten nicht.</p>
+<p><strong>5. Wie lange speichern wir Ihre Daten?</strong></p>
+<p>Wir speichern manche Daten aus der App Carikom. Wir speichern aber keine Daten von Personen. Wir speichern die Daten nur so lange, wie wir die Daten brauchen. Vielleicht machen wir eine Auswertung. Dann löschen wir die Daten direkt nach der Auswertung.</p>
+<p>Vielleicht möchten Sie nicht, dass wir Ihre Daten zur Auswertung benutzen. Dann können Sie uns über die App eine Nachricht schicken. Dann speichern wir Ihre Daten noch kürzer. Während Sie die App benutzen, speichern wir die Daten. Sonst funktioniert die App Carikom nicht. Danach löschen wir die Daten sofort.</p>
+<p><strong>6. Ihre Rechte</strong></p>
+<p>Vielleicht benutzen wir Daten von Ihnen. Dann können Sie uns fragen, was wir genau mit den Daten machen. Sie können auch sagen, dass wir die Daten löschen sollen. Dann müssen wir die Daten löschen. Sie können auch sagen, dass wir nur manche der Daten benutzen dürfen. Und Sie können genau sagen, wie wir Ihre Daten benutzen dürfen. Das ist Ihr Recht.</p>
+<p>Schreiben Sie uns dazu einfach an unsere E-Mail: <a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#58;&#100;&#x69;&#103;&#x69;&#x74;&#97;&#108;&#x66;&#x61;&#98;&#114;&#105;&#107;&#64;&#116;&#117;&#101;&#114;&#97;&#x6e;&#116;&#117;&#101;&#114;&#46;&#100;&#x65;">&#100;&#x69;&#103;&#x69;&#x74;&#97;&#108;&#x66;&#x61;&#98;&#114;&#105;&#107;&#64;&#116;&#117;&#101;&#114;&#97;&#x6e;&#116;&#117;&#101;&#114;&#46;&#100;&#x65;</a>.</p>
+<p>Vielleicht finden Sie, dass wir die Daten von Personen nicht richtig speichern. Oder dass wir die Daten von Personen falsch benutzen. Dann können Sie sich über uns beschweren. Schreiben Sie dazu an die Aufsichtsbehörde.</p>
+<p><strong>7. Änderungen dieser Datenschutzerklärung</strong></p>
+<p>Vielleicht ändern wir diese Datenschutzerklärung in der Zukunft. Auf unserer Webseite finden Sie immer die neuste Datenschutzerklärung.</p>]]></string>
+</resources>

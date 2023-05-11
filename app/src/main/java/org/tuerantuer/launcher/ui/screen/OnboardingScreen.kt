@@ -1,5 +1,8 @@
 package org.tuerantuer.launcher.ui.screen
 
+import android.text.Html
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
@@ -43,15 +46,19 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.material.textview.MaterialTextView
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
+import org.tuerantuer.launcher.ui.components.ScrollScrimComponent
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
 import org.tuerantuer.launcher.ui.data.OnboardingPage
@@ -308,7 +315,7 @@ fun ColumnScope.MainContent(
                 OnboardingPage.TERMS_OF_SERVICE -> R.string.terms_of_service_text
                 else -> error("Invalid page: $page")
             }
-            ScrollableText(
+            ScrollableHtmlText(
                 modifier = Modifier
                     .weight(1f),
                 text = stringResource(textRes),
@@ -397,15 +404,33 @@ private fun getMainContentIconResFromPage(page: OnboardingPage): Int? {
 }
 
 @Composable
-fun ScrollableText(
+fun ScrollableHtmlText(
     modifier: Modifier = Modifier,
     text: String,
 ) {
-    ScrollableColumn(modifier = modifier) {
-        Text(
-            modifier = Modifier
-                .padding(16.dp),
-            text = text,
+    val textColor = MaterialTheme.colorScheme.onBackground
+    val linkColor = MaterialTheme.colorScheme.primary
+    Box(modifier = modifier) {
+        ScrollableColumn {
+            AndroidView(
+                modifier = Modifier
+                    .padding(horizontal = 32.dp, vertical = 32.dp),
+                factory = {
+                    MaterialTextView(it).apply {
+                        movementMethod = LinkMovementMethod.getInstance()
+                        setLinkTextColor(linkColor.toArgb())
+                    }
+                },
+                update = { textView ->
+                    textView.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE)
+                    textView.setTextColor(textColor.toArgb())
+                },
+            )
+        }
+        ScrollScrimComponent(
+            Modifier
+                .fillMaxWidth()
+                .height(32.dp),
         )
     }
 }
