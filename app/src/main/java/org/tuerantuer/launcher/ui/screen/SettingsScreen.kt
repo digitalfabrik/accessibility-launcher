@@ -402,10 +402,6 @@ fun ColumnScope.IconSizeScreen(
             textRes = R.string.button_set_size,
             imageVector = Icons.Outlined.Done,
         )
-        Text(
-            text = stringResource(R.string.settings_info_short),
-            textAlign = TextAlign.Center,
-        )
     }
 }
 
@@ -798,16 +794,20 @@ fun SettingsButton(settingsButton: SettingsButtonData) {
     }
 }
 
+/**
+ * Displays a link to our wiki and explains that here, users can find more information about the setting.
+ */
 @Composable
 fun SettingsInfoCard() {
-    BottomSheetComponent {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth(),
-            text = stringResource(R.string.settings_info),
-            textAlign = TextAlign.Center,
-        )
-    }
+    //TODO: Reimplement once we have a wiki
+//    BottomSheetComponent {
+//        Text(
+//            modifier = Modifier
+//                .fillMaxWidth(),
+//            text = stringResource(R.string.settings_info),
+//            textAlign = TextAlign.Center,
+//        )
+//    }
 }
 
 @Preview(

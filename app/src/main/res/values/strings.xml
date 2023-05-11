@@ -74,7 +74,6 @@
     <string name="button_save_favorites">Lieblings-Apps speichern</string>
     <string name="edit_favorites_info">Mehr Informationen zu den Einstellungen findest du hier: [LINK]</string>
     <string name="settings_info">Um zu erfahren, warum es wichtig sein kann, diese Einstellungen anzupassen, besuche die Carikom-Wiki-Website. Hier erfährt du auch, welche Einstellung für dich geeignet ist.</string>
-    <string name="settings_info_short">Für mehr Informationen zu dieser Einstellung besuche die Carikom-Wiki-Website.</string>
 
     <string name="display_scale">Anzeige-Größe</string>
     <string name="wallpaper">Hintergrund-Bild</string>
