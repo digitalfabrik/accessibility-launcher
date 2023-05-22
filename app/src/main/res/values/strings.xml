@@ -40,7 +40,7 @@
     <string name="open_system_settings_description">Willst du CariKom schließen?</string>
     <string name="share_launcher">CariKom mit Freunden teilen</string>
     <string name="share_launcher_description">Möchtest du CariKom auch deinen Freunden oder deiner Familie zeigen?\nDann kannst du die CariKom-App mit deinen Kontakten teilen.\nWähle Kontakte aus, denen du CariKom zeigen willst:</string>
-    <string name="share_launcher_text">Carikom Launcher - [INSERT_TAGLINE]: %s</string>
+    <string name="share_launcher_text">Ich benutze CariKom um mein digitales Leben zu erleichtern. Tippe hier um ihn auch auszuprobieren: %s</string>
     <string name="get_feedback_contact">Kontakt mit CariKom aufnehmen</string>
     <string name="write_email">Email schreiben</string>
     <string name="get_feedback_contact_description">Hat dir etwas besonders gut gefallen?\nOder hast du Probleme mit CariKom?\nDann schreib uns deine Rückmeldung:</string>
@@ -94,7 +94,7 @@
     <string name="voice_commands">Sprach-Einstellungen</string>
     <string name="voice_commands_description">Du kannst dein Handy über eine Sprach-Eingabe bedienen.\n\nDie Sprach-Eingabe kannst du in den Geräte-Einstellungen aktivieren.</string>
 
-    <string name="support_mail_address">example@example.org</string>
-    <string name="feedback_mail_subject">[SUBJECT_PLACEHOLDER]</string>
-    <string name="feedback_mail_body">[BODY_PLACEHOLDER]</string>
+    <string name="support_mail_address">digitalfabrik@tuerantuer.de</string>
+    <string name="feedback_mail_subject">Kontakt mit CariKom aufnehmen</string>
+    <string name="feedback_mail_body"></string>
 </resources>
