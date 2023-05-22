@@ -90,7 +90,6 @@ fun SettingsScreen(
     onOpenSystemSettings: () -> Unit = {},
     onOpenAccessibilitySettings: () -> Unit = {},
     onOpenDisplaySettings: () -> Unit = {},
-    onOpenNotificationSettings: () -> Unit = {},
     onOpenSoundSettings: () -> Unit = {},
     onUninstallLauncher: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
@@ -138,7 +137,6 @@ fun SettingsScreen(
                     onOpenSystemSettings = onOpenSystemSettings,
                     onOpenAccessibilitySettings = onOpenAccessibilitySettings,
                     onOpenDisplaySettings = onOpenDisplaySettings,
-                    onOpenNotificationSettings = onOpenNotificationSettings,
                     onOpenSoundSettings = onOpenSoundSettings,
                     onUninstallLauncher = onUninstallLauncher,
                     onWriteFeedbackMail = onWriteFeedbackMail,
@@ -197,7 +195,6 @@ fun ColumnScope.MainContent(
     onOpenSystemSettings: () -> Unit = {},
     onOpenAccessibilitySettings: () -> Unit = {},
     onOpenDisplaySettings: () -> Unit = {},
-    onOpenNotificationSettings: () -> Unit = {},
     onOpenSoundSettings: () -> Unit = {},
     onUninstallLauncher: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
@@ -246,7 +243,7 @@ fun ColumnScope.MainContent(
             onOpenDisplaySettings = onOpenDisplaySettings,
         )
         SettingsPage.Notifications -> NotificationsScreen(
-            onOpenNotificationSettings = onOpenNotificationSettings,
+            onOpenSystemSettings = onOpenSystemSettings,
         )
         SettingsPage.InputDelay -> InputDelayScreen(
         )
@@ -510,14 +507,14 @@ fun ColumnScope.DisplayTimeoutScreen(
 
 @Composable
 fun ColumnScope.NotificationsScreen(
-    onOpenNotificationSettings: () -> Unit = {},
+    onOpenSystemSettings: () -> Unit = {},
 ) {
     SettingsFrame {
         SettingsBody(R.string.notifications_description)
         SettingsFab(
             R.string.system_settings,
             Icons.Outlined.AppSettingsAlt,
-            onOpenNotificationSettings,
+            onOpenSystemSettings,
             R.string.system_settings_description,
         )
     }

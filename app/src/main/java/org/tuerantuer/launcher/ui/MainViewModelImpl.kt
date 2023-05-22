@@ -168,10 +168,6 @@ class MainViewModelImpl(
         frameworkActionsManager.openAccessibilitySettings()
     }
 
-    override fun onOpenNotificationSettings() {
-        frameworkActionsManager.openNotificationSettings()
-    }
-
     override fun onOpenDisplaySettings() {
         frameworkActionsManager.openDisplaySettings()
     }

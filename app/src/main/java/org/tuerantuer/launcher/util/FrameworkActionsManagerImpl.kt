@@ -28,13 +28,6 @@ class FrameworkActionsManagerImpl(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : FrameworkActionsManager {
 
-    companion object {
-        /**
-         * Constant is hidden in the Android framework, so we have to define it ourselves.
-         */
-        private const val INTENT_ACTION_OPEN_NOTIFICATION_SETTINGS = "android.settings.APP_NOTIFICATION_SETTINGS"
-    }
-
     override fun openSetDefaultLauncherChooser() {
         try {
             Intent(Settings.ACTION_HOME_SETTINGS).launchAppActivityInNewState(context)
@@ -64,10 +57,6 @@ class FrameworkActionsManagerImpl(
 
     override fun openAccessibilitySettings() {
         launchIntentAndHandleFailure(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-    }
-
-    override fun openNotificationSettings() {
-        launchIntentAndHandleFailure(Intent(INTENT_ACTION_OPEN_NOTIFICATION_SETTINGS))
     }
 
     override fun openSoundSettings() {

@@ -31,11 +31,6 @@ interface FrameworkActionsManager {
     fun openAccessibilitySettings()
 
     /**
-     * Opens Android's notification settings.
-     */
-    fun openNotificationSettings()
-
-    /**
      * Opens Android's sound settings.
      */
     fun openSoundSettings()

@@ -39,7 +39,6 @@ interface MainViewModel {
     fun onShareLauncher()
     fun onOpenSystemSettings()
     fun onOpenAccessibilitySettings()
-    fun onOpenNotificationSettings()
     fun onOpenDisplaySettings()
     fun onOpenSoundSettings()
     fun onUninstallLauncher()
