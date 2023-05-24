@@ -213,7 +213,7 @@ fun OnboardingScreen(
                         onGoToNextStep = onGoToNextStep,
                         onSetFavorites = {
                             // TODO: Don't sort favorites by name. Instead, allow the user to reorder them.
-                            onSetFavorites.invoke(selectedFavorites.value.sortedBy { it.name })
+                            onSetFavorites.invoke(selectedFavorites.value.sorted())
                         },
                     )
                 }

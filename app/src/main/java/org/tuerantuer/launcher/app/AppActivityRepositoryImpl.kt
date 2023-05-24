@@ -106,7 +106,7 @@ class AppActivityRepositoryImpl(
                 val componentKeySer = ComponentKeySer(componentKey.componentName, userSerialized)
                 AppItemInfo(name, icon, componentKey, componentKeySer)
             }
-            result.sortBy { it.name }
+            result.sort()
             result
         }
     }

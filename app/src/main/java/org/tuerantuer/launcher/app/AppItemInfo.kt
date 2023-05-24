@@ -13,7 +13,16 @@ data class AppItemInfo(
     val icon: Drawable?,
     val componentKey: ComponentKey,
     val componentKeySer: ComponentKeySer,
-) {
+) : Comparable<AppItemInfo> {
+
+    companion object {
+        private val INTERNAL_NAME_COMPARATOR = String.CASE_INSENSITIVE_ORDER
+    }
+
+    override fun compareTo(other: AppItemInfo): Int {
+        return INTERNAL_NAME_COMPARATOR.compare(name, other.name)
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is AppItemInfo) return false
