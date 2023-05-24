@@ -178,6 +178,8 @@ fun Header(
         SettingsPage.ShareLauncher -> R.string.share_launcher
         SettingsPage.UninstallLauncher -> R.string.uninstall_launcher
         SettingsPage.UninstallApps -> R.string.uninstall_apps
+        SettingsPage.Licenses -> R.string.read_licenses
+        SettingsPage.LicensesApache20 -> R.string.read_licenses
     }
     HeaderComponent(
         modifier = Modifier
@@ -266,6 +268,10 @@ fun ColumnScope.MainContent(
             onOpenSettingsPage = onOpenSettingsPage,
         )
         SettingsPage.UninstallApps -> {}
+        SettingsPage.Licenses -> LicensesScreen(
+            onOpenSettingsPage = onOpenSettingsPage,
+        )
+        SettingsPage.LicensesApache20 -> LicenseApache20Screen()
     }
 }
 
@@ -287,6 +293,7 @@ fun ColumnScope.SettingsOverviewScreen(
             //TODO: Re-enable when uninstalling apps is implemented
 //            SettingsButtonData(R.string.uninstall_apps) { onOpenSettingsPage(SettingsPage.UninstallApps) },
             SettingsButtonData(R.string.uninstall_launcher) { onOpenSettingsPage(SettingsPage.UninstallLauncher) },
+            SettingsButtonData(R.string.read_licenses) { onOpenSettingsPage(SettingsPage.Licenses) },
         )
         SettingsButtonList(settingsButtons)
     }
@@ -640,6 +647,87 @@ fun ColumnScope.UninstallLauncherScreen(
             secondaryTextRes = R.string.uninstall_launcher_buttons_description,
         )
         SettingsFab(R.string.uninstall_launcher_button_no, onClick = onGoBack)
+    }
+}
+
+/**
+ * Lists all open source licenses of the used libraries.
+ */
+@Composable
+fun ColumnScope.LicensesScreen(
+    onOpenSettingsPage: (SettingsPage) -> Unit = {},
+) {
+    val openApache20ScreenAction = { onOpenSettingsPage(SettingsPage.LicensesApache20) }
+    SettingsFrame {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            text = stringResource(R.string.read_licenses_description),
+            textAlign = TextAlign.Center,
+        )
+        val settingsButtons = listOf(
+            SettingsButtonData(
+                textRes = R.string.license_accompanist,
+                secondaryTextRes = R.string.license_accompanist_author,
+                onClick = openApache20ScreenAction,
+            ),
+            SettingsButtonData(
+                textRes = R.string.license_aosp,
+                secondaryTextRes = R.string.license_aosp_author,
+                onClick = openApache20ScreenAction,
+            ),
+            SettingsButtonData(
+                textRes = R.string.license_androidx,
+                secondaryTextRes = R.string.license_androidx_author,
+                onClick = openApache20ScreenAction,
+            ),
+            SettingsButtonData(
+                textRes = R.string.license_coil,
+                secondaryTextRes = R.string.license_coil_author,
+                onClick = openApache20ScreenAction,
+            ),
+            SettingsButtonData(
+                textRes = R.string.license_hilt,
+                secondaryTextRes = R.string.license_hilt_author,
+                onClick = openApache20ScreenAction,
+            ),
+            SettingsButtonData(
+                textRes = R.string.license_kotlin,
+                secondaryTextRes = R.string.license_kotlin_author,
+                onClick = openApache20ScreenAction,
+            ),
+            SettingsButtonData(
+                textRes = R.string.license_launcher_3,
+                secondaryTextRes = R.string.license_launcher_3_author,
+                onClick = openApache20ScreenAction,
+            ),
+            SettingsButtonData(
+                textRes = R.string.license_material_components,
+                secondaryTextRes = R.string.license_material_components_author,
+                onClick = openApache20ScreenAction,
+            ),
+            SettingsButtonData(
+                textRes = R.string.license_timber,
+                secondaryTextRes = R.string.license_timber_author,
+                onClick = openApache20ScreenAction,
+            ),
+        )
+        SettingsButtonList(settingsButtons)
+    }
+}
+
+/**
+ * Shows the Apache 2.0 license text.
+ */
+@Composable
+fun ColumnScope.LicenseApache20Screen() {
+    SettingsFrame {
+        ScrollableHtmlText(
+            modifier = Modifier
+                .weight(1f),
+            text = stringResource(R.string.license_apache_20),
+        )
     }
 }
 

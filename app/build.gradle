@@ -77,6 +77,8 @@ android {
 }
 
 dependencies {
+    // If you add a new dependency, please also list it in our settings' license screen
+
 
     implementation "androidx.core:core-ktx:1.10.0"
 

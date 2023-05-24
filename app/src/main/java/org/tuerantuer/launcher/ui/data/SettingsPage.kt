@@ -12,6 +12,8 @@ enum class SettingsPage(val parentPage: SettingsPage?) {
     UninstallApps(parentPage = Overview),
     UninstallLauncher(parentPage = Overview),
     Assistant(parentPage = Overview),
+    Licenses(parentPage = Overview),
+    LicensesApache20(parentPage = Licenses),
     VisualAssistant(parentPage = Assistant),
     IconSize(parentPage = VisualAssistant),
     Wallpaper(parentPage = VisualAssistant),
