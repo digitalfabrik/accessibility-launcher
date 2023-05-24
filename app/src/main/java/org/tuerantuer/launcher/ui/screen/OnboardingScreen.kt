@@ -57,6 +57,7 @@ import com.google.android.material.textview.MaterialTextView
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.data.datastore.Settings
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.ScrollScrimComponent
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
@@ -122,6 +123,7 @@ fun OnboardingScreen(
         ) {
             Toolbar(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                settings = uiState.settings,
                 progress = page.pageNumber.toFloat() / OnboardingPage.SETUP_FINISHED_3.pageNumber.toFloat(),
                 onGoToPreviousStep = onGoToPreviousStep,
                 onCancelOnboarding = onCancelOnboarding,
@@ -432,6 +434,7 @@ fun ScrollableHtmlText(
 @Composable
 fun Toolbar(
     modifier: Modifier = Modifier,
+    settings: Settings,
     progress: Float,
     onGoToPreviousStep: () -> Unit,
     onCancelOnboarding: () -> Unit,
@@ -465,15 +468,18 @@ fun Toolbar(
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(4.dp)),
         )
-        IconButton(
-            onClick = onCancelOnboarding,
-            modifier = Modifier
-                .size(48.dp),
-        ) {
-            Icon(
-                Icons.Filled.Clear,
-                contentDescription = stringResource(id = R.string.cancel_setup_assistant),
-            )
+        // Only allow canceling onboarding if the user has already completed it once
+        if (settings.isUserOnboarded) {
+            IconButton(
+                onClick = onCancelOnboarding,
+                modifier = Modifier
+                    .size(48.dp),
+            ) {
+                Icon(
+                    Icons.Filled.Clear,
+                    contentDescription = stringResource(id = R.string.cancel_setup_assistant),
+                )
+            }
         }
     }
 }
