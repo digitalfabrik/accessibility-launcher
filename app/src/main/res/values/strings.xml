@@ -96,7 +96,7 @@
     <string name="voice_commands">Sprach-Einstellungen</string>
     <string name="voice_commands_description">Du kannst dein Handy über eine Sprach-Eingabe bedienen.\n\nDie Sprach-Eingabe kannst du in den Geräte-Einstellungen aktivieren.</string>
 
-    <string name="support_mail_address">digitalfabrik@tuerantuer.de</string>
+    <string name="support_mail_address">carikom@caritas-augsburg.de</string>
     <string name="feedback_mail_subject">Kontakt mit CariKom aufnehmen</string>
     <string name="feedback_mail_body"></string>
 </resources>
