@@ -45,7 +45,6 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -134,11 +133,12 @@ fun EditFavoritesScreen(
                         )
                     },
                 )
-                Text(
-                    modifier = Modifier.padding(top = 32.dp),
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.edit_favorites_info),
-                )
+                //TODO: Re-enable once we have a wiki
+//                Text(
+//                    modifier = Modifier.padding(top = 32.dp),
+//                    textAlign = TextAlign.Center,
+//                    text = stringResource(R.string.edit_favorites_info),
+//                )
             }
         }
     }
