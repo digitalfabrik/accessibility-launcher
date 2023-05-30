@@ -62,7 +62,7 @@ platform :android do
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )[0]
     version_code_prod = google_play_track_version_codes(
-      track: "beta",
+      track: "production",
       package_name: application_id,
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )[0]
@@ -121,7 +121,7 @@ platform :android do
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )[0]
     version_code_prod = google_play_track_version_codes(
-      track: "beta",
+      track: "production",
       package_name: application_id,
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )[0]
