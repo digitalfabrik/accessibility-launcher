@@ -109,11 +109,17 @@ platform :android do
 
     track = production_delivery === true ? "production" : "beta"
 
-    version_code = google_play_track_version_codes(
+    version_code_beta = google_play_track_version_codes(
       track: "beta",
       package_name: application_id,
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )[0]
+    version_code_prod = google_play_track_version_codes(
+      track: "beta",
+      package_name: application_id,
+      json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    )[0]
+    version_code = [version_code_beta, version_code_prod].max
     version_code += 1
     version_name = `cat ../version.txt`
     puts(version_name)
