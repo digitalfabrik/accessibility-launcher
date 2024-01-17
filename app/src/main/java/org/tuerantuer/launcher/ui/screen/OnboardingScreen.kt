@@ -3,9 +3,14 @@ package org.tuerantuer.launcher.ui.screen
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -137,16 +142,28 @@ fun OnboardingScreen(
                 -> R.string.done
                 else -> R.string.setup
             }
-            Text(
-                text = stringResource(headerTextRes),
-                Modifier
+            AnimatedContent(
+                modifier = Modifier
                     .wrapContentHeight()
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center,
-            )
+                    .fillMaxWidth(),
+                targetState = stringResource(headerTextRes),
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(500)) with
+                            fadeOut(animationSpec = tween(100))
+                },
+                label = "headerTextAnimation"
+            ) { targetText ->
+                Text(
+                    text = targetText,
+                    Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
             CustomMaterialMotion(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -198,15 +215,27 @@ fun OnboardingScreen(
                         ),
                 ) {
                     if (contentTextRes != null) {
-                        Text(
-                            text = stringResource(contentTextRes),
-                            Modifier
+                        AnimatedContent(
+                            modifier = Modifier
                                 .wrapContentHeight()
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            style = MaterialTheme.typography.titleSmall,
-                            textAlign = TextAlign.Center,
-                        )
+                                .fillMaxWidth(),
+                            targetState = stringResource(contentTextRes),
+                            transitionSpec = {
+                                fadeIn(animationSpec = tween(500)) with
+                                        fadeOut(animationSpec = tween(100))
+                            },
+                            label = "contentTextAnimation"
+                        ) { targetText ->
+                            Text(
+                                text = targetText,
+                                Modifier
+                                    .wrapContentHeight()
+                                    .fillMaxWidth()
+                                    .padding(bottom = 16.dp),
+                                style = MaterialTheme.typography.titleSmall,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
                     }
                     SheetButtons(
                         page = page,
