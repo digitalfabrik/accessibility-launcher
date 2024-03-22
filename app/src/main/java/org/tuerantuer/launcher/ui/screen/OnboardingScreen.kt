@@ -142,7 +142,7 @@ fun OnboardingScreen(
                 Modifier
                     .wrapContentHeight()
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp),
+                    .padding(vertical = 16.dp),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center,
@@ -193,8 +193,8 @@ fun OnboardingScreen(
                         .padding(
                             top = 32.dp,
                             bottom = 0.dp,
-                            start = 16.dp,
-                            end = 16.dp,
+                            start = 24.dp,
+                            end = 24.dp,
                         ),
                 ) {
                     if (contentTextRes != null) {
@@ -448,16 +448,11 @@ fun Toolbar(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconButton(
-            onClick = onGoToPreviousStep,
-            modifier = Modifier
-                .size(48.dp)
-                .padding(4.dp),
-        ) {
+        IconButton(onClick = onGoToPreviousStep,) {
             Icon(
                 Icons.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(id = R.string.go_back),
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(36.dp)
             )
         }
         val animatedProgress by animateFloatAsState(
@@ -474,16 +469,11 @@ fun Toolbar(
         )
         // Only allow canceling onboarding if the user has already completed it once
         if (settings.isUserOnboarded) {
-            IconButton(
-                onClick = onCancelOnboarding,
-                modifier = Modifier
-                    .size(48.dp)
-                    .padding(4.dp),
-            ) {
+            IconButton(onClick = onCancelOnboarding) {
                 Icon(
                     Icons.Filled.Clear,
                     contentDescription = stringResource(id = R.string.cancel_setup_assistant),
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(36.dp)
                 )
             }
         }

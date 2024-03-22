@@ -2,8 +2,8 @@ package org.tuerantuer.launcher.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -32,6 +32,7 @@ fun HeaderComponent(
 ) {
     Surface(
         modifier = Modifier
+            .padding(bottom = 8.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         shadowElevation = 8.dp,
@@ -44,26 +45,26 @@ fun HeaderComponent(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
             IconButton(onClick = onGoBack) {
                 Icon(
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(36.dp),
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = null,
                 )
             }
             Text(
                 text = text,
-                modifier = Modifier
-                    .weight(1f)
-                    .offset(x = (-8).dp), // to compensate the back button
+                modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
             )
+            // add a spacer to keep the title centered
+            Spacer(modifier = Modifier.size(48.dp))
         }
     }
 }

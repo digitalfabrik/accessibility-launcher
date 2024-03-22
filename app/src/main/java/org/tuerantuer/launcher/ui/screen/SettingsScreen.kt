@@ -183,8 +183,6 @@ fun Header(
         SettingsPage.LicensesApache20 -> R.string.read_licenses
     }
     HeaderComponent(
-        modifier = Modifier
-            .padding(bottom = 16.dp),
         text = stringResource(textRes),
         onGoBack = onGoBack,
     )
