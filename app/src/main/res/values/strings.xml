@@ -22,12 +22,13 @@
     <string name="setup_2">Oben links kannst du einen Schritt zurück gehen.</string>
     <string name="setup_3">Oben rechts kannst du die Einstellungen schließen.</string>
     <string name="setup_settings_intro">Bereit? Los geht’s mit den Einstellungen.</string>
-    <string name="setup_4">1. Schritt: Du kannst CariKom als Standard einstellen.\nDas bedeutet: CariKom öffnet sich beim Start automatisch.</string>
-    <string name="setup_5">Wir empfehlen dir:\nStelle CariKom als Standard ein. So kannst du CariKom am besten nutzen</string>
+    <string name="setup_4">Du kannst CariKom als Standard einstellen.\nDas bedeutet: CariKom öffnet sich beim Start automatisch.</string>
+    <string name="setup_5">Wir empfehlen dir:\nStelle CariKom als Standard ein. So kannst du CariKom am besten nutzen.</string>
     <string name="setup_6">Möchtest du CariKom als Standard einstellen?</string>
-    <string name="setup_7">2. Schritt: Bitte stimme der Datenschutzerklärung zu</string>
-    <string name="setup_9">3. Schritt: Du kannst die Größe von deinen Bildschirm-Symbolen einstellen</string>
-    <string name="setup_10">4. Schritt: Du kannst deine Lieblings-Apps auswählen.</string>
+    <string name="setup_7">Bitte stimme der Datenschutzerklärung zu.</string>
+    <string name="setup_9">Du kannst die Größe von deinen Bildschirm-Symbolen einstellen.</string>
+    <string name="confirm_size">Möchtest du die angezeigte Größe einstellen?</string>
+    <string name="setup_10">Du kannst deine Lieblings-Apps auswählen.</string>
     <string name="setup_11">Deine Lieblings-Apps werden dann ganz oben in deinem Start-Bildschirm angezeigt.</string>
     <string name="setup_12">Wähle deine Lieblings-Apps aus. Zum Beispiel Apps, die du oft brauchst.\nSo kannst du Apps auswählen:\nTippe auf die App.</string>
     <string name="setup_13">Die Einstellungen kannst du später wieder ändern.</string>
@@ -49,7 +50,7 @@
     <string name="read_licenses_description">In einer App gibt es Regeln und Erlaubnisse, die sehr wichtig sind. Diese Regeln sorgen dafür, dass die App richtig benutzt wird und dass die Rechte der Menschen, die die App gemacht haben, respektiert werden.\n\nManchmal hat eine App auch Teile, die von anderen Leuten gemacht wurden. Diese Teile können auch ihre eigenen Regeln haben. In den Regeln der App sollte stehen, welche Teile das sind und welche Regeln für sie gelten.\n\nHier findest du alle Teile welche von anderen gemacht wurden und wir verwenden.</string>
 
     <string name="uninstall_launcher">CariKom löschen</string>
-    <string name="uninstall_launcher_description">Hier kannst du CariKom löschen.\nAchtung:Deine Einstellungen werden gelöscht.</string>
+    <string name="uninstall_launcher_description">Hier kannst du CariKom löschen.\nAchtung: Deine Einstellungen werden gelöscht.</string>
     <string name="uninstall_launcher_buttons_description">Möchtest du CariKom löschen:</string>
     <string name="uninstall_launcher_button_yes">CariKom löschen</string>
     <string name="uninstall_launcher_button_no">CariKom nicht löschen</string>
@@ -62,7 +63,7 @@
     <string name="assistant_speech">Sprache</string>
     <string name="assistant_speech_description">Hier geht es zum Sprach-Assistent</string>
 
-    <string name="next_step">Nächster Schritt</string>
+    <string name="next_step">Weiter</string>
     <string name="go_back">Zurück</string>
     <string name="start">Starten</string>
     <string name="cancel_setup_assistant">Einrichtung verlassen</string>
@@ -70,7 +71,7 @@
     <string name="button_no">Nein</string>
     <string name="button_skip">Ich weiß noch nicht</string>
     <string name="button_accept">Zustimmen</string>
-    <string name="button_set_size">Möchtest du die angezeigte Größe einstellen?</string>
+    <string name="button_set_size">Bestätigen</string>
     <string name="button_increase_size">Größer</string>
     <string name="button_decrease_size">Kleiner</string>
     <string name="button_save_favorites">Lieblings-Apps speichern</string>

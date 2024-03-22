@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -182,8 +183,6 @@ fun Header(
         SettingsPage.LicensesApache20 -> R.string.read_licenses
     }
     HeaderComponent(
-        modifier = Modifier
-            .padding(bottom = 16.dp),
         text = stringResource(textRes),
         onGoBack = onGoBack,
     )
@@ -598,7 +597,13 @@ fun ColumnScope.SetDefaultLauncherScreen(
 ) {
     SettingsFrame {
         SettingsBody(R.string.set_this_launcher_as_default_description)
-        SettingsFab(R.string.set_this_launcher_as_default, Icons.Outlined.Home, onSetDefaultLauncher)
+        SettingsFab(
+            buttonTextRes = R.string.set_this_launcher_as_default,
+            imageVector = Icons.Outlined.Home,
+            onClick = {
+                onSetDefaultLauncher()
+            }
+        )
     }
 }
 
@@ -743,7 +748,7 @@ data class SettingsButtonData(
 fun ColumnScope.SettingsBody(textRes: Int) {
     ScrollableColumn(
         modifier = Modifier
-            .weight(1f)
+            .weight(1f, fill = false)
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp),
     ) {
@@ -798,7 +803,11 @@ fun SettingsFab(
             ExtendedFloatingActionButton(
                 onClick = onClick,
                 text = {
-                    Text(text = stringResource(buttonTextRes))
+                    Text(
+                        text = stringResource(buttonTextRes),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.offset((-8).dp),
+                    )
                 },
                 icon = {
                     if (imageVector != null) {

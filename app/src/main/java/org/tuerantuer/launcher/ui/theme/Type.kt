@@ -2,6 +2,7 @@ package org.tuerantuer.launcher.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.unit.sp
 
 val Typography = run {
     val defaultTypography = Typography()
@@ -15,12 +16,12 @@ val Typography = run {
         headlineMedium = defaultTypography.headlineMedium.copy(hyphens = Hyphens.Auto),
         headlineSmall = defaultTypography.headlineSmall.copy(hyphens = Hyphens.Auto),
         titleLarge = defaultTypography.titleLarge.copy(hyphens = Hyphens.Auto),
-        titleMedium = defaultTypography.titleMedium.copy(hyphens = Hyphens.Auto),
-        titleSmall = defaultTypography.titleSmall.copy(hyphens = Hyphens.Auto),
-        bodyLarge = defaultTypography.bodyLarge.copy(hyphens = Hyphens.Auto),
-        bodyMedium = defaultTypography.bodyMedium.copy(hyphens = Hyphens.Auto),
+        titleMedium = defaultTypography.titleMedium.copy(hyphens = Hyphens.Auto, fontSize = 24.sp),
+        titleSmall = defaultTypography.titleSmall.copy(hyphens = Hyphens.Auto, fontSize = 20.sp),
+        bodyLarge = defaultTypography.bodyLarge.copy(hyphens = Hyphens.Auto, fontSize = 24.sp),
+        bodyMedium = defaultTypography.bodyMedium.copy(hyphens = Hyphens.Auto, fontSize = 20.sp),
         bodySmall = defaultTypography.bodySmall.copy(hyphens = Hyphens.Auto),
-        labelLarge = defaultTypography.labelLarge.copy(hyphens = Hyphens.Auto),
+        labelLarge = defaultTypography.labelLarge.copy(hyphens = Hyphens.Auto, fontSize = 20.sp),
         labelMedium = defaultTypography.labelMedium.copy(hyphens = Hyphens.Auto),
         labelSmall = defaultTypography.labelSmall.copy(hyphens = Hyphens.Auto),
     )
