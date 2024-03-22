@@ -23,10 +23,10 @@
     <string name="setup_3">Oben rechts kannst du die Einstellungen schließen.</string>
     <string name="setup_settings_intro">Bereit? Los geht’s mit den Einstellungen.</string>
     <string name="setup_4">Du kannst CariKom als Standard einstellen.\nDas bedeutet: CariKom öffnet sich beim Start automatisch.</string>
-    <string name="setup_5">Wir empfehlen dir:\nStelle CariKom als Standard ein. So kannst du CariKom am besten nutzen</string>
+    <string name="setup_5">Wir empfehlen dir:\nStelle CariKom als Standard ein. So kannst du CariKom am besten nutzen.</string>
     <string name="setup_6">Möchtest du CariKom als Standard einstellen?</string>
-    <string name="setup_7">Bitte stimme der Datenschutzerklärung zu</string>
-    <string name="setup_9">Du kannst die Größe von deinen Bildschirm-Symbolen einstellen</string>
+    <string name="setup_7">Bitte stimme der Datenschutzerklärung zu.</string>
+    <string name="setup_9">Du kannst die Größe von deinen Bildschirm-Symbolen einstellen.</string>
     <string name="confirm_size">Möchtest du die angezeigte Größe einstellen?</string>
     <string name="setup_10">Du kannst deine Lieblings-Apps auswählen.</string>
     <string name="setup_11">Deine Lieblings-Apps werden dann ganz oben in deinem Start-Bildschirm angezeigt.</string>
