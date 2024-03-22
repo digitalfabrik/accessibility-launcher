@@ -1,8 +1,11 @@
 package org.tuerantuer.launcher.ui.components
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
@@ -38,23 +41,25 @@ fun HeaderComponent(
             topEnd = CornerSize(0f),
         ),
     ) {
-        Box(
+        Row(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            contentAlignment = Alignment.CenterStart,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ) {
             IconButton(onClick = onGoBack) {
                 Icon(
+                    modifier = Modifier.size(48.dp),
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = null,
                 )
             }
             Text(
                 text = text,
-                Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
+                modifier = Modifier
+                    .weight(1f)
+                    .offset(x = (-8).dp), // to compensate the back button
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
