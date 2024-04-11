@@ -8,6 +8,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -134,11 +135,15 @@ fun Screens(
             onEditFavorites = mainViewModel::onEditFavorites,
             onShowOnboarding = mainViewModel::onOpenOnboarding,
             onOpenApp = mainViewModel::openApp,
+            gridState = LazyGridState(),
+            coroutineScope = coroutinesScope,
         )
         is ScreenState.AllAppsScreenState -> AllAppsScreen(
             uiState = uiState,
             onOpenApp = mainViewModel::openApp,
             onGoBack = mainViewModel::goBack,
+            coroutineScope = coroutinesScope,
+
         )
         is ScreenState.OnboardingState -> OnboardingScreen(
             uiState = uiState,
