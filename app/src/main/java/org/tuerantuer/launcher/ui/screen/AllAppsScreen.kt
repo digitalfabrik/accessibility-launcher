@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -40,6 +41,9 @@ import org.tuerantuer.launcher.ui.theme.LauncherTheme
 import timber.log.Timber
 import java.util.Locale
 
+// Used to remove whitespaces from a string.
+private val WHITESPACE_REGEX = "\\s+".toRegex()
+
 /**
  * The screen that shows all installed apps.
  */
@@ -51,6 +55,13 @@ fun AllAppsScreen(
 ) {
     val searchQuery = remember { mutableStateOf("") }
     val filteredList = remember { mutableStateOf(uiState.allApps) }
+
+    // react to changes in the allApps list and update the filtered list (eg. when an app is installed/uninstalled)
+    LaunchedEffect(uiState.allApps) {
+        if (uiState.allApps !== filteredList.value) {
+            filteredList.value = filter(searchQuery.value, uiState.allApps)
+        }
+    }
 
     // to provide a way to close the keyboard
     val focusManager = LocalFocusManager.current
@@ -102,7 +113,6 @@ fun AllAppsScreen(
                     onSearch = {
                         searchQuery.value
                         focusManager.clearFocus()
-                        Timber.d("Carikom: onSearch ")
                     },
                 )
             )
@@ -147,7 +157,9 @@ fun AllAppsScreenPreview() {
  * Filters the list of apps based on the search query.
  */
 fun filter(searchQuery: String, allAppsList: List<AppItemInfo>): List<AppItemInfo> {
-    Timber.d("Carikom: Search results: ")
+    if(searchQuery.isEmpty()) {
+        return allAppsList
+    }
     return (allAppsList.filter { appItemInfo ->
         normalizeName(appItemInfo.name).contains(normalizeName(searchQuery))
     })
@@ -157,5 +169,5 @@ fun filter(searchQuery: String, allAppsList: List<AppItemInfo>): List<AppItemInf
  * Normalizes the name of an app by removing whitespaces and making it lowercase.
  */
 fun normalizeName(name: String): String {
-    return name.replace("\\s+".toRegex(), "").toLowerCase(Locale.ROOT)
+    return name.replace(WHITESPACE_REGEX, "").lowercase(Locale.ROOT)
 }

@@ -5,7 +5,7 @@
     <string name="system_settings_description">Hier kommst du zu den Geräte-Einstellungen:</string>
     <string name="setup_assistant">Assistent</string>
     <string name="all_apps">Alle Apps</string>
-    <string name="search">Suche…</string>
+    <string name="search">Apps suchen…</string>
     <string name="change_favorites">Lieblings-Apps ändern</string>
     <string name="select_favorites">Lieblings-Apps auswählen</string>
     <string name="opening_set_default_launcher_screen_failed">Startbildschirm kann nicht geändert werden</string>
