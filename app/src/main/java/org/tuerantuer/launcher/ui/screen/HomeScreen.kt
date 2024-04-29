@@ -7,6 +7,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,13 +32,20 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +54,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
@@ -67,6 +77,11 @@ private const val TIME_PATTERN = "HH:mm"
 /**
  * The main screen of the launcher. Here, the user can see the clock, the favorites and can access other screens.
  * If the grid content exceeds the visible screen space, scroll buttons are shown.
+ *
+ * todo
+ *  Homescreen enters and leaves composition multiple times. Flickering of the Scrollbutton component due to
+ *  recomposition / reinitialization of the showScrollButtonState. Remember and RememberSaveable are not working as
+ *  expected. The state is not preserved between recompositions. Perhaps use viewmodel to store the state?
  */
 @Composable
 fun HomeScreen(
@@ -79,29 +94,35 @@ fun HomeScreen(
     gridState: LazyGridState,
     coroutineScope: CoroutineScope,
 ) {
-    val showScrollButtonState = remember {
-        Timber.d("Carikom: remember: showScrollButtonState")
+    // todo check composition lifecycle
+    DisposableEffect(Unit) {
+        Timber.d("Carikom: HomeScreen entered composition")
+        onDispose {
+            Timber.d("Carikom: HomeScreen leaving composition")
+        }
+    }
+
+    val showScrollButtonState = rememberSaveable {
         mutableStateOf(false)
-    } // false
+    }
     val scrollButtonsOpacity by animateFloatAsState (
         targetValue = if (showScrollButtonState.value) 1f else 0f,
         animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing),
         label = "",
     )
-    // todo hallo zukunfts ich, warum 2 compositionen? jetzt dein problem
-    Timber.d("Carikom: showScrollButtonState: ${showScrollButtonState.value}")
-    LaunchedEffect(key1 = uiState.allApps.size) {
-        Timber.d("Carikom: LaunchedEffect: uiState.allApps.size: ${uiState.allApps.size}" )
-        val totalItemsCount = gridState.layoutInfo.totalItemsCount
-        Timber.d("Carikom: totalItemsCount: $totalItemsCount" )
-        val visibleItemsCount = gridState.layoutInfo.visibleItemsInfo.size
-        Timber.d("Carikom: visibleItemsCount: $visibleItemsCount" )
-        val shouldShow = totalItemsCount > visibleItemsCount
-        if (shouldShow != showScrollButtonState.value) { // as long as there are less items than visible, this will not be called
-//            showScrollButtonState.value = shouldShow
-            Timber.d("Carikom: updated state: ${showScrollButtonState.value}")
-        }
+    LaunchedEffect(key1 = showScrollButtonState) {
+        Timber.d("Carikom: showScrollButtonState changed to: $showScrollButtonState")
     }
+    LaunchedEffect(gridState) {
+        snapshotFlow { gridState.layoutInfo }
+            .map { layoutInfo -> layoutInfo.totalItemsCount > layoutInfo.visibleItemsInfo.size }
+            .distinctUntilChanged()  // Only emit when actual changes occur
+            .collect { shouldBeVisible ->
+//                Timber.d("Updating showScrollButtonState to $shouldBeVisible")
+                showScrollButtonState.value = shouldBeVisible
+            }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -176,46 +197,60 @@ fun HomeScreen(
                     .alpha(scrollButtonsOpacity),
             )
         }
+        ScrollButtons(
+            showScrollButtonState = showScrollButtonState.value,
+            scrollButtonsOpacity = scrollButtonsOpacity,
+            gridState = gridState,
+            coroutineScope = coroutineScope,
+        )
+    }
+}
 
-        if (showScrollButtonState.value) {
-            Row(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background) // todo
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(vertical = 16.dp)
-                    .alpha(scrollButtonsOpacity),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                val scrollDistance = 1000.dp.value
-                FloatingActionButton(onClick = {
-                    coroutineScope.launch {
-                        gridState.animateScrollBy(
-                            -scrollDistance,
-                            tween(durationMillis = 500, easing = LinearOutSlowInEasing)
-                        )
-                    }
-                }) {
-                    Icon(
-                        Icons.Filled.ArrowUpward,
-                        contentDescription = "up",
+@Composable
+fun ScrollButtons(
+    showScrollButtonState: Boolean,
+    scrollButtonsOpacity: Float,
+    gridState: LazyGridState,
+    coroutineScope: CoroutineScope
+) {
+    if (showScrollButtonState) {
+        Row(
+            modifier = Modifier
+                .background(LauncherTheme.all.onWallpaperBackground.copy(alpha = 0.4f))
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(vertical = 16.dp)
+                .alpha(scrollButtonsOpacity),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val scrollDistance = 1000.dp.value
+            FloatingActionButton(onClick = {
+                coroutineScope.launch {
+                    gridState.animateScrollBy(
+                        -scrollDistance,
+                        tween(durationMillis = 500, easing = LinearOutSlowInEasing)
                     )
                 }
-                Spacer(modifier = Modifier.width(50.dp))
-                FloatingActionButton(onClick = {
-                    coroutineScope.launch {
-                        gridState.animateScrollBy(
-                            value = scrollDistance,
-                            animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
-                        )
-                    }
-                }) {
-                    Icon(
-                        Icons.Filled.ArrowDownward,
-                        contentDescription = "down",
+            }) {
+                Icon(
+                    Icons.Filled.ArrowUpward,
+                    contentDescription = "up",
+                )
+            }
+            Spacer(modifier = Modifier.width(50.dp))
+            FloatingActionButton(onClick = {
+                coroutineScope.launch {
+                    gridState.animateScrollBy(
+                        value = scrollDistance,
+                        animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
                     )
                 }
+            }) {
+                Icon(
+                    Icons.Filled.ArrowDownward,
+                    contentDescription = "down",
+                )
             }
         }
     }

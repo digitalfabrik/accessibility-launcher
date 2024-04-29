@@ -45,6 +45,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -55,6 +56,8 @@ import org.tuerantuer.launcher.ui.components.ScrollScrimComponent
 
 /**
  * The screen that shows all installed apps.
+ *
+ * todo This isn't done yet. I'll update it once the homescreen works without the scroll buttons flickering
  */
 @Composable
 fun AllAppsScreen(
@@ -64,8 +67,7 @@ fun AllAppsScreen(
     coroutineScope: CoroutineScope,
 ) {
     val gridState = rememberLazyGridState()
-    // this next line sets the initial scroll button state to false, meaning that the scroll buttons are not visible
-    val showScrollButtonState = remember { mutableStateOf(false) }
+    val showScrollButtonState = rememberSaveable { mutableStateOf(false) }
 
     val scrollButtonsOpacity by animateFloatAsState (
         targetValue = if (showScrollButtonState.value) 1f else 0f,
@@ -84,7 +86,7 @@ fun AllAppsScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(LauncherTheme.all.onWallpaperBackground), //todo only use this when there is no wallpaper?
+            .background(LauncherTheme.all.onWallpaperBackground),
     ) {
         Column(
             modifier = Modifier
@@ -126,59 +128,15 @@ fun AllAppsScreen(
                         .fillMaxWidth()
                         .height(50.dp)
                         .alpha(scrollButtonsOpacity)
-//                        .background(
-//                            brush = Brush.verticalGradient(
-//                                colors = listOf(
-//                                    Color.Transparent, // This makes the start of the gradient fully transparent
-//                                    Color.Transparent,
-//                                ),
-//                            ),
-//                        ),
 
                 )
             }
-            if (showScrollButtonState.value) {
-                Row(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
-//                        .background(Color(0f, 0f, 0f, 0.1f)) // todo only use this when there is no wallpaper?
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(vertical = 16.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-
-                    ) {
-                    val scrollDistance = 1000.dp.value
-                    FloatingActionButton(onClick = {
-                        coroutineScope.launch {
-                            gridState.animateScrollBy(
-                                -scrollDistance,
-                                tween(durationMillis = 500, easing = LinearOutSlowInEasing)
-                            )
-                        }
-                    }) {
-                        Icon(
-                            Icons.Filled.ArrowUpward,
-                            contentDescription = stringResource(id = R.string.button_scroll_up),
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(50.dp))
-                    FloatingActionButton(onClick = {
-                        coroutineScope.launch {
-                            gridState.animateScrollBy(
-                                value = scrollDistance,
-                                animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
-                            )
-                        }
-                    }) {
-                        Icon(
-                            Icons.Filled.ArrowDownward,
-                            contentDescription = stringResource(id = R.string.button_scroll_down),
-                        )
-                    }
-                }
-            }
+            ScrollButtons(
+                showScrollButtonState = showScrollButtonState.value,
+                scrollButtonsOpacity = scrollButtonsOpacity,
+                gridState = gridState,
+                coroutineScope = coroutineScope,
+            )
         }
     }
 }
@@ -191,7 +149,7 @@ fun AllAppsScreenPreview() {
     LauncherTheme {
         AllAppsScreen(
             uiState = UiState(ScreenState.AllAppsScreenState),
-            coroutineScope = CoroutineScope(GlobalScope.coroutineContext), // todo change?
+            coroutineScope = CoroutineScope(GlobalScope.coroutineContext),
         )
     }
 }
