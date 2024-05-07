@@ -93,6 +93,7 @@ fun SettingsScreen(
     onOpenDisplaySettings: () -> Unit = {},
     onOpenSoundSettings: () -> Unit = {},
     onUninstallLauncher: () -> Unit = {},
+    onUninstallApps: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
@@ -103,7 +104,8 @@ fun SettingsScreen(
     Column(
         Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background).zIndex(10f),
+            .background(MaterialTheme.colorScheme.background)
+            .zIndex(10f),
     ) {
         Header(
             uiState,
@@ -140,6 +142,7 @@ fun SettingsScreen(
                     onOpenDisplaySettings = onOpenDisplaySettings,
                     onOpenSoundSettings = onOpenSoundSettings,
                     onUninstallLauncher = onUninstallLauncher,
+                    onUninstallApps = onUninstallApps,
                     onWriteFeedbackMail = onWriteFeedbackMail,
                     onOpenSettingsPage = onOpenSettingsPage,
                     onSetIconSize = onSetIconSize,
@@ -198,6 +201,7 @@ fun ColumnScope.MainContent(
     onOpenDisplaySettings: () -> Unit = {},
     onOpenSoundSettings: () -> Unit = {},
     onUninstallLauncher: () -> Unit = {},
+    onUninstallApps: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
@@ -229,6 +233,9 @@ fun ColumnScope.MainContent(
         SettingsPage.UninstallLauncher -> UninstallLauncherScreen(
             onUninstallLauncher = onUninstallLauncher,
             onGoBack = onGoBack,
+        )
+        SettingsPage.UninstallApps -> UninstallAppsScreen(
+            onUninstallApps = onUninstallApps,
         )
         SettingsPage.IconSize -> IconSizeScreen(
             uiState = uiState,
@@ -266,7 +273,6 @@ fun ColumnScope.MainContent(
         SettingsPage.VisualAssistant -> VisualAssistantScreen(
             onOpenSettingsPage = onOpenSettingsPage,
         )
-        SettingsPage.UninstallApps -> {}
         SettingsPage.Licenses -> LicensesScreen(
             onOpenSettingsPage = onOpenSettingsPage,
         )
@@ -289,8 +295,7 @@ fun ColumnScope.SettingsOverviewScreen(
             SettingsButtonData(R.string.open_system_settings) { onOpenSettingsPage(SettingsPage.SystemSettings) },
             SettingsButtonData(R.string.share_launcher) { onOpenSettingsPage(SettingsPage.ShareLauncher) },
             SettingsButtonData(R.string.get_feedback_contact) { onOpenSettingsPage(SettingsPage.Feedback) },
-            //TODO: Re-enable when uninstalling apps is implemented
-//            SettingsButtonData(R.string.uninstall_apps) { onOpenSettingsPage(SettingsPage.UninstallApps) },
+            SettingsButtonData(R.string.uninstall_apps) { onOpenSettingsPage(SettingsPage.UninstallApps) },
             SettingsButtonData(R.string.uninstall_launcher) { onOpenSettingsPage(SettingsPage.UninstallLauncher) },
             SettingsButtonData(R.string.read_licenses) { onOpenSettingsPage(SettingsPage.Licenses) },
         )
@@ -654,6 +659,22 @@ fun ColumnScope.UninstallLauncherScreen(
         SettingsFab(R.string.uninstall_launcher_button_no, onClick = onGoBack)
     }
 }
+
+@Composable
+fun ColumnScope.UninstallAppsScreen(
+    onUninstallApps: () -> Unit = {},
+) {
+    SettingsFrame {
+        SettingsBody(R.string.uninstall_apps_description)
+        SettingsFab(
+            buttonTextRes = R.string.open_system_settings,
+            imageVector = Icons.Outlined.AppSettingsAlt,
+            onClick = onUninstallApps,
+            secondaryTextRes = R.string.system_settings_description,
+        )
+    }
+}
+
 
 /**
  * Lists all open source licenses of the used libraries.

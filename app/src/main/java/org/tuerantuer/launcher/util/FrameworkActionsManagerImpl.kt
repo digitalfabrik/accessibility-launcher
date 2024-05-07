@@ -106,6 +106,10 @@ class FrameworkActionsManagerImpl(
         }
     }
 
+    override fun openAllAppsSettingsDialog() {
+        launchIntentAndHandleFailure(Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS))
+    }
+
     override fun sendFeedbackMail() {
         sendMail(
             subject = context.getString(R.string.feedback_mail_subject),

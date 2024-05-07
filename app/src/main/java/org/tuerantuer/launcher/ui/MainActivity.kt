@@ -59,6 +59,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (!mainViewModel.goBack()) {
             super.onBackPressed()
@@ -158,6 +159,7 @@ fun Screens(
             onOpenSoundSettings = mainViewModel::onOpenSoundSettings,
             onOpenDisplaySettings = mainViewModel::onOpenDisplaySettings,
             onUninstallLauncher = mainViewModel::onUninstallLauncher,
+            onUninstallApps = mainViewModel::onUninstallApps,
             onWriteFeedbackMail = mainViewModel::onWriteFeedbackMail,
             onOpenSettingsPage = mainViewModel::openSettingsPage,
             onSetIconSize = { appIconSize -> coroutinesScope.launch { mainViewModel.onSetIconSize(appIconSize) } },

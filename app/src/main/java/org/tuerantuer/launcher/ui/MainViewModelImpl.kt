@@ -185,6 +185,10 @@ class MainViewModelImpl(
         frameworkActionsManager.openAppUninstallDialog(ownComponentKey)
     }
 
+    override fun onUninstallApps() {
+        frameworkActionsManager.openAllAppsSettingsDialog()
+    }
+
     override fun onWriteFeedbackMail() {
         frameworkActionsManager.sendFeedbackMail()
     }

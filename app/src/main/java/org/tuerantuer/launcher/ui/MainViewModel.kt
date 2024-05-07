@@ -42,6 +42,7 @@ interface MainViewModel {
     fun onOpenDisplaySettings()
     fun onOpenSoundSettings()
     fun onUninstallLauncher()
+    fun onUninstallApps()
     fun onWriteFeedbackMail()
     fun cancelOnboarding()
 

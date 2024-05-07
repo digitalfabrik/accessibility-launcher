@@ -20,7 +20,7 @@ interface FrameworkActionsManager {
 
     /**
      * Opens Android's system settings.
-     * You can also use [openNotificationSettings], [openSoundSettings], [openDisplaySettings] or
+     * You can also use [openDisplaySettings], [openSoundSettings], [openDisplaySettings] or
      * [openAccessibilitySettings] to open a specific settings page.
      */
     fun openSystemSettings()
@@ -44,6 +44,11 @@ interface FrameworkActionsManager {
      * Opens the uninstall dialog for the app with the given [componentKey].
      */
     fun openAppUninstallDialog(componentKey: ComponentKey)
+
+    /**
+     * Opens Android's all apps settings.
+     */
+    fun openAllAppsSettingsDialog()
 
     /**
      * Allows the user to send us feedback via email.

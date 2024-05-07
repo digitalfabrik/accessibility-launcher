@@ -46,7 +46,6 @@
     <string name="get_feedback_contact">Kontakt mit Carikom aufnehmen</string>
     <string name="write_email">Email schreiben</string>
     <string name="get_feedback_contact_description">Hat dir etwas besonders gut gefallen?\nOder hast du Probleme mit Carikom?\nDann schreib uns deine Rückmeldung:</string>
-    <string name="uninstall_apps">Apps löschen</string>
     <string name="read_licenses">Lizenzen lesen</string>
     <string name="read_licenses_description">In einer App gibt es Regeln und Erlaubnisse, die sehr wichtig sind. Diese Regeln sorgen dafür, dass die App richtig benutzt wird und dass die Rechte der Menschen, die die App gemacht haben, respektiert werden.\n\nManchmal hat eine App auch Teile, die von anderen Leuten gemacht wurden. Diese Teile können auch ihre eigenen Regeln haben. In den Regeln der App sollte stehen, welche Teile das sind und welche Regeln für sie gelten.\n\nHier findest du alle Teile welche von anderen gemacht wurden und wir verwenden.</string>
 
@@ -55,6 +54,10 @@
     <string name="uninstall_launcher_buttons_description">Möchtest du Carikom löschen:</string>
     <string name="uninstall_launcher_button_yes">Carikom löschen</string>
     <string name="uninstall_launcher_button_no">Carikom nicht löschen</string>
+
+    <string name="uninstall_apps">Apps einstellen und löschen</string>
+    <string name="uninstall_apps_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque semper cursus mauris sit amet maximus.</string>
+
 
     <string name="assistant">Assistent</string>
     <string name="assistant_visual">Sehen</string>
