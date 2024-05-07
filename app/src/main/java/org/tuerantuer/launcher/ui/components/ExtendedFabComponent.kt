@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 fun ExtendedFabComponent(
     modifier: Modifier = Modifier,
     textRes: Int,
-    imageVector: ImageVector,
+    imageVector: ImageVector?,
     onClick: () -> Unit,
 ) {
     ExtendedFloatingActionButton(
@@ -27,10 +27,12 @@ fun ExtendedFabComponent(
             Text(text = stringResource(textRes))
         },
         icon = {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = null,
-            )
+            if (imageVector != null) {
+                Icon(
+                    imageVector = imageVector,
+                    contentDescription = null,
+                )
+            }
         },
     )
 }

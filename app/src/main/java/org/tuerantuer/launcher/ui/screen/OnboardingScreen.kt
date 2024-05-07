@@ -3,9 +3,14 @@ package org.tuerantuer.launcher.ui.screen
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,11 +31,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -102,7 +106,7 @@ fun OnboardingScreen(
         OnboardingPage.SET_AS_DEFAULT_3 -> R.string.setup_6
         OnboardingPage.PRIVACY_POLICY -> R.string.setup_7
         OnboardingPage.SET_SIZE_INTRO -> R.string.setup_9
-        OnboardingPage.SET_SIZE_MAIN -> null
+        OnboardingPage.SET_SIZE_MAIN -> R.string.confirm_size
         OnboardingPage.SET_FAVORITES_INTRO_1 -> R.string.setup_10
         OnboardingPage.SET_FAVORITES_INTRO_2 -> R.string.setup_11
         OnboardingPage.SET_FAVORITES_INTRO_3 -> R.string.setup_12
@@ -128,10 +132,42 @@ fun OnboardingScreen(
                 onGoToPreviousStep = onGoToPreviousStep,
                 onCancelOnboarding = onCancelOnboarding,
             )
+            val headerTextRes = when (page) {
+                OnboardingPage.INTRODUCTION_1,
+                OnboardingPage.INTRODUCTION_2,
+                OnboardingPage.INTRODUCTION_3,
+                OnboardingPage.INTRODUCTION_4,
+                -> R.string.welcome
+                OnboardingPage.SETUP_FINISHED_3,
+                -> R.string.done
+                else -> R.string.setup
+            }
+            AnimatedContent(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth(),
+                targetState = stringResource(headerTextRes),
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(500)) with
+                            fadeOut(animationSpec = tween(100))
+                },
+                label = "headerTextAnimation"
+            ) { targetText ->
+                Text(
+                    text = targetText,
+                    Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
             CustomMaterialMotion(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .weight(3f),
                 targetState = uiState,
                 animationForStateTransition = { old, new ->
                     val oldPage = (old.screenState as? ScreenState.OnboardingState)?.onboardingPage
@@ -157,7 +193,7 @@ fun OnboardingScreen(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentHeight(),
+                    .weight(2f),
                 shadowElevation = 8.dp,
                 // only round top corners
                 shape = MaterialTheme.shapes.medium.copy(
@@ -174,40 +210,32 @@ fun OnboardingScreen(
                         .padding(
                             top = 32.dp,
                             bottom = 0.dp,
-                            start = 16.dp,
-                            end = 16.dp,
+                            start = 24.dp,
+                            end = 24.dp,
                         ),
                 ) {
-                    val headerTextRes = when (page) {
-                        OnboardingPage.INTRODUCTION_1,
-                        OnboardingPage.INTRODUCTION_2,
-                        OnboardingPage.INTRODUCTION_3,
-                        OnboardingPage.INTRODUCTION_4,
-                        -> R.string.welcome
-                        OnboardingPage.SETUP_FINISHED_3,
-                        -> R.string.done
-                        else -> R.string.setup
-                    }
-                    Text(
-                        text = stringResource(headerTextRes),
-                        Modifier
-                            .wrapContentHeight()
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp),
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center,
-                    )
                     if (contentTextRes != null) {
-                        Text(
-                            text = stringResource(contentTextRes),
-                            Modifier
+                        AnimatedContent(
+                            modifier = Modifier
                                 .wrapContentHeight()
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            style = MaterialTheme.typography.bodyMedium,
-                            textAlign = TextAlign.Center,
-                        )
+                                .fillMaxWidth(),
+                            targetState = stringResource(contentTextRes),
+                            transitionSpec = {
+                                fadeIn(animationSpec = tween(500)) with
+                                        fadeOut(animationSpec = tween(100))
+                            },
+                            label = "contentTextAnimation"
+                        ) { targetText ->
+                            Text(
+                                text = targetText,
+                                Modifier
+                                    .wrapContentHeight()
+                                    .fillMaxWidth()
+                                    .padding(bottom = 16.dp),
+                                style = MaterialTheme.typography.titleSmall,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
                     }
                     SheetButtons(
                         page = page,
@@ -249,13 +277,17 @@ fun SheetButtons(
                         imageVector = Icons.Outlined.Home,
                     )
                     Button(
+                        shape = FloatingActionButtonDefaults.extendedFabShape,
                         onClick = onGoToNextStep,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer,
                             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                         ),
                     ) {
-                        Text(text = stringResource(R.string.button_skip))
+                        Text(
+                            modifier = Modifier.padding(vertical = 12.dp), // makes it the same height as the FAB
+                            text = stringResource(R.string.button_skip),
+                        )
                     }
                 }
             }
@@ -263,14 +295,14 @@ fun SheetButtons(
                 ExtendedFabComponent(
                     onClick = onGoToNextStep,
                     textRes = R.string.button_accept,
-                    imageVector = Icons.Outlined.Done,
+                    imageVector = null,
                 )
             }
             OnboardingPage.SET_SIZE_MAIN -> {
                 ExtendedFabComponent(
                     onClick = onGoToNextStep,
                     textRes = R.string.button_set_size,
-                    imageVector = Icons.Outlined.Done,
+                    imageVector = null,
                 )
             }
             OnboardingPage.SET_FAVORITES_MAIN -> {
@@ -280,7 +312,7 @@ fun SheetButtons(
                         onGoToNextStep.invoke()
                     },
                     textRes = R.string.button_save_favorites,
-                    imageVector = Icons.Outlined.Done,
+                    imageVector = null,
                 )
             }
             OnboardingPage.SETUP_FINISHED_3 -> {
@@ -291,12 +323,11 @@ fun SheetButtons(
                 )
             }
             else -> {
-                FloatingActionButton(onClick = onGoToNextStep) {
-                    Icon(
-                        Icons.Filled.ArrowForward,
-                        contentDescription = stringResource(id = R.string.next_step),
-                    )
-                }
+                ExtendedFabComponent(
+                    onClick = onGoToNextStep,
+                    textRes = R.string.next_step,
+                    imageVector = Icons.Filled.ArrowForward,
+                )
             }
         }
     }
@@ -446,14 +477,11 @@ fun Toolbar(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconButton(
-            onClick = onGoToPreviousStep,
-            modifier = Modifier
-                .size(48.dp),
-        ) {
+        IconButton(onClick = onGoToPreviousStep,) {
             Icon(
                 Icons.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(id = R.string.go_back),
+                modifier = Modifier.size(36.dp)
             )
         }
         val animatedProgress by animateFloatAsState(
@@ -470,14 +498,11 @@ fun Toolbar(
         )
         // Only allow canceling onboarding if the user has already completed it once
         if (settings.isUserOnboarded) {
-            IconButton(
-                onClick = onCancelOnboarding,
-                modifier = Modifier
-                    .size(48.dp),
-            ) {
+            IconButton(onClick = onCancelOnboarding) {
                 Icon(
                     Icons.Filled.Clear,
                     contentDescription = stringResource(id = R.string.cancel_setup_assistant),
+                    modifier = Modifier.size(36.dp)
                 )
             }
         }
