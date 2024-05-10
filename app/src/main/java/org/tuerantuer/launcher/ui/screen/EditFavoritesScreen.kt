@@ -68,7 +68,7 @@ fun EditFavoritesScreen(
 ) {
     val appIconSize = uiState.settings.appIconSize.sizeDp.dp
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+        modifier = Modifier.fillMaxSize().background(LauncherTheme.all.onWallpaperBackground),
     ) {
         HeaderComponent(
             text = stringResource(R.string.select_favorites),
@@ -249,6 +249,9 @@ fun AppListItem(
     }
 }
 
+/**
+ * This is a workaround for the fact that LazyColumn doesn't support drag and drop yet.
+ */
 @Composable
 fun rememberDragDropListState(
     lazyListState: LazyListState = rememberLazyListState(),

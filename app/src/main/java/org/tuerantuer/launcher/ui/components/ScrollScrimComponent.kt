@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
  * A component that displays a gradient at the bottom of the screen to indicate that there is more content to scroll to.
@@ -21,7 +22,8 @@ fun BoxScope.ScrollScrimComponent(modifier: Modifier = Modifier) {
             .align(Alignment.BottomCenter)
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color.Transparent, MaterialTheme.colorScheme.background),
+                    // todo: background: black or white gradient, looks weird on wallpaper. I'd say this is better.
+                    colors = listOf(Color.Transparent, LauncherTheme.all.onWallpaperBackground), // .copy(alpha = 0.4f)
                 ),
             ),
     )
