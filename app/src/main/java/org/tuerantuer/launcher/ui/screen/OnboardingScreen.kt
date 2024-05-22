@@ -454,6 +454,7 @@ fun Toolbar(
             Icon(
                 Icons.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(id = R.string.go_back),
+                tint = MaterialTheme.colorScheme.onSurface,
             )
         }
         val animatedProgress by animateFloatAsState(
@@ -478,6 +479,7 @@ fun Toolbar(
                 Icon(
                     Icons.Filled.Clear,
                     contentDescription = stringResource(id = R.string.cancel_setup_assistant),
+                    tint = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }

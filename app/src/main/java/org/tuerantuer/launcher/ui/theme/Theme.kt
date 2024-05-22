@@ -1,16 +1,23 @@
 package org.tuerantuer.launcher.ui.theme
 
+import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextStyle
+import androidx.core.view.WindowInsetsControllerCompat
 import org.tuerantuer.launcher.data.datastore.WallpaperType
 
 private val LightColorScheme = lightColorScheme(
@@ -25,6 +32,19 @@ private val LightColorScheme = lightColorScheme(
     background = almostWhite,
     onSurface = almostBlack,
     onBackground = almostBlack,
+)
+private val DarkColorScheme = darkColorScheme(
+    primary = purpleDM,
+    primaryContainer = almostWhiteDM,
+    secondary = purpleDM,
+    secondaryContainer = gray,
+    onSecondaryContainer = almostWhiteDM,
+    onPrimaryContainer = almostBlack,
+    onPrimary = almostWhiteDM,
+    surface = almostBlackDM,
+    background = almostBlackDM,
+    onSurface = almostWhiteDM,
+    onBackground = almostWhiteDM,
 )
 
 @Immutable
@@ -52,11 +72,11 @@ fun LauncherTheme(
     wallpaperType: WallpaperType = WallpaperType.SOLID_COLOR,
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = LightColorScheme
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     val onWallpaperText = when (wallpaperType) {
         WallpaperType.SOLID_COLOR -> MaterialTheme.typography.labelLarge.copy(
-            color = almostBlack,
+            color = colorScheme.onBackground,
         )
         WallpaperType.CUSTOM_WALLPAPER,
         WallpaperType.DARKENED_CUSTOM_WALLPAPER,
@@ -71,7 +91,7 @@ fun LauncherTheme(
     }
 
     val onWallpaperBackground = when (wallpaperType) {
-        WallpaperType.SOLID_COLOR -> MaterialTheme.colorScheme.background
+        WallpaperType.SOLID_COLOR -> colorScheme.background
         WallpaperType.CUSTOM_WALLPAPER -> Color.Transparent
         WallpaperType.DARKENED_CUSTOM_WALLPAPER -> wallpaperScrim
     }
