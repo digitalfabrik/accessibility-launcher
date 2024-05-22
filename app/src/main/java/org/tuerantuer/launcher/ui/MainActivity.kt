@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -71,11 +72,12 @@ fun StatusAndNavigationBars(
     uiState: UiState,
 ) {
     val view = LocalView.current
+    val darkTheme = isSystemInDarkTheme()
     if (!view.isInEditMode) {
         val useTransparentBars = uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
                 && uiState.screenState is ScreenState.HomeScreenState
         val backgroundColor = if (useTransparentBars) {
-            LauncherTheme.all.onWallpaperBackground
+            MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
         } else {
             MaterialTheme.colorScheme.background
         }.toArgb()
@@ -85,7 +87,7 @@ fun StatusAndNavigationBars(
                 navigationBarColor = backgroundColor
             }
             ViewCompat.getWindowInsetsController(view)?.apply {
-                val useLightBars = !useTransparentBars
+                val useLightBars = !darkTheme
                 isAppearanceLightStatusBars = useLightBars
                 isAppearanceLightNavigationBars = useLightBars
             }

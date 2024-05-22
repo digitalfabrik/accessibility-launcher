@@ -24,7 +24,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -38,7 +37,6 @@ import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
-import timber.log.Timber
 import java.util.Locale
 
 // Used to remove whitespaces from a string.
@@ -102,7 +100,7 @@ fun AllAppsScreen(
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = null,
-                        tint = Color.Gray,
+                        tint = LauncherTheme.all.onWallpaperText.color,
                     )
                 },
                 placeholder = { Text(stringResource(R.string.search), style = LauncherTheme.all.onWallpaperText) },
@@ -114,7 +112,7 @@ fun AllAppsScreen(
                         searchQuery.value
                         focusManager.clearFocus()
                     },
-                )
+                ),
             )
         }
         val appIconSize = uiState.settings.appIconSize.sizeDp.dp

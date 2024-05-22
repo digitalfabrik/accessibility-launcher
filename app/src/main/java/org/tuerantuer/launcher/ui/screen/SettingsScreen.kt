@@ -444,6 +444,7 @@ fun ColumnScope.WallpaperScreen(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                     text = stringResource(R.string.tap_to_apply_wallpaper),
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 val images = listOf(R.raw.wp_1, R.raw.wp_2, R.raw.wp_3, R.raw.wp_4, R.raw.wp_5, R.raw.wp_6)
                 LazyVerticalGrid(
@@ -670,6 +671,7 @@ fun ColumnScope.LicensesScreen(
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             text = stringResource(R.string.read_licenses_description),
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         val settingsButtons = listOf(
             SettingsButtonData(
@@ -757,6 +759,7 @@ fun ColumnScope.SettingsBody(textRes: Int) {
                 .fillMaxWidth(),
             text = stringResource(textRes),
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }
@@ -790,6 +793,7 @@ fun SettingsFab(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center, text = stringResource(secondaryTextRes),
             )
             Spacer(modifier = Modifier.padding(8.dp))
