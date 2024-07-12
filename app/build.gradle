@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace 'org.tuerantuer.launcher'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.tuerantuer.launcher"
         minSdk 26
-        targetSdk 33
+        targetSdk 35
         if (project.hasProperty('VERSION_CODE')) {
             versionCode project.VERSION_CODE.toInteger()
             versionName project.VERSION_NAME
