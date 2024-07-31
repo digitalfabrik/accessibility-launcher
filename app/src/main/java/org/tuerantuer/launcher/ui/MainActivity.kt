@@ -5,11 +5,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -70,30 +73,43 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun StatusAndNavigationBars(
     uiState: UiState,
+    content: @Composable () -> Unit,
 ) {
     val view = LocalView.current
     val darkTheme = isSystemInDarkTheme()
-    if (!view.isInEditMode) {
-        val useTransparentBars = uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
+    val backgroundColor = when {
+        view.isInEditMode -> MaterialTheme.colorScheme.background
+        uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
                 && uiState.screenState is ScreenState.HomeScreenState
-        val backgroundColor = if (useTransparentBars) {
-            MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
-        } else {
-            MaterialTheme.colorScheme.background
-        }.toArgb()
-        SideEffect {
-            (view.context as Activity).window.apply {
-                statusBarColor = backgroundColor
-                navigationBarColor = backgroundColor
-            }
-            ViewCompat.getWindowInsetsController(view)?.apply {
-                val useLightBars = !darkTheme
-                isAppearanceLightStatusBars = useLightBars
-                isAppearanceLightNavigationBars = useLightBars
-            }
+        -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
+        else -> MaterialTheme.colorScheme.background
+    }
+
+    SideEffect {
+        val backgroundColorArgb = backgroundColor.toArgb()
+
+        // Ignored on Android 15+
+        (view.context as Activity).window.apply {
+            statusBarColor = backgroundColorArgb
+            navigationBarColor = backgroundColorArgb
+        }
+
+        ViewCompat.getWindowInsetsController(view)?.apply {
+            val useLightBars = !darkTheme
+            isAppearanceLightStatusBars = useLightBars
+            isAppearanceLightNavigationBars = useLightBars
         }
     }
+
+    // On Android 15+ edge-to-edge is enforced and the this surface will draw behind the status and navigation bars
+    Surface(
+        modifier = Modifier
+            .background(backgroundColor)
+            .systemBarsPadding(),
+        content = content,
+    )
 }
+
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -103,20 +119,21 @@ fun LauncherApp(
     uiState: UiState,
 ) {
     val coroutinesScope = rememberCoroutineScope()
-    StatusAndNavigationBars(uiState)
-    CustomMaterialMotion(
-        targetState = uiState,
-        animationForStateTransition = { old, new ->
-            screenTransitionManager.loadAnimationForUiStateTransition(old, new)
-        },
-    ) { animatedUiState ->
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Screens(animatedUiState, mainViewModel, coroutinesScope)
+    StatusAndNavigationBars(uiState = uiState) {
+        CustomMaterialMotion(
+            targetState = uiState,
+            animationForStateTransition = { old, new ->
+                screenTransitionManager.loadAnimationForUiStateTransition(old, new)
+            },
+        ) { animatedUiState ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Screens(animatedUiState, mainViewModel, coroutinesScope)
+            }
         }
     }
 }

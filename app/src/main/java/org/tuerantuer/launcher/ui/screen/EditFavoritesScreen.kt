@@ -96,7 +96,6 @@ fun EditFavoritesScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            shadowElevation = 8.dp,
             // only round top corners
             shape = MaterialTheme.shapes.medium.copy(
                 bottomEnd = CornerSize(0f),

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Icon
@@ -32,15 +31,11 @@ fun HeaderComponent(
 ) {
     Surface(
         modifier = Modifier
-            .padding(bottom = 8.dp)
+            .padding(8.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         shadowElevation = 8.dp,
-        // only round bottom corners
-        shape = MaterialTheme.shapes.medium.copy(
-            topStart = CornerSize(0f),
-            topEnd = CornerSize(0f),
-        ),
+        shape = MaterialTheme.shapes.large,
     ) {
         Row(
             modifier = modifier
