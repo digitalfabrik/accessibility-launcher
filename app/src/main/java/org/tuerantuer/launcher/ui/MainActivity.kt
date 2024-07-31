@@ -175,6 +175,7 @@ fun Screens(
             onOpenSystemSettings = mainViewModel::onOpenSystemSettings,
             onOpenAccessibilitySettings = mainViewModel::onOpenAccessibilitySettings,
             onOpenSoundSettings = mainViewModel::onOpenSoundSettings,
+            onOpenApplicationSettings = mainViewModel::onOpenApplicationSettings,
             onOpenDisplaySettings = mainViewModel::onOpenDisplaySettings,
             onUninstallLauncher = mainViewModel::onUninstallLauncher,
             onWriteFeedbackMail = mainViewModel::onWriteFeedbackMail,

@@ -36,6 +36,11 @@ interface FrameworkActionsManager {
     fun openSoundSettings()
 
     /**
+     * Opens Android's application settings
+     */
+    fun openApplicationSettings()
+
+    /**
      * Opens Android's display settings.
      */
     fun openDisplaySettings()
