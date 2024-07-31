@@ -47,6 +47,7 @@
     <string name="write_email">Email schreiben</string>
     <string name="get_feedback_contact_description">Hat dir etwas besonders gut gefallen?\nOder hast du Probleme mit Carikom?\nDann schreib uns deine Rückmeldung:</string>
     <string name="uninstall_apps">Apps löschen</string>
+    <string name="uninstall_apps_no_button">Apps nicht löschen</string>
     <string name="uninstall_apps_description">Hier kannst du Apps von deinem Gerät entfernen.</string>
     <string name="uninstall_apps_confirmation">Möchtest du Apps löschen:</string>
     <string name="read_licenses">Lizenzen lesen</string>

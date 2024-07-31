@@ -256,6 +256,7 @@ fun ColumnScope.MainContent(
         )
         SettingsPage.UninstallApps -> UninstallAppsScreen(
             onOpenApplicationSettings = onOpenApplicationSettings,
+            onGoBack = onGoBack,
         )
         SettingsPage.ScreenReader -> ScreenReaderScreen(
             onOpenAccessibilitySettings = onOpenAccessibilitySettings,
@@ -567,15 +568,17 @@ fun ColumnScope.NotificationSoundsScreen(
 @Composable
 fun ColumnScope.UninstallAppsScreen(
     onOpenApplicationSettings: () -> Unit = {},
+    onGoBack: () -> Unit = {},
 ){
     SettingsFrame {
         SettingsBody(R.string.uninstall_apps_description)
         SettingsFab(
             R.string.uninstall_apps,
-            Icons.Outlined.AppSettingsAlt,
+            Icons.Outlined.Delete,
             onOpenApplicationSettings,
             R.string.uninstall_apps_confirmation,
         )
+        SettingsFab(R.string.uninstall_apps_no_button, onClick = onGoBack)
     }
     SettingsInfoCard()
 }
