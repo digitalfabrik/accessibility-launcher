@@ -92,6 +92,7 @@ fun SettingsScreen(
     onOpenAccessibilitySettings: () -> Unit = {},
     onOpenDisplaySettings: () -> Unit = {},
     onOpenSoundSettings: () -> Unit = {},
+    onOpenApplicationSettings: () -> Unit = {},
     onUninstallLauncher: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
@@ -139,6 +140,7 @@ fun SettingsScreen(
                     onOpenAccessibilitySettings = onOpenAccessibilitySettings,
                     onOpenDisplaySettings = onOpenDisplaySettings,
                     onOpenSoundSettings = onOpenSoundSettings,
+                    onOpenApplicationSettings = onOpenApplicationSettings,
                     onUninstallLauncher = onUninstallLauncher,
                     onWriteFeedbackMail = onWriteFeedbackMail,
                     onOpenSettingsPage = onOpenSettingsPage,
@@ -197,6 +199,7 @@ fun ColumnScope.MainContent(
     onOpenAccessibilitySettings: () -> Unit = {},
     onOpenDisplaySettings: () -> Unit = {},
     onOpenSoundSettings: () -> Unit = {},
+    onOpenApplicationSettings: () -> Unit = {},
     onUninstallLauncher: () -> Unit = {},
     onWriteFeedbackMail: () -> Unit = {},
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
@@ -251,6 +254,10 @@ fun ColumnScope.MainContent(
         SettingsPage.NotificationSounds -> NotificationSoundsScreen(
             onOpenSoundSettings = onOpenSoundSettings,
         )
+        SettingsPage.UninstallApps -> UninstallAppsScreen(
+            onOpenApplicationSettings = onOpenApplicationSettings,
+            onGoBack = onGoBack,
+        )
         SettingsPage.ScreenReader -> ScreenReaderScreen(
             onOpenAccessibilitySettings = onOpenAccessibilitySettings,
         )
@@ -289,8 +296,7 @@ fun ColumnScope.SettingsOverviewScreen(
             SettingsButtonData(R.string.open_system_settings) { onOpenSettingsPage(SettingsPage.SystemSettings) },
             SettingsButtonData(R.string.share_launcher) { onOpenSettingsPage(SettingsPage.ShareLauncher) },
             SettingsButtonData(R.string.get_feedback_contact) { onOpenSettingsPage(SettingsPage.Feedback) },
-            //TODO: Re-enable when uninstalling apps is implemented
-//            SettingsButtonData(R.string.uninstall_apps) { onOpenSettingsPage(SettingsPage.UninstallApps) },
+            SettingsButtonData(R.string.uninstall_apps) { onOpenSettingsPage(SettingsPage.UninstallApps) },
             SettingsButtonData(R.string.uninstall_launcher) { onOpenSettingsPage(SettingsPage.UninstallLauncher) },
             SettingsButtonData(R.string.read_licenses) { onOpenSettingsPage(SettingsPage.Licenses) },
         )
@@ -556,6 +562,23 @@ fun ColumnScope.NotificationSoundsScreen(
             onOpenSoundSettings,
             R.string.system_settings_description,
         )
+    }
+    SettingsInfoCard()
+}
+@Composable
+fun ColumnScope.UninstallAppsScreen(
+    onOpenApplicationSettings: () -> Unit = {},
+    onGoBack: () -> Unit = {},
+){
+    SettingsFrame {
+        SettingsBody(R.string.uninstall_apps_description)
+        SettingsFab(
+            R.string.uninstall_apps,
+            Icons.Outlined.Delete,
+            onOpenApplicationSettings,
+            R.string.uninstall_apps_confirmation,
+        )
+        SettingsFab(R.string.uninstall_apps_no_button, onClick = onGoBack)
     }
     SettingsInfoCard()
 }

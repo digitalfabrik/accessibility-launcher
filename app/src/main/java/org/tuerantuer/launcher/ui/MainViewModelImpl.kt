@@ -176,6 +176,9 @@ class MainViewModelImpl(
         frameworkActionsManager.openSoundSettings()
     }
 
+    override fun onOpenApplicationSettings() {
+        frameworkActionsManager.openApplicationSettings()
+    }
     override fun onUninstallLauncher() {
         val ownComponentKey = ComponentKey(
             packageName = BuildConfig.APPLICATION_ID,
