@@ -5,18 +5,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
@@ -71,30 +74,36 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun StatusAndNavigationBars(
     uiState: UiState,
-) {
+): Color {
     val view = LocalView.current
     val darkTheme = isSystemInDarkTheme()
-    if (!view.isInEditMode) {
+    val backgroundColor = if (!view.isInEditMode) {
         val useTransparentBars = uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
                 && uiState.screenState is ScreenState.HomeScreenState
-        val backgroundColor = if (useTransparentBars) {
+        if (useTransparentBars) {
             MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
         } else {
             MaterialTheme.colorScheme.background
-        }.toArgb()
-        SideEffect {
-            (view.context as Activity).window.apply {
-                statusBarColor = backgroundColor
-                navigationBarColor = backgroundColor
-            }
-            ViewCompat.getWindowInsetsController(view)?.apply {
-                val useLightBars = !darkTheme
-                isAppearanceLightStatusBars = useLightBars
-                isAppearanceLightNavigationBars = useLightBars
-            }
+        }
+    } else {
+        MaterialTheme.colorScheme.background
+    }
+
+    SideEffect {
+        val color = backgroundColor.toArgb()
+        (view.context as Activity).window.apply {
+            statusBarColor = color
+            navigationBarColor = color
+        }
+        ViewCompat.getWindowInsetsController(view)?.apply {
+            val useLightBars = !darkTheme
+            isAppearanceLightStatusBars = useLightBars
+            isAppearanceLightNavigationBars = useLightBars
         }
     }
+    return backgroundColor
 }
+
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -104,6 +113,7 @@ fun LauncherApp(
     uiState: UiState,
 ) {
     val coroutinesScope = rememberCoroutineScope()
+    val background = StatusAndNavigationBars(uiState = uiState)
     StatusAndNavigationBars(uiState)
     CustomMaterialMotion(
         targetState = uiState,
@@ -111,14 +121,16 @@ fun LauncherApp(
             screenTransitionManager.loadAnimationForUiStateTransition(old, new)
         },
     ) { animatedUiState ->
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .systemBarsPadding(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Screens(animatedUiState, mainViewModel, coroutinesScope)
+        Surface(Modifier.background(background)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .systemBarsPadding(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Screens(animatedUiState, mainViewModel, coroutinesScope)
+            }
         }
     }
 }

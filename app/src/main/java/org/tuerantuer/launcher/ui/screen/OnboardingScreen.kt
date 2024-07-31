@@ -194,7 +194,6 @@ fun OnboardingScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(2f),
-                shadowElevation = 8.dp,
                 // only round top corners
                 shape = MaterialTheme.shapes.medium.copy(
                     bottomEnd = CornerSize(0f),
