@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace 'org.tuerantuer.launcher'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "org.tuerantuer.launcher"
