@@ -36,7 +36,7 @@ interface FrameworkActionsManager {
     fun openSoundSettings()
 
     /**
-     * Opens Android's application settings
+     * Opens Android's manage application settings
      */
     fun openApplicationSettings()
 
