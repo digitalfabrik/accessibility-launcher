@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
@@ -74,34 +73,41 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun StatusAndNavigationBars(
     uiState: UiState,
-): Color {
+    content: @Composable () -> Unit,
+) {
     val view = LocalView.current
     val darkTheme = isSystemInDarkTheme()
-    val backgroundColor = if (!view.isInEditMode) {
-        val useTransparentBars = uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
+    val backgroundColor = when {
+        view.isInEditMode -> MaterialTheme.colorScheme.background
+        uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
                 && uiState.screenState is ScreenState.HomeScreenState
-        if (useTransparentBars) {
-            MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
-        } else {
-            MaterialTheme.colorScheme.background
-        }
-    } else {
-        MaterialTheme.colorScheme.background
+        -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
+        else -> MaterialTheme.colorScheme.background
     }
 
     SideEffect {
-        val color = backgroundColor.toArgb()
+        val backgroundColorArgb = backgroundColor.toArgb()
+
+        // Ignored on Android 15+
         (view.context as Activity).window.apply {
-            statusBarColor = color
-            navigationBarColor = color
+            statusBarColor = backgroundColorArgb
+            navigationBarColor = backgroundColorArgb
         }
+
         ViewCompat.getWindowInsetsController(view)?.apply {
             val useLightBars = !darkTheme
             isAppearanceLightStatusBars = useLightBars
             isAppearanceLightNavigationBars = useLightBars
         }
     }
-    return backgroundColor
+
+    // On Android 15+ edge-to-edge is enforced and the this surface will draw behind the status and navigation bars
+    Surface(
+        modifier = Modifier
+            .background(backgroundColor)
+            .systemBarsPadding(),
+        content = content,
+    )
 }
 
 
@@ -113,20 +119,17 @@ fun LauncherApp(
     uiState: UiState,
 ) {
     val coroutinesScope = rememberCoroutineScope()
-    val background = StatusAndNavigationBars(uiState = uiState)
-    StatusAndNavigationBars(uiState)
-    CustomMaterialMotion(
-        targetState = uiState,
-        animationForStateTransition = { old, new ->
-            screenTransitionManager.loadAnimationForUiStateTransition(old, new)
-        },
-    ) { animatedUiState ->
-        Surface(Modifier.background(background)) {
+    StatusAndNavigationBars(uiState = uiState) {
+        CustomMaterialMotion(
+            targetState = uiState,
+            animationForStateTransition = { old, new ->
+                screenTransitionManager.loadAnimationForUiStateTransition(old, new)
+            },
+        ) { animatedUiState ->
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight()
-                    .systemBarsPadding(),
+                    .fillMaxHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Screens(animatedUiState, mainViewModel, coroutinesScope)
