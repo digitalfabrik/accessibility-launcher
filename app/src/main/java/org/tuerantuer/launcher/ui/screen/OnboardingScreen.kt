@@ -57,15 +57,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.edit
 import com.google.android.material.textview.MaterialTextView
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.data.datastore.AppTextSize
 import org.tuerantuer.launcher.data.datastore.Settings
+import org.tuerantuer.launcher.data.datastore.SettingsManagerImpl
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.ScrollScrimComponent
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
+import org.tuerantuer.launcher.ui.components.SetTextSizeComponent
 import org.tuerantuer.launcher.ui.data.OnboardingPage
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
@@ -86,6 +91,7 @@ fun OnboardingScreen(
     onSetDefaultLauncher: () -> Unit = {},
     onCancelOnboarding: () -> Unit = {},
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
+    onSetTextSize: (appTextSize: AppTextSize) -> Unit = {},
     onSetFavorites: (newFavorites: List<AppItemInfo>) -> Unit = {},
 ) {
     val screenState = uiState.screenState
@@ -106,7 +112,7 @@ fun OnboardingScreen(
         OnboardingPage.SET_AS_DEFAULT_3 -> R.string.setup_6
         OnboardingPage.PRIVACY_POLICY -> R.string.setup_7
         OnboardingPage.SET_SIZE_INTRO -> R.string.setup_9
-        OnboardingPage.SET_SIZE_MAIN -> R.string.confirm_size
+        OnboardingPage.SET_SIZE_ICONS -> R.string.confirm_size
         OnboardingPage.SET_FAVORITES_INTRO_1 -> R.string.setup_10
         OnboardingPage.SET_FAVORITES_INTRO_2 -> R.string.setup_11
         OnboardingPage.SET_FAVORITES_INTRO_3 -> R.string.setup_12
@@ -151,7 +157,7 @@ fun OnboardingScreen(
                     fadeIn(animationSpec = tween(500)) with
                             fadeOut(animationSpec = tween(100))
                 },
-                label = "headerTextAnimation"
+                label = "headerTextAnimation",
             ) { targetText ->
                 Text(
                     text = targetText,
@@ -187,6 +193,7 @@ fun OnboardingScreen(
                 MainContent(
                     uiState = animatedUiState,
                     onSetIconSize = onSetIconSize,
+                    onSetTextSize = onSetTextSize,
                     selectedFavorites = selectedFavorites,
                 )
             }
@@ -223,7 +230,7 @@ fun OnboardingScreen(
                                 fadeIn(animationSpec = tween(500)) with
                                         fadeOut(animationSpec = tween(100))
                             },
-                            label = "contentTextAnimation"
+                            label = "contentTextAnimation",
                         ) { targetText ->
                             Text(
                                 text = targetText,
@@ -259,7 +266,7 @@ fun SheetButtons(
     onSetFavorites: () -> Unit,
 ) {
     Box(
-        modifier = Modifier.heightIn(min = 100.dp),
+        modifier = Modifier.heightIn(min = 200.dp),
         contentAlignment = Alignment.Center,
     ) {
         when (page) {
@@ -285,7 +292,7 @@ fun SheetButtons(
                     ) {
                         Text(
                             modifier = Modifier.padding(vertical = 12.dp), // makes it the same height as the FAB
-                            text = stringResource(R.string.button_skip),
+                            text = stringResource(R.string.button_later),
                         )
                     }
                 }
@@ -297,12 +304,26 @@ fun SheetButtons(
                     imageVector = null,
                 )
             }
-            OnboardingPage.SET_SIZE_MAIN -> {
+            OnboardingPage.SET_SIZE_ICONS -> {
                 ExtendedFabComponent(
                     onClick = onGoToNextStep,
-                    textRes = R.string.button_set_size,
+                    textRes = R.string.button_accept,
                     imageVector = null,
                 )
+            }
+            OnboardingPage.SET_SIZE_TEXT -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    ExtendedFabComponent(
+                        onClick = {
+                            onGoToNextStep.invoke()
+                        },
+                        textRes = R.string.button_set_font_size,
+                        imageVector = null,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
             }
             OnboardingPage.SET_FAVORITES_MAIN -> {
                 ExtendedFabComponent(
@@ -336,6 +357,7 @@ fun SheetButtons(
 fun ColumnScope.MainContent(
     uiState: UiState,
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
+    onSetTextSize: (appTextSize: AppTextSize) -> Unit = {},
     selectedFavorites: MutableState<List<AppItemInfo>>,
 ) {
     val screenState = uiState.screenState as ScreenState.OnboardingState
@@ -347,11 +369,18 @@ fun ColumnScope.MainContent(
                 text = stringResource(R.string.privacy_policy_text),
             )
         }
-        OnboardingPage.SET_SIZE_MAIN -> {
+        OnboardingPage.SET_SIZE_ICONS -> {
             SetIconSizeComponent(
                 modifier = Modifier.fillMaxSize(),
                 uiState = uiState,
                 onSetIconSize = onSetIconSize,
+            )
+        }
+        OnboardingPage.SET_SIZE_TEXT -> {
+            SetTextSizeComponent(
+                modifier = Modifier.fillMaxSize(),
+                uiState = uiState,
+                onSetTextSize = onSetTextSize,
             )
         }
         OnboardingPage.SET_FAVORITES_MAIN -> {
@@ -436,6 +465,7 @@ fun ScrollableHtmlText(
 ) {
     val textColor = MaterialTheme.colorScheme.onBackground
     val linkColor = MaterialTheme.colorScheme.primary
+    val textSizeSp = MaterialTheme.typography.bodyMedium.fontSize.value
     Box(modifier = modifier) {
         ScrollableColumn {
             AndroidView(
@@ -450,6 +480,7 @@ fun ScrollableHtmlText(
                 update = { textView ->
                     textView.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE)
                     textView.setTextColor(textColor.toArgb())
+                    textView.textSize = textSizeSp
                 },
             )
         }
@@ -476,7 +507,7 @@ fun Toolbar(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconButton(onClick = onGoToPreviousStep,) {
+        IconButton(onClick = onGoToPreviousStep) {
             Icon(
                 Icons.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(id = R.string.go_back),
@@ -503,7 +534,7 @@ fun Toolbar(
                     Icons.Filled.Clear,
                     contentDescription = stringResource(id = R.string.cancel_setup_assistant),
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(36.dp),
                 )
             }
         }
