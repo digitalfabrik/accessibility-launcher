@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -64,12 +65,14 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.data.datastore.AppTextSize
 import org.tuerantuer.launcher.data.datastore.WallpaperType
 import org.tuerantuer.launcher.ui.components.BottomSheetComponent
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
+import org.tuerantuer.launcher.ui.components.SetTextSizeComponent
 import org.tuerantuer.launcher.ui.components.SettingSwitchItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.SettingsPage
@@ -97,6 +100,7 @@ fun SettingsScreen(
     onWriteFeedbackMail: () -> Unit = {},
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
+    onSetTextSize: (appTextSize: AppTextSize) -> Unit = {},
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
@@ -104,7 +108,8 @@ fun SettingsScreen(
     Column(
         Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background).zIndex(10f),
+            .background(MaterialTheme.colorScheme.background)
+            .zIndex(10f),
     ) {
         Header(
             uiState,
@@ -145,6 +150,7 @@ fun SettingsScreen(
                     onWriteFeedbackMail = onWriteFeedbackMail,
                     onOpenSettingsPage = onOpenSettingsPage,
                     onSetIconSize = onSetIconSize,
+                    onSetTextSize = onSetTextSize,
                     onGoBack = onGoBack,
                     onSetWallpaperType = onSetWallpaperType,
                     onSetWallpaper = onSetWallpaper,
@@ -167,7 +173,8 @@ fun Header(
         SettingsPage.VisualAssistant -> R.string.assistant_visual
         SettingsPage.HearingAssistant -> R.string.assistant_hearing
         SettingsPage.SpeechAssistant -> R.string.assistant_speech
-        SettingsPage.IconSize -> R.string.display_scale
+        SettingsPage.IconSize -> R.string.display_scale_icons
+        SettingsPage.TextSize -> R.string.display_scale_text
         SettingsPage.Wallpaper -> R.string.wallpaper
         SettingsPage.DisplayTimeout -> R.string.display_timeout
         SettingsPage.Notifications -> R.string.notifications
@@ -204,6 +211,7 @@ fun ColumnScope.MainContent(
     onWriteFeedbackMail: () -> Unit = {},
     onOpenSettingsPage: (settingsPage: SettingsPage) -> Unit = {},
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
+    onSetTextSize: (appTextSize: AppTextSize) -> Unit = {},
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
@@ -236,6 +244,11 @@ fun ColumnScope.MainContent(
         SettingsPage.IconSize -> IconSizeScreen(
             uiState = uiState,
             onSetIconSize = onSetIconSize,
+            onGoBack = onGoBack,
+        )
+        SettingsPage.TextSize -> TextSizeScreen(
+            uiState = uiState,
+            onSetTextSize = onSetTextSize,
             onGoBack = onGoBack,
         )
         SettingsPage.Wallpaper -> WallpaperScreen(
@@ -342,8 +355,11 @@ fun ColumnScope.VisualAssistantScreen(
 ) {
     SettingsFrame {
         val settingsButtons = listOf(
-            SettingsButtonData(R.string.display_scale) {
+            SettingsButtonData(R.string.display_scale_icons) {
                 onOpenSettingsPage(SettingsPage.IconSize)
+            },
+            SettingsButtonData(R.string.display_scale_text) {
+                onOpenSettingsPage(SettingsPage.TextSize)
             },
             SettingsButtonData(R.string.wallpaper) {
                 onOpenSettingsPage(SettingsPage.Wallpaper)
@@ -409,8 +425,32 @@ fun ColumnScope.IconSizeScreen(
     BottomSheetComponent {
         ExtendedFabComponent(
             onClick = onGoBack,
-            textRes = R.string.button_set_size,
+            textRes = R.string.button_set_font_size,
             imageVector = Icons.Outlined.Done,
+            color = MaterialTheme.colorScheme.primary,
+        )
+    }
+}
+
+@Composable
+fun ColumnScope.TextSizeScreen(
+    uiState: UiState,
+    onSetTextSize: (appTextSize: AppTextSize) -> Unit = {},
+    onGoBack: () -> Unit = {},
+) {
+    SetTextSizeComponent(
+        modifier = Modifier
+            .fillMaxSize()
+            .weight(1f),
+        uiState = uiState,
+        onSetTextSize = onSetTextSize,
+    )
+    BottomSheetComponent {
+        ExtendedFabComponent(
+            onClick = onGoBack,
+            textRes = R.string.button_set_font_size,
+            imageVector = Icons.Outlined.Done,
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 }
@@ -424,47 +464,53 @@ fun ColumnScope.WallpaperScreen(
     SettingsFrame {
         val wallpaperType = uiState.settings.wallpaperType
         val showCustomWallpaper = wallpaperType != WallpaperType.SOLID_COLOR
-        SettingSwitchItem(
-            title = stringResource(R.string.enable_custom_wallpaper),
-            checked = showCustomWallpaper,
-            onCheckedChange = { checked ->
-                onSetWallpaperType(if (checked) WallpaperType.CUSTOM_WALLPAPER else WallpaperType.SOLID_COLOR)
-            },
-        )
-        AnimatedVisibility(visible = showCustomWallpaper) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-            ) {
-                SettingSwitchItem(
-                    title = stringResource(R.string.darken_custom_wallpaper),
-                    description = stringResource(R.string.darken_custom_wallpaper_description),
-                    checked = wallpaperType == WallpaperType.DARKENED_CUSTOM_WALLPAPER,
-                    onCheckedChange = { checked ->
-                        val newWallpaperType =
-                            if (checked) WallpaperType.DARKENED_CUSTOM_WALLPAPER else WallpaperType.CUSTOM_WALLPAPER
-                        onSetWallpaperType(newWallpaperType)
-                    },
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                    text = stringResource(R.string.tap_to_apply_wallpaper),
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-                val images = listOf(R.raw.wp_1, R.raw.wp_2, R.raw.wp_3, R.raw.wp_4, R.raw.wp_5, R.raw.wp_6)
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(128.dp),
-                    contentPadding = PaddingValues(16.dp),
-                ) {
-                    items(images) { imageRes ->
-                        WallpaperItem(imageRes = imageRes, onClick = { onSetWallpaper(imageRes) })
+
+        val images = listOf(R.raw.wp_1, R.raw.wp_2, R.raw.wp_3, R.raw.wp_4, R.raw.wp_5, R.raw.wp_6)
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxSize(),
+            columns = GridCells.Adaptive(128.dp),
+            contentPadding = PaddingValues(16.dp),
+        ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Column {
+                    SettingSwitchItem(
+                        title = stringResource(R.string.enable_custom_wallpaper),
+                        checked = showCustomWallpaper,
+                        onCheckedChange = { checked ->
+                            onSetWallpaperType(if (checked) WallpaperType.CUSTOM_WALLPAPER else WallpaperType.SOLID_COLOR)
+                        },
+                    )
+                    AnimatedVisibility(visible = showCustomWallpaper) {
+                        Column {
+                            SettingSwitchItem(
+                                title = stringResource(R.string.darken_custom_wallpaper),
+                                description = stringResource(R.string.darken_custom_wallpaper_description),
+                                checked = wallpaperType == WallpaperType.DARKENED_CUSTOM_WALLPAPER,
+                                onCheckedChange = { checked ->
+                                    val newWallpaperType =
+                                        if (checked) WallpaperType.DARKENED_CUSTOM_WALLPAPER else WallpaperType.CUSTOM_WALLPAPER
+                                    onSetWallpaperType(newWallpaperType)
+                                },
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                                text = stringResource(R.string.tap_to_apply_wallpaper),
+                                color = MaterialTheme.colorScheme.onBackground,
+                            )
+                        }
                     }
+                }
+            }
+            items(images) { imageRes ->
+                AnimatedVisibility(visible = showCustomWallpaper) {
+                    WallpaperItem(imageRes = imageRes, onClick = { onSetWallpaper(imageRes) })
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun WallpaperItem(imageRes: Int, onClick: () -> Unit) {
@@ -565,11 +611,12 @@ fun ColumnScope.NotificationSoundsScreen(
     }
     SettingsInfoCard()
 }
+
 @Composable
 fun ColumnScope.UninstallAppsScreen(
     onOpenApplicationSettings: () -> Unit = {},
     onGoBack: () -> Unit = {},
-){
+) {
     SettingsFrame {
         SettingsBody(R.string.uninstall_apps_description)
         SettingsFab(
@@ -626,7 +673,7 @@ fun ColumnScope.SetDefaultLauncherScreen(
             imageVector = Icons.Outlined.Home,
             onClick = {
                 onSetDefaultLauncher()
-            }
+            },
         )
     }
 }
@@ -688,15 +735,7 @@ fun ColumnScope.LicensesScreen(
 ) {
     val openApache20ScreenAction = { onOpenSettingsPage(SettingsPage.LicensesApache20) }
     SettingsFrame {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
-            text = stringResource(R.string.read_licenses_description),
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
-        val settingsButtons = listOf(
+        val settingsButtonsData = listOf(
             SettingsButtonData(
                 textRes = R.string.license_accompanist,
                 secondaryTextRes = R.string.license_accompanist_author,
@@ -743,7 +782,23 @@ fun ColumnScope.LicensesScreen(
                 onClick = openApache20ScreenAction,
             ),
         )
-        SettingsButtonList(settingsButtons)
+        LazyColumn(
+            modifier = Modifier,
+        ) {
+            item {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                    text = stringResource(R.string.read_licenses_description),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            itemsIndexed(items = settingsButtonsData) { _, settingsButton ->
+                SettingsButton(settingsButton)
+            }
+        }
     }
 }
 
@@ -850,11 +905,11 @@ fun SettingsFab(
 }
 
 @Composable
-fun SettingsButtonList(settingsButtons: List<SettingsButtonData>) {
+fun SettingsButtonList(settingsButtonsData: List<SettingsButtonData>) {
     LazyColumn(
         modifier = Modifier,
     ) {
-        itemsIndexed(items = settingsButtons) { _, settingsButton ->
+        itemsIndexed(items = settingsButtonsData) { _, settingsButton ->
             SettingsButton(settingsButton)
         }
     }

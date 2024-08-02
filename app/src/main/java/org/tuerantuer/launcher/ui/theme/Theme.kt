@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsControllerCompat
 import org.tuerantuer.launcher.data.datastore.WallpaperType
 
@@ -70,6 +71,7 @@ object LauncherTheme {
 fun LauncherTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     wallpaperType: WallpaperType = WallpaperType.SOLID_COLOR,
+    scalingFactor:Float = 1.0f,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
@@ -88,7 +90,7 @@ fun LauncherTheme(
                 blurRadius = 6f,
             ),
         )
-    }
+    }.scaleSizeWithHyphens(scalingFactor)
 
     val onWallpaperBackground = when (wallpaperType) {
         WallpaperType.SOLID_COLOR -> colorScheme.background
@@ -106,7 +108,7 @@ fun LauncherTheme(
         MaterialTheme(
             colorScheme = colorScheme,
             shapes = Shapes,
-            typography = Typography,
+            typography = createTypography(scalingFactor),
             content = content,
         )
     }

@@ -19,6 +19,11 @@ interface SettingsManager {
     suspend fun setAppIconSize(size: AppIconSize)
 
     /**
+     * @see Settings.appTextSize
+     */
+    suspend fun setAppTextSize(size: AppTextSize)
+
+    /**
      * @see Settings.isUserOnboarded
      */
     suspend fun setIsUserOnboarded(isOnboarded: Boolean)

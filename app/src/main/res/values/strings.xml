@@ -29,6 +29,7 @@
     <string name="setup_7">Bitte stimme der Datenschutzerklärung zu.</string>
     <string name="setup_9">Du kannst die Größe von deinen Bildschirm-Symbolen einstellen.</string>
     <string name="confirm_size">Möchtest du die angezeigte Größe einstellen?</string>
+    <string name="confirm_font_size">Dies ist die aktuelle Textgröße. Du kannst sie jetzt größer oder kleiner stellen.</string>
     <string name="setup_10">Du kannst deine Lieblings-Apps auswählen.</string>
     <string name="setup_11">Deine Lieblings-Apps werden dann ganz oben in deinem Start-Bildschirm angezeigt.</string>
     <string name="setup_12">Wähle deine Lieblings-Apps aus. Zum Beispiel Apps, die du oft brauchst. So kannst du Apps auswählen: Tippe auf die App.</string>
@@ -73,16 +74,19 @@
     <string name="cancel_setup_assistant">Einrichtung verlassen</string>
     <string name="button_yes">Ja</string>
     <string name="button_no">Nein</string>
-    <string name="button_skip">Ich weiß noch nicht</string>
+    <string name="button_later">Ich weiß noch nicht</string>
+    <string name="button_skip">Überspringen</string>
     <string name="button_accept">Zustimmen</string>
     <string name="button_set_size">Bestätigen</string>
     <string name="button_increase_size">Größer</string>
     <string name="button_decrease_size">Kleiner</string>
+    <string name="button_set_font_size">Diese Größe einstellen</string>
     <string name="button_save_favorites">Lieblings-Apps speichern</string>
     <string name="edit_favorites_info">Mehr Informationen zu den Einstellungen findest du hier: %s</string>
     <string name="settings_info">Um zu erfahren, warum es wichtig sein kann, diese Einstellungen anzupassen, besuche die Carikom-Wiki-Website. Hier erfährt du auch, welche Einstellung für dich geeignet ist.</string>
 
-    <string name="display_scale">Anzeige-Größe</string>
+    <string name="display_scale_icons">Symbol-Größe</string>
+    <string name="display_scale_text">Schriftgröße</string>
     <string name="wallpaper">Hintergrund-Bild</string>
     <string name="enable_custom_wallpaper">Buntes Hintergrund-Bild verwenden</string>
     <string name="darken_custom_wallpaper">Hintergrund-Bild dunkler machen</string>

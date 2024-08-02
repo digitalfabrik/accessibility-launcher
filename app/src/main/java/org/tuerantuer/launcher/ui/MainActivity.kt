@@ -57,7 +57,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
-            LauncherTheme(wallpaperType = uiState.settings.wallpaperType) {
+            LauncherTheme(
+                wallpaperType = uiState.settings.wallpaperType,
+                scalingFactor = uiState.settings.appTextSize.scalingFactor,
+            ) {
                 LauncherApp(mainViewModel, screenTransitionManager, uiState)
             }
         }
@@ -165,7 +168,10 @@ fun Screens(
             onGoToNextStep = mainViewModel::onGoToNextOnboardingStep,
             onSetDefaultLauncher = mainViewModel::onSetDefaultLauncher,
             onCancelOnboarding = mainViewModel::cancelOnboarding,
-            onSetIconSize = { appIconSize -> coroutinesScope.launch { mainViewModel.onSetIconSize(appIconSize) } },
+            onSetIconSize = { appIconSize ->
+                coroutinesScope.launch { mainViewModel.onSetIconSize(appIconSize, uiState.settings.isUserOnboarded) }
+            },
+            onSetTextSize = { appTextSize -> coroutinesScope.launch { mainViewModel.onSetTextSize(appTextSize) } },
             onSetFavorites = { favorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(favorites) } },
         )
         is ScreenState.SettingsState -> SettingsScreen(
@@ -180,7 +186,10 @@ fun Screens(
             onUninstallLauncher = mainViewModel::onUninstallLauncher,
             onWriteFeedbackMail = mainViewModel::onWriteFeedbackMail,
             onOpenSettingsPage = mainViewModel::openSettingsPage,
-            onSetIconSize = { appIconSize -> coroutinesScope.launch { mainViewModel.onSetIconSize(appIconSize) } },
+            onSetIconSize = { appIconSize ->
+                coroutinesScope.launch { mainViewModel.onSetIconSize(appIconSize, uiState.settings.isUserOnboarded) }
+            },
+            onSetTextSize = { appTextSize -> coroutinesScope.launch { mainViewModel.onSetTextSize(appTextSize) } },
             onSetWallpaperType = { wallpaperType ->
                 coroutinesScope.launch { mainViewModel.onSetWallpaperType(wallpaperType) }
             },
