@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -82,8 +83,9 @@ fun StatusAndNavigationBars(
     val darkTheme = isSystemInDarkTheme()
     val backgroundColor = when {
         view.isInEditMode -> MaterialTheme.colorScheme.background
-        uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
-                && uiState.screenState is ScreenState.HomeScreenState
+        uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR &&
+                (uiState.screenState is ScreenState.HomeScreenState ||
+                        uiState.screenState is ScreenState.AllAppsScreenState)
         -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
         else -> MaterialTheme.colorScheme.background
     }
@@ -105,12 +107,9 @@ fun StatusAndNavigationBars(
     }
 
     // On Android 15+ edge-to-edge is enforced and the this surface will draw behind the status and navigation bars
-    Surface(
-        modifier = Modifier
-            .background(backgroundColor)
-            .systemBarsPadding(),
-        content = content,
-    )
+    Box(modifier = Modifier.systemBarsPadding()) {
+        content()
+    }
 }
 
 
