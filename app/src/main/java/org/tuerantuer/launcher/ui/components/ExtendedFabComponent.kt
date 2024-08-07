@@ -22,6 +22,7 @@ fun ExtendedFabComponent(
     textRes: Int,
     imageVector: ImageVector?,
     color: Color = MaterialTheme.colorScheme.primaryContainer,
+    textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onClick: () -> Unit,
 ) {
     ExtendedFloatingActionButton(
@@ -29,7 +30,10 @@ fun ExtendedFabComponent(
         onClick = onClick,
         containerColor = color,
         text = {
-            Text(text = stringResource(textRes))
+            Text(
+                text = stringResource(textRes),
+                color = textColor,
+            )
         },
         icon = {
             if (imageVector != null) {
