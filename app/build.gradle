@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace 'org.tuerantuer.launcher'
-    compileSdk 33
+    compileSdk 35
 
     defaultConfig {
         applicationId "org.tuerantuer.launcher"
         minSdk 26
-        targetSdk 33
+        targetSdk 35
         if (project.hasProperty('VERSION_CODE')) {
             versionCode project.VERSION_CODE.toInteger()
             versionName project.VERSION_NAME
@@ -57,11 +57,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     buildFeatures {
         compose true
@@ -80,27 +80,27 @@ dependencies {
     // If you add a new dependency, please also list it in our settings' license screen
 
 
-    implementation "androidx.core:core-ktx:1.10.0"
+    implementation "androidx.core:core-ktx:1.13.1"
 
-    implementation "androidx.appcompat:appcompat:1.6.1"
-    implementation "com.google.android.material:material:1.8.0"
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "com.google.android.material:material:1.12.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
-    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.7.7"
+    implementation "androidx.navigation:navigation-ui-ktx:2.7.7"
 
     // Jetpack Compose (UI)
-    implementation "androidx.activity:activity-compose:1.7.0"
+    implementation "androidx.activity:activity-compose:1.9.1"
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.compose.material3:material3:1.1.0-beta02"
+    implementation "androidx.compose.material3:material3:1.2.1"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.22.0-rc"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation "com.google.accompanist:accompanist-flowlayout:0.22.0-rc"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "com.google.accompanist:accompanist-drawablepainter:0.28.0"
+    implementation "com.google.accompanist:accompanist-drawablepainter:0.30.0"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
     // Timber - More painless console logging
@@ -123,7 +123,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     // DataStore - Replaces SharedPreferences
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:1.1.1"
 
     // Coil - Image loading library
     implementation "io.coil-kt:coil:2.3.0"
@@ -131,8 +131,8 @@ dependencies {
 
     // Testing
     testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.5"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
 }
 
 // Allow references to generated code

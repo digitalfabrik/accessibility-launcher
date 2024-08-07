@@ -16,6 +16,7 @@ enum class SettingsPage(val parentPage: SettingsPage?) {
     LicensesApache20(parentPage = Licenses),
     VisualAssistant(parentPage = Assistant),
     IconSize(parentPage = VisualAssistant),
+    TextSize(parentPage = VisualAssistant),
     Wallpaper(parentPage = VisualAssistant),
     DisplayTimeout(parentPage = VisualAssistant),
     Notifications(parentPage = VisualAssistant),

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.StateFlow
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
+import org.tuerantuer.launcher.data.datastore.AppTextSize
 import org.tuerantuer.launcher.data.datastore.WallpaperType
 import org.tuerantuer.launcher.ui.data.SettingsPage
 import org.tuerantuer.launcher.ui.data.UiState
@@ -12,8 +13,8 @@ import org.tuerantuer.launcher.ui.data.UiState
 /**
  * View Model of [MainActivity]. This class is not an extension of [ViewModel] because the [ViewModel]s lifecycle is
  * broken with launchers (doing the home gesture the first time recreates the view model). Since our [MainActivity]
- * lives as long as the launcher is running if the launcher is set as default, it's okay that our [MainViewModelImpl] lives
- * as long as the launcher is running.
+ * lives as long as the launcher is running if the launcher is set as default, it's okay that our [MainViewModelImpl]
+ * lives as long as the launcher is running.
  */
 interface MainViewModel {
     /**
@@ -41,12 +42,14 @@ interface MainViewModel {
     fun onOpenAccessibilitySettings()
     fun onOpenDisplaySettings()
     fun onOpenSoundSettings()
+    fun onOpenApplicationSettings()
     fun onUninstallLauncher()
     fun onWriteFeedbackMail()
     fun cancelOnboarding()
 
     suspend fun onSetFavorites(newFavorites: List<AppItemInfo>)
-    suspend fun onSetIconSize(appIconSize: AppIconSize)
+    suspend fun onSetIconSize(appIconSize: AppIconSize, isUserOnboarded: Boolean)
+    suspend fun onSetTextSize(appTextSize: AppTextSize)
     suspend fun onSetWallpaperType(wallpaperType: WallpaperType)
     suspend fun onSetWallpaper(@RawRes wallpaperRes: Int)
 }

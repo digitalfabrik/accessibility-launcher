@@ -11,6 +11,11 @@ data class Settings(
     val appIconSize: AppIconSize = AppIconSize.M,
 
     /**
+     * @see AppTextSize
+     */
+    val appTextSize: AppTextSize = AppTextSize.M,
+
+    /**
      * Whether the user has tapped through all the onboarding screens and therefore accepted the terms and conditions.
      */
     val isUserOnboarded: Boolean = true,

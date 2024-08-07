@@ -176,7 +176,7 @@ fun HomeScreen(
                 columns = GridCells.Adaptive(minSize = appIconSize),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             ) {
-                item(span = { GridItemSpan(Int.MAX_VALUE) }) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
                     Clock()
                 }
                 items(

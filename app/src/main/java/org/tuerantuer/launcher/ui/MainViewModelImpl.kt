@@ -15,6 +15,7 @@ import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.app.AppLauncher
 import org.tuerantuer.launcher.app.Apps
 import org.tuerantuer.launcher.app.appIdentifier.ComponentKey
+import org.tuerantuer.launcher.data.datastore.AppTextSize
 import org.tuerantuer.launcher.data.datastore.AppIconSize
 import org.tuerantuer.launcher.data.datastore.SettingsManager
 import org.tuerantuer.launcher.data.datastore.WallpaperType
@@ -120,8 +121,15 @@ class MainViewModelImpl(
         screenState = ScreenState.OnboardingState(OnboardingPage.INTRODUCTION_1)
     }
 
-    override suspend fun onSetIconSize(appIconSize: AppIconSize) {
+    override suspend fun onSetIconSize(appIconSize: AppIconSize, isUserOnboarded: Boolean) {
         settingsManager.setAppIconSize(appIconSize)
+        if (isUserOnboarded) {
+            settingsManager.setAppTextSize(appIconSize.findMatchingTextSize())
+        }
+    }
+
+    override suspend fun onSetTextSize(appTextSize: AppTextSize) {
+        settingsManager.setAppTextSize(appTextSize)
     }
 
     override suspend fun onSetWallpaperType(wallpaperType: WallpaperType) {
@@ -174,6 +182,10 @@ class MainViewModelImpl(
 
     override fun onOpenSoundSettings() {
         frameworkActionsManager.openSoundSettings()
+    }
+
+    override fun onOpenApplicationSettings() {
+        frameworkActionsManager.openApplicationSettings()
     }
 
     override fun onUninstallLauncher() {

@@ -1,10 +1,12 @@
 package org.tuerantuer.launcher.ui.components
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Icon
@@ -29,36 +31,35 @@ fun HeaderComponent(
 ) {
     Surface(
         modifier = Modifier
+            .padding(8.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         shadowElevation = 8.dp,
-        // only round bottom corners
-        shape = MaterialTheme.shapes.medium.copy(
-            topStart = CornerSize(0f),
-            topEnd = CornerSize(0f),
-        ),
+        shape = MaterialTheme.shapes.large,
     ) {
-        Box(
+        Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            contentAlignment = Alignment.CenterStart,
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ) {
             IconButton(onClick = onGoBack) {
                 Icon(
+                    modifier = Modifier.size(36.dp),
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = null,
                 )
             }
             Text(
                 text = text,
-                Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
+                modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
             )
+            // add a spacer to keep the title centered
+            Spacer(modifier = Modifier.size(48.dp))
         }
     }
 }

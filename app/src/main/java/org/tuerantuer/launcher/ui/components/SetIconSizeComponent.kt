@@ -4,29 +4,23 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ZoomIn
-import androidx.compose.material.icons.filled.ZoomOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.data.datastore.AppIconSize
 import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.UiState
+import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 /**
  * A component that allows the user to change the size of the app icons and see the result in a live preview.
@@ -44,6 +38,7 @@ fun SetIconSizeComponent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(LauncherTheme.all.onWallpaperBackground)
                 .weight(1f),
         ) {
             val homeScreenItems =
@@ -73,7 +68,7 @@ fun SetIconSizeComponent(
                         ),
                         homeScreenItem = homeScreenItem,
                         iconSize = animatedAppIconSize,
-                        useOnWallpaperStyle = false,
+                        useOnWallpaperStyle = true,
                     )
                 }
             }
@@ -85,33 +80,9 @@ fun SetIconSizeComponent(
                     .height(100.dp),
             )
         }
-        Row(
-            modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            val allAppIconSizes = AppIconSize.values()
-            val currentAppIconSize = uiState.settings.appIconSize
-            val currentAppIconSizeIndex = allAppIconSizes.indexOf(currentAppIconSize)
-            val smallerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex - 1)
-            val largerIconSize = allAppIconSizes.getOrNull(currentAppIconSizeIndex + 1)
-            if (smallerIconSize != null) {
-                ExtendedFabComponent(
-                    modifier = Modifier.padding(start = 0.dp, bottom = 16.dp),
-                    onClick = { onSetIconSize(smallerIconSize) },
-                    textRes = R.string.button_decrease_size,
-                    imageVector = Icons.Filled.ZoomOut,
-                )
-            }
-            if (largerIconSize != null) {
-                ExtendedFabComponent(
-                    modifier = Modifier.padding(end = 0.dp, bottom = 16.dp),
-                    onClick = { onSetIconSize(largerIconSize) },
-                    textRes = R.string.button_increase_size,
-                    imageVector = Icons.Filled.ZoomIn,
-                )
-            }
-        }
+        ScalingButtonComponent(
+            currentSize = uiState.settings.appIconSize,
+            onSetSize = onSetIconSize,
+        )
     }
 }

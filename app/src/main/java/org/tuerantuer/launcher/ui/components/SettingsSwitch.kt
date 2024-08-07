@@ -49,11 +49,13 @@ fun SettingSwitchItem(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             if (description != null) {
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.alpha(contentAlpha),
                 )
             }
