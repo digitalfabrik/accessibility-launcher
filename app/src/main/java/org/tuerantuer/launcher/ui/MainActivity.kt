@@ -10,7 +10,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,8 +23,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -81,18 +85,25 @@ fun StatusAndNavigationBars(
 ) {
     val view = LocalView.current
     val darkTheme = isSystemInDarkTheme()
-    val backgroundColor = when {
+    val systemBarsColor = when {
         view.isInEditMode -> MaterialTheme.colorScheme.background
-        uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR &&
-                (uiState.screenState is ScreenState.HomeScreenState ||
-                        uiState.screenState is ScreenState.AllAppsScreenState)
+        uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
+                && uiState.screenState is ScreenState.HomeScreenState
         -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
         else -> MaterialTheme.colorScheme.background
     }
+    val insets = ViewCompat.getRootWindowInsets(view)
+    val systemBarsInsets = insets?.getInsets(WindowInsetsCompat.Type.systemBars())
+    // Android 15+ has edge-to-edge enabled by default and we need to pad the system bars here manually
+    val padSystemBars = android.os.Build.VERSION.SDK_INT > 34
+    val statusBarHeightPx = if (padSystemBars) systemBarsInsets?.top ?: 0 else 0
+    val navigationBarHeightPx = if (padSystemBars) systemBarsInsets?.bottom ?: 0 else 0
+    val density = LocalDensity.current
+    val statusBarHeight = with(density) { statusBarHeightPx.toDp() }
+    val navigationBarHeight = with(density) { navigationBarHeightPx.toDp() }
 
     SideEffect {
-        val backgroundColorArgb = backgroundColor.toArgb()
-
+        val backgroundColorArgb = systemBarsColor.toArgb()
         // Ignored on Android 15+
         (view.context as Activity).window.apply {
             statusBarColor = backgroundColorArgb
@@ -106,9 +117,33 @@ fun StatusAndNavigationBars(
         }
     }
 
-    // On Android 15+ edge-to-edge is enforced and the this surface will draw behind the status and navigation bars
-    Box(modifier = Modifier.systemBarsPadding()) {
-        content()
+    // On Android 15+ edge-to-edge is enforced and we emulate the system bars with colored boxes
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        // Status bar background for Android 15+
+        Box(
+            modifier = Modifier
+                .height(statusBarHeight)
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
+                .background(systemBarsColor),
+        )
+        Box(
+            modifier = Modifier
+                .systemBarsPadding(),
+        ) {
+            content()
+        }
+        // Navigation bar background for Android 15+
+        Box(
+            modifier = Modifier
+                .height(navigationBarHeight)
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .background(systemBarsColor),
+        )
     }
 }
 
@@ -120,6 +155,12 @@ fun LauncherApp(
     screenTransitionManager: ScreenTransitionManager,
     uiState: UiState,
 ) {
+    val backgroundColor = when {
+        uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
+                && uiState.screenState is ScreenState.HomeScreenState
+        -> MaterialTheme.colorScheme.background.copy(alpha = 0f)
+        else -> MaterialTheme.colorScheme.background
+    }
     val coroutinesScope = rememberCoroutineScope()
     StatusAndNavigationBars(uiState = uiState) {
         CustomMaterialMotion(
@@ -131,7 +172,8 @@ fun LauncherApp(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(),
+                    .fillMaxHeight()
+                    .background(backgroundColor),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Screens(animatedUiState, mainViewModel, coroutinesScope)
