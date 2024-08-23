@@ -10,14 +10,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,33 +70,33 @@ fun HomeScreen(
                     innerIconRes = R.drawable.baseline_apps_24,
                     context = context,
                     onClick = onShowAllApps,
-                ),
-            )
-            add(
-                ButtonHomeScreenItem(
-                    nameRes = R.string.change_favorites,
-                    innerIconRes = R.drawable.outline_interests_24,
-                    context = context,
-                    onClick = onEditFavorites,
-                ),
-            )
-            add(
-                ButtonHomeScreenItem(
-                    nameRes = R.string.setup_assistant,
-                    innerIconRes = R.drawable.outline_help_outline_24,
-                    context = context,
-                    onClick = onShowOnboarding,
-                ),
-            )
-            add(
-                ButtonHomeScreenItem(
-                    nameRes = R.string.settings,
-                    innerIconRes = R.drawable.outline_settings_24,
-                    context = context,
-                    onClick = onOpenSettings,
-                ),
+                    iconColor = Color.White,
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    borderColor = MaterialTheme.colorScheme.tertiaryContainer,
+                )
             )
         }
+        val additionalItems = listOf(
+            ButtonHomeScreenItem(
+                nameRes = R.string.change_favorites,
+                innerIconRes = R.drawable.outline_interests_24,
+                context = LocalContext.current,
+                onClick = onEditFavorites,
+            ),
+            ButtonHomeScreenItem(
+                nameRes = R.string.setup_assistant,
+                innerIconRes = R.drawable.outline_help_outline_24,
+                context = LocalContext.current,
+                onClick = onShowOnboarding,
+            ),
+            ButtonHomeScreenItem(
+                nameRes = R.string.settings,
+                innerIconRes = R.drawable.outline_settings_24,
+                context = LocalContext.current,
+                onClick = onOpenSettings,
+            )
+        )
+
         val appIconSize = uiState.settings.appIconSize.sizeDp.dp
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = appIconSize),
@@ -103,6 +107,22 @@ fun HomeScreen(
             }
             items(
                 items = homeScreenItems,
+                key = { homeScreenItem -> homeScreenItem.key },
+            ) { homeScreenItem ->
+                HomeScreenItemComponent(
+                    homeScreenItem = homeScreenItem,
+                    iconSize = appIconSize,
+                )
+            }
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    thickness = 2.dp,
+                    color = Color.Gray
+                )
+            }
+            items(
+                items = additionalItems,
                 key = { homeScreenItem -> homeScreenItem.key },
             ) { homeScreenItem ->
                 HomeScreenItemComponent(
