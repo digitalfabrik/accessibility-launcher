@@ -15,13 +15,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
@@ -95,7 +95,7 @@ fun StatusAndNavigationBars(
     val insets = ViewCompat.getRootWindowInsets(view)
     val systemBarsInsets = insets?.getInsets(WindowInsetsCompat.Type.systemBars())
     // Android 15+ has edge-to-edge enabled by default and we need to pad the system bars here manually
-    val padSystemBars = android.os.Build.VERSION.SDK_INT > 34
+    val padSystemBars = android.os.Build.VERSION.SDK_INT >= 35
     val statusBarHeightPx = if (padSystemBars) systemBarsInsets?.top ?: 0 else 0
     val navigationBarHeightPx = if (padSystemBars) systemBarsInsets?.bottom ?: 0 else 0
     val density = LocalDensity.current
@@ -158,7 +158,7 @@ fun LauncherApp(
     val backgroundColor = when {
         uiState.settings.wallpaperType != WallpaperType.SOLID_COLOR
                 && uiState.screenState is ScreenState.HomeScreenState
-        -> MaterialTheme.colorScheme.background.copy(alpha = 0f)
+        -> Color.Transparent
         else -> MaterialTheme.colorScheme.background
     }
     val coroutinesScope = rememberCoroutineScope()
