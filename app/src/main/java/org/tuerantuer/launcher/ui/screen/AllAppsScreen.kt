@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,7 +31,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -46,6 +50,8 @@ import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.components.ScrollButtonComponent
+import org.tuerantuer.launcher.ui.components.ScrollableLazyVerticalGrid
 import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
@@ -69,6 +75,10 @@ fun AllAppsScreen(
     val searchBarFocusRequester = remember { FocusRequester() }
     val isSearchBarVisible = remember { mutableStateOf(true) }
 
+    val scrollState = rememberLazyGridState()
+    val gestureScrollingEnabled = !uiState.settings.useScrollButtons
+    val coroutineScope = rememberCoroutineScope()
+
     // react to changes in the allApps list and update the filtered list (eg. when an app is installed/uninstalled)
     LaunchedEffect(uiState.allApps) {
         if (uiState.allApps !== filteredList.value) {
@@ -87,7 +97,7 @@ fun AllAppsScreen(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(LauncherTheme.all.onWallpaperBackground)
@@ -97,6 +107,7 @@ fun AllAppsScreen(
                 onClick = { focusManager.clearFocus() },
             ),
     ) {
+        Column(modifier = Modifier.fillMaxSize()) {
         HeaderComponent(
             text = stringResource(R.string.all_apps),
             onGoBack = onGoBack,
@@ -147,9 +158,11 @@ fun AllAppsScreen(
         }
         SearchToggleButton( isSearchBarVisible = isSearchBarVisible )
         val appIconSize = uiState.settings.appIconSize.sizeDp.dp
-        LazyVerticalGrid(
+       ScrollableLazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = appIconSize),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+           state = scrollState,
+           scrollEnabled = gestureScrollingEnabled
         ) {
             items(
                 items = filteredList.value.map { appItemInfo ->
@@ -165,6 +178,18 @@ fun AllAppsScreen(
                 HomeScreenItemComponent(
                     homeScreenItem = homeScreenItem,
                     iconSize = appIconSize,
+                )
+            }
+        }}
+        if (uiState.settings.useScrollButtons) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(),
+            ) {
+                ScrollButtonComponent(
+                    scrollState = scrollState,
+                    coroutineScope = coroutineScope,
                 )
             }
         }

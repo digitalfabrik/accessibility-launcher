@@ -4,6 +4,7 @@ import android.text.format.DateFormat
 import android.widget.TextClock
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -26,6 +28,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.components.ScrollButtonComponent
+import org.tuerantuer.launcher.ui.components.ScrollableLazyVerticalGrid
 import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.ButtonHomeScreenItem
 import org.tuerantuer.launcher.ui.data.HomeScreenItem
@@ -50,7 +54,10 @@ fun HomeScreen(
     onShowOnboarding: () -> Unit,
     onOpenApp: (appItemInfo: AppItemInfo) -> Unit,
 ) {
-    Column(
+    val scrollState = rememberLazyGridState()
+    val gestureScrollingEnabled = !uiState.settings.useScrollButtons
+    val coroutineScope = rememberCoroutineScope()
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(LauncherTheme.all.onWallpaperBackground),
@@ -94,9 +101,12 @@ fun HomeScreen(
             )
         }
         val appIconSize = uiState.settings.appIconSize.sizeDp.dp
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = appIconSize),
+        ScrollableLazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = appIconSize), // Defines the grid structure
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+            state = scrollState,
+            modifier = Modifier.fillMaxSize(),
+            scrollEnabled = gestureScrollingEnabled
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Clock()
@@ -108,6 +118,18 @@ fun HomeScreen(
                 HomeScreenItemComponent(
                     homeScreenItem = homeScreenItem,
                     iconSize = appIconSize,
+                )
+            }
+        }
+        if (uiState.settings.useScrollButtons) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(),
+            ) {
+                ScrollButtonComponent(
+                    scrollState = scrollState,
+                    coroutineScope = coroutineScope,
                 )
             }
         }

@@ -32,4 +32,9 @@ interface SettingsManager {
      * @see Settings.wallpaperType
      */
     suspend fun setWallpaperType(type: WallpaperType)
+
+    /**
+     * @see Settings.useScrollButtons
+     */
+    suspend fun setUseScrollButtons(useScrollButtons: Boolean)
 }

@@ -21,6 +21,7 @@ enum class SettingsPage(val parentPage: SettingsPage?) {
     DisplayTimeout(parentPage = VisualAssistant),
     Notifications(parentPage = VisualAssistant),
     InputDelay(parentPage = VisualAssistant),
+    ScrollBehavior(parentPage = VisualAssistant),
     HearingAssistant(parentPage = Assistant),
     NotificationSounds(parentPage = HearingAssistant),
     ScreenReader(parentPage = HearingAssistant),

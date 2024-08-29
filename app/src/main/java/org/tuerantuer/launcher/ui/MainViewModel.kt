@@ -52,4 +52,5 @@ interface MainViewModel {
     suspend fun onSetTextSize(appTextSize: AppTextSize)
     suspend fun onSetWallpaperType(wallpaperType: WallpaperType)
     suspend fun onSetWallpaper(@RawRes wallpaperRes: Int)
+    suspend fun onSetUseScrollButtons(useButtons: Boolean)
 }

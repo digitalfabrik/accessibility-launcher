@@ -100,6 +100,14 @@
     <string name="notifications_description">Du bekommst von verschiedenen Apps Push-Benachrichtigungen. Du kannst diese anpassen oder ganz auszustellen.</string>
     <string name="input_delay">Eingabe-Einstellungen</string>
     <string name="input_delay_description">Dein Bildschirm reagiert auf deine Berührung.\nReagiert der Bildschirm zu schnell?\nDann kannst du eine Verzögerung in den Geräte-Einstellungen einstellen.\nDann reagiert dein Bildschirm langsamer auf die Berührungen.</string>
+    <string name="scroll_behavior">Scrollverhalten</string>
+    <string name="use_scroll_buttons">Buttons</string>
+    <string name="use_scroll_gesture">Wischgeste</string>
+    <string name="scroll_up">Hoch</string>
+    <string name="scroll_down">Runter</string>
+    <string name="empty"></string>
+    <string name="scroll_gesture_description">Scrollen per Wischgeste bedeutet, dass du mit deinem Finger über den Bildschimrm streichst, um nach oben oder unten zu gehen.</string>
+    <string name="scroll_buttons_description">Scrollen mit einem Button bedeutet dass du auf einen Knopf auf dem Bildschirm drückst, um nach oben oder unten zu gehen.</string>
     <string name="notification_sounds">Benachrichtigungs-Töne</string>
     <string name="notification_sounds_description">Du kannst die Benachrichtigungs-Töne einstellen. Benachrichtigungs-Töne hörst du zum Beispiel bei Anrufen oder Nachrichten.\nDas kannst du einstellen:\nWelchen Benachrichtigungs-Ton will ich hören?\n\nWelche Benachrichtigungs-Töne will ich hören?\nDas kannst du in den Geräte-Einstellungen einstellen.</string>
     <string name="screen_reader">Vorlese-Funktion</string>

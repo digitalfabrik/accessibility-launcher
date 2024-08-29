@@ -194,6 +194,9 @@ fun Screens(
                 coroutinesScope.launch { mainViewModel.onSetWallpaperType(wallpaperType) }
             },
             onSetWallpaper = { wallpaperRes -> coroutinesScope.launch { mainViewModel.onSetWallpaper(wallpaperRes) } },
+            onSetUseScrollButtons = { useButtons ->
+                coroutinesScope.launch { mainViewModel.onSetUseScrollButtons(useButtons) }
+            },
             onGoBack = mainViewModel::goBack,
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(

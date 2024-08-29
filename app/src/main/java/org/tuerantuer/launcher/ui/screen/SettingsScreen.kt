@@ -1,5 +1,6 @@
 package org.tuerantuer.launcher.ui.screen
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -37,8 +38,11 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Message
+import androidx.compose.material.icons.outlined.RadioButtonChecked
+import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.ToggleOn
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,6 +65,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.datastore.dataStore
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import org.tuerantuer.launcher.R
@@ -81,6 +86,7 @@ import org.tuerantuer.launcher.ui.motion.CustomMaterialMotion
 import org.tuerantuer.launcher.ui.motion.sharedXMotionSpec
 import org.tuerantuer.launcher.ui.motion.sharedXMotionSpecReverse
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
+import timber.log.Timber
 
 /**
  * The screen where the user can change the launcher settings.
@@ -104,6 +110,7 @@ fun SettingsScreen(
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
+    onSetUseScrollButtons: (useButtons: Boolean) -> Unit = {},
 ) {
     Column(
         Modifier
@@ -154,6 +161,7 @@ fun SettingsScreen(
                     onGoBack = onGoBack,
                     onSetWallpaperType = onSetWallpaperType,
                     onSetWallpaper = onSetWallpaper,
+                    onSetUseScrollButtons = onSetUseScrollButtons,
                 )
             }
         }
@@ -179,6 +187,7 @@ fun Header(
         SettingsPage.DisplayTimeout -> R.string.display_timeout
         SettingsPage.Notifications -> R.string.notifications
         SettingsPage.InputDelay -> R.string.input_delay
+        SettingsPage.ScrollBehavior -> R.string.scroll_behavior
         SettingsPage.NotificationSounds -> R.string.notification_sounds
         SettingsPage.ScreenReader -> R.string.screen_reader
         SettingsPage.VoiceCommands -> R.string.voice_commands
@@ -215,6 +224,7 @@ fun ColumnScope.MainContent(
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
+    onSetUseScrollButtons: (useButtons: Boolean) -> Unit = {},
 ) {
     val screenState = uiState.screenState
     require(screenState is ScreenState.SettingsState)
@@ -263,6 +273,10 @@ fun ColumnScope.MainContent(
             onOpenSystemSettings = onOpenSystemSettings,
         )
         SettingsPage.InputDelay -> InputDelayScreen(
+        )
+        SettingsPage.ScrollBehavior -> ScrollBehaviorScreen(
+            uiState = uiState,
+            onSetUseScrollButtons = onSetUseScrollButtons,
         )
         SettingsPage.NotificationSounds -> NotificationSoundsScreen(
             onOpenSoundSettings = onOpenSoundSettings,
@@ -372,6 +386,9 @@ fun ColumnScope.VisualAssistantScreen(
             },
             SettingsButtonData(R.string.input_delay) {
                 onOpenSettingsPage(SettingsPage.InputDelay)
+            },
+            SettingsButtonData(R.string.scroll_behavior) {
+                onOpenSettingsPage(SettingsPage.ScrollBehavior)
             },
         )
         SettingsButtonList(settingsButtons)
@@ -594,6 +611,60 @@ fun ColumnScope.InputDelayScreen(
         )
     }
     SettingsInfoCard()
+}
+
+@Composable
+fun ColumnScope.ScrollBehaviorScreen(
+    uiState: UiState,
+    onSetUseScrollButtons: (useButtons: Boolean) -> Unit = {},
+) {
+    val gestureIcon =
+        if (uiState.settings.useScrollButtons) Icons.Outlined.RadioButtonUnchecked else Icons.Outlined.RadioButtonChecked
+    val buttonIcon =
+        if (uiState.settings.useScrollButtons) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked
+
+    SettingsFrame() {
+        Column() {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp), // todo padding or no padding?
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text("Wischgeste")
+                ExtendedFabComponent(
+                    onClick = {
+                        onSetUseScrollButtons(false)
+                    },
+                    textRes = R.string.empty, // todo make textres optional or use different button component
+                    imageVector = gestureIcon,
+                    shape = RoundedCornerShape(32.dp),
+                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                )
+            }
+            SettingsBody(R.string.scroll_gesture_description)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp), // todo padding or no padding?
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Buttons")
+                ExtendedFabComponent(
+                    onClick = {
+                        onSetUseScrollButtons(true)
+                    },
+                    textRes = R.string.empty, // todo make textres optional or use different button component
+                    imageVector = buttonIcon,
+                    shape = RoundedCornerShape(32.dp),
+                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                )
+            }
+            SettingsBody(R.string.scroll_buttons_description)
+        }
+    }
 }
 
 @Composable
