@@ -136,7 +136,7 @@ fun HomeScreen(
                         .padding(8.dp)
                         .height(3.dp)
                         .background(
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = LauncherTheme.all.onWallpaperText.color,
                             shape = RoundedCornerShape(3.dp),
                         ),
                 )
