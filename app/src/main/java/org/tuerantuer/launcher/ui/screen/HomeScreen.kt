@@ -62,7 +62,8 @@ fun HomeScreen(
     val scrollState = rememberLazyGridState()
     val gestureScrollingEnabled = !uiState.settings.useScrollButtons
     val coroutineScope = rememberCoroutineScope()
-    Box(
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(LauncherTheme.all.onWallpaperBackground),
@@ -112,6 +113,7 @@ fun HomeScreen(
             state = scrollState,
             modifier = Modifier
                 .fillMaxSize()
+                .weight(1f)
                 .setScrollingEnabled(gestureScrollingEnabled),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
@@ -150,16 +152,10 @@ fun HomeScreen(
             }
         }
         if (uiState.settings.useScrollButtons) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth(),
-            ) {
                 ScrollButtonComponent(
                     scrollState = scrollState,
                     coroutineScope = coroutineScope,
                 )
-            }
         }
     }
 }
