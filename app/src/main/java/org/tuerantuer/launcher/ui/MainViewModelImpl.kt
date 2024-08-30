@@ -136,6 +136,10 @@ class MainViewModelImpl(
         settingsManager.setWallpaperType(wallpaperType)
     }
 
+    override suspend fun onSetUseScrollButtons(useButtons: Boolean) {
+        settingsManager.setUseScrollButtons(useButtons)
+    }
+
     override fun onGoToNextOnboardingStep() {
         takeOnboardingStep(1)
     }

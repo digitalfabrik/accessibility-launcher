@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,7 +31,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -46,10 +50,12 @@ import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.components.ScrollButtonComponent
 import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
+import org.tuerantuer.launcher.util.extension.setScrollingEnabled
 import java.util.Locale
 
 // Used to remove whitespaces from a string.
@@ -69,6 +75,10 @@ fun AllAppsScreen(
     val searchBarFocusRequester = remember { FocusRequester() }
     val isSearchBarVisible = remember { mutableStateOf(true) }
 
+    val scrollState = rememberLazyGridState()
+    val gestureScrollingEnabled = !uiState.settings.useScrollButtons
+    val coroutineScope = rememberCoroutineScope()
+
     // react to changes in the allApps list and update the filtered list (eg. when an app is installed/uninstalled)
     LaunchedEffect(uiState.allApps) {
         if (uiState.allApps !== filteredList.value) {
@@ -87,7 +97,7 @@ fun AllAppsScreen(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(LauncherTheme.all.onWallpaperBackground)
@@ -97,74 +107,90 @@ fun AllAppsScreen(
                 onClick = { focusManager.clearFocus() },
             ),
     ) {
-        HeaderComponent(
-            text = stringResource(R.string.all_apps),
-            onGoBack = onGoBack,
-        )
-        AnimatedVisibility(visible = isSearchBarVisible.value) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-            ) {
-                OutlinedTextField(
+        Column(modifier = Modifier.fillMaxSize()) {
+            HeaderComponent(
+                text = stringResource(R.string.all_apps),
+                onGoBack = onGoBack,
+            )
+            AnimatedVisibility(visible = isSearchBarVisible.value) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .background(LauncherTheme.all.onWallpaperBackground)
-                        .focusRequester(searchBarFocusRequester),
-                    value = searchQuery.value,
-                    singleLine = true,
-                    onValueChange = {
-                        searchQuery.value = it
-                        filteredList.value = filter(searchQuery.value, uiState.allApps)
-                    },
-                    trailingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = null,
-                            tint = LauncherTheme.all.onWallpaperText.color,
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                        )
-                    },
-                    placeholder = {
-                        Text(
-                            stringResource(R.string.search),
-                            style = LauncherTheme.all.onWallpaperText.copy(textIndent = TextIndent(8.sp)),
-                        )
-                    },
-                    textStyle = LauncherTheme.all.onWallpaperText.copy(textIndent = TextIndent(8.sp)),
-                    shape = RoundedCornerShape(32.dp),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                    keyboardActions = KeyboardActions(
-                        onSearch = {
-                            searchQuery.value
-                            focusManager.clearFocus()
+                        .padding(16.dp),
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .background(LauncherTheme.all.onWallpaperBackground)
+                            .focusRequester(searchBarFocusRequester),
+                        value = searchQuery.value,
+                        singleLine = true,
+                        onValueChange = {
+                            searchQuery.value = it
+                            filteredList.value = filter(searchQuery.value, uiState.allApps)
                         },
-                    ),
-                )
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = null,
+                                tint = LauncherTheme.all.onWallpaperText.color,
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                            )
+                        },
+                        placeholder = {
+                            Text(
+                                stringResource(R.string.search),
+                                style = LauncherTheme.all.onWallpaperText.copy(textIndent = TextIndent(8.sp)),
+                            )
+                        },
+                        textStyle = LauncherTheme.all.onWallpaperText.copy(textIndent = TextIndent(8.sp)),
+                        shape = RoundedCornerShape(32.dp),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                        keyboardActions = KeyboardActions(
+                            onSearch = {
+                                searchQuery.value
+                                focusManager.clearFocus()
+                            },
+                        ),
+                    )
+                }
+            }
+            SearchToggleButton(isSearchBarVisible = isSearchBarVisible)
+            val appIconSize = uiState.settings.appIconSize.sizeDp.dp
+            LazyVerticalGrid(
+                modifier = Modifier.setScrollingEnabled(gestureScrollingEnabled),
+                columns = GridCells.Adaptive(minSize = appIconSize),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                state = scrollState,
+            ) {
+                items(
+                    items = filteredList.value.map { appItemInfo ->
+                        AppHomeScreenItem(
+                            appItemInfo,
+                            onClick = { onOpenApp(appItemInfo) },
+                        )
+                    },
+                    key = { homeScreenItems ->
+                        homeScreenItems.key
+                    },
+                ) { homeScreenItem ->
+                    HomeScreenItemComponent(
+                        homeScreenItem = homeScreenItem,
+                        iconSize = appIconSize,
+                    )
+                }
             }
         }
-        SearchToggleButton( isSearchBarVisible = isSearchBarVisible )
-        val appIconSize = uiState.settings.appIconSize.sizeDp.dp
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = appIconSize),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        ) {
-            items(
-                items = filteredList.value.map { appItemInfo ->
-                    AppHomeScreenItem(
-                        appItemInfo,
-                        onClick = { onOpenApp(appItemInfo) },
-                    )
-                },
-                key = { homeScreenItems ->
-                    homeScreenItems.key
-                },
-            ) { homeScreenItem ->
-                HomeScreenItemComponent(
-                    homeScreenItem = homeScreenItem,
-                    iconSize = appIconSize,
+        if (uiState.settings.useScrollButtons) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(),
+            ) {
+                ScrollButtonComponent(
+                    scrollState = scrollState,
+                    coroutineScope = coroutineScope,
                 )
             }
         }
@@ -204,7 +230,7 @@ fun normalizeName(name: String): String {
 
 @Composable
 fun SearchToggleButton(
-    isSearchBarVisible: MutableState<Boolean>
+    isSearchBarVisible: MutableState<Boolean>,
 ) {
     val textRes by rememberUpdatedState(if (isSearchBarVisible.value) R.string.close_search else R.string.open_search)
     val color by animateColorAsState(
@@ -213,7 +239,7 @@ fun SearchToggleButton(
         } else {
             MaterialTheme.colorScheme.secondaryContainer
         },
-        animationSpec = tween(durationMillis = 300), label = ""
+        animationSpec = tween(durationMillis = 300), label = "",
     )
 
     ExtendedFabComponent(
@@ -227,6 +253,6 @@ fun SearchToggleButton(
         textRes = textRes,
         onClick = {
             isSearchBarVisible.value = !isSearchBarVisible.value
-        }
+        },
     )
 }

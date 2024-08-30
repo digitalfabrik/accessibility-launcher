@@ -17,9 +17,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,12 +33,14 @@ import androidx.compose.ui.viewinterop.AndroidView
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
+import org.tuerantuer.launcher.ui.components.ScrollButtonComponent
 import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.ButtonHomeScreenItem
 import org.tuerantuer.launcher.ui.data.HomeScreenItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
+import org.tuerantuer.launcher.util.extension.setScrollingEnabled
 import org.tuerantuer.launcher.util.extension.setShadow
 import java.util.Locale
 
@@ -55,6 +59,10 @@ fun HomeScreen(
     onShowOnboarding: () -> Unit,
     onOpenApp: (appItemInfo: AppItemInfo) -> Unit,
 ) {
+    val scrollState = rememberLazyGridState()
+    val gestureScrollingEnabled = !uiState.settings.useScrollButtons
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -102,6 +110,11 @@ fun HomeScreen(
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = appIconSize),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+            state = scrollState,
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f)
+                .setScrollingEnabled(gestureScrollingEnabled),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Clock()
@@ -137,6 +150,12 @@ fun HomeScreen(
                     iconSize = appIconSize,
                 )
             }
+        }
+        if (uiState.settings.useScrollButtons) {
+                ScrollButtonComponent(
+                    scrollState = scrollState,
+                    coroutineScope = coroutineScope,
+                )
         }
     }
 }

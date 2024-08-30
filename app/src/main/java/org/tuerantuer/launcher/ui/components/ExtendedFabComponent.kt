@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 fun ExtendedFabComponent(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(16.dp),
-    textRes: Int,
+    textRes: Int? = null,
     imageVector: ImageVector?,
     color: Color = MaterialTheme.colorScheme.primaryContainer,
     textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -33,14 +33,17 @@ fun ExtendedFabComponent(
         onClick = onClick,
         containerColor = color,
         text = {
-            Text(
-                text = stringResource(textRes),
-                color = textColor,
-            )
+            textRes?.let {
+                Text(
+                    text = stringResource(id = it),
+                    color = textColor,
+                )
+            }
         },
         icon = {
             if (imageVector != null) {
                 Icon(
+                    modifier = if (textRes == null) Modifier.padding(start = 16.dp) else Modifier,
                     imageVector = imageVector,
                     contentDescription = null,
                 )

@@ -68,7 +68,9 @@ fun EditFavoritesScreen(
 ) {
     val appIconSize = uiState.settings.appIconSize.sizeDp.dp
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
     ) {
         HeaderComponent(
             text = stringResource(R.string.select_favorites),
@@ -235,7 +237,10 @@ fun AppListItem(
                 onCheckedChange = { isChecked = it; onAppChecked(appItemInfo, isChecked) },
             )
             Image(
-                modifier = Modifier.width(appIconSize).height(appIconSize).padding(vertical = 8.dp),
+                modifier = Modifier
+                    .width(appIconSize)
+                    .height(appIconSize)
+                    .padding(vertical = 8.dp),
                 painter = rememberDrawablePainter(appItemInfo.icon),
                 contentDescription = null,
             )

@@ -214,6 +214,9 @@ fun Screens(
             },
             onSetTextSize = { appTextSize -> coroutinesScope.launch { mainViewModel.onSetTextSize(appTextSize) } },
             onSetFavorites = { favorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(favorites) } },
+            onSetUseScrollButtons = { useButtons ->
+                coroutinesScope.launch { mainViewModel.onSetUseScrollButtons(useButtons) }
+            },
         )
         is ScreenState.SettingsState -> SettingsScreen(
             uiState = uiState,
@@ -235,6 +238,9 @@ fun Screens(
                 coroutinesScope.launch { mainViewModel.onSetWallpaperType(wallpaperType) }
             },
             onSetWallpaper = { wallpaperRes -> coroutinesScope.launch { mainViewModel.onSetWallpaper(wallpaperRes) } },
+            onSetScrollBehavior = { useButtons ->
+                coroutinesScope.launch { mainViewModel.onSetUseScrollButtons(useButtons) }
+            },
             onGoBack = mainViewModel::goBack,
         )
         is ScreenState.EditFavoritesScreenState -> EditFavoritesScreen(

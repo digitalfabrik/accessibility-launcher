@@ -68,7 +68,7 @@ object LauncherTheme {
 fun LauncherTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     wallpaperType: WallpaperType = WallpaperType.SOLID_COLOR,
-    scalingFactor:Float = 1.0f,
+    scalingFactor: Float = 1.0f,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme

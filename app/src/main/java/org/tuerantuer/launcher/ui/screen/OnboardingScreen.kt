@@ -57,16 +57,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.edit
 import com.google.android.material.textview.MaterialTextView
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.data.datastore.AppIconSize
 import org.tuerantuer.launcher.data.datastore.AppTextSize
 import org.tuerantuer.launcher.data.datastore.Settings
-import org.tuerantuer.launcher.data.datastore.SettingsManagerImpl
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
+import org.tuerantuer.launcher.ui.components.ScrollBehaviorScreen
 import org.tuerantuer.launcher.ui.components.ScrollScrimComponent
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
@@ -93,6 +91,7 @@ fun OnboardingScreen(
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
     onSetTextSize: (appTextSize: AppTextSize) -> Unit = {},
     onSetFavorites: (newFavorites: List<AppItemInfo>) -> Unit = {},
+    onSetUseScrollButtons: (useButtons: Boolean) -> Unit = {},
 ) {
     val screenState = uiState.screenState
     require(screenState is ScreenState.OnboardingState)
@@ -116,6 +115,7 @@ fun OnboardingScreen(
         OnboardingPage.SET_FAVORITES_INTRO_1 -> R.string.setup_10
         OnboardingPage.SET_FAVORITES_INTRO_2 -> R.string.setup_11
         OnboardingPage.SET_FAVORITES_INTRO_3 -> R.string.setup_12
+        OnboardingPage.SCROLL_BEHAVIOR_INTRO -> R.string.scroll_behavior_description
         OnboardingPage.SETUP_FINISHED_1 -> R.string.setup_13
         OnboardingPage.SETUP_FINISHED_2 -> R.string.setup_14
         OnboardingPage.SETUP_FINISHED_3 -> R.string.setup_15
@@ -195,63 +195,68 @@ fun OnboardingScreen(
                     onSetIconSize = onSetIconSize,
                     onSetTextSize = onSetTextSize,
                     selectedFavorites = selectedFavorites,
-                )
+                    onSetUseScrollButtons = onSetUseScrollButtons,
+
+                    )
             }
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(2f),
-                // only round top corners
-                shape = MaterialTheme.shapes.medium.copy(
-                    bottomEnd = CornerSize(0f),
-                    bottomStart = CornerSize(0f),
-                ),
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
+            Box() {
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .run { if (contentTextRes != null) heightIn(min = 260.dp) else this }
-                        .padding(
-                            top = 32.dp,
-                            bottom = 0.dp,
-                            start = 24.dp,
-                            end = 24.dp,
-                        ),
+                        .align(Alignment.BottomCenter)
+                        .wrapContentHeight(unbounded = true),
+                    // only round top corners
+                    shape = MaterialTheme.shapes.medium.copy(
+                        bottomEnd = CornerSize(0f),
+                        bottomStart = CornerSize(0f),
+                    ),
                 ) {
-                    if (contentTextRes != null) {
-                        AnimatedContent(
-                            modifier = Modifier
-                                .wrapContentHeight()
-                                .fillMaxWidth(),
-                            targetState = stringResource(contentTextRes),
-                            transitionSpec = {
-                                fadeIn(animationSpec = tween(500)) with
-                                        fadeOut(animationSpec = tween(100))
-                            },
-                            label = "contentTextAnimation",
-                        ) { targetText ->
-                            Text(
-                                text = targetText,
-                                Modifier
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .run { if (contentTextRes != null) heightIn(min = 260.dp) else this }
+                            .padding(
+                                top = 32.dp,
+                                bottom = 0.dp,
+                                start = 24.dp,
+                                end = 24.dp,
+                            ),
+                    ) {
+                        if (contentTextRes != null) {
+                            AnimatedContent(
+                                modifier = Modifier
                                     .wrapContentHeight()
-                                    .fillMaxWidth()
-                                    .padding(bottom = 16.dp),
-                                style = MaterialTheme.typography.titleSmall,
-                                textAlign = TextAlign.Center,
-                            )
+                                    .fillMaxWidth(),
+                                targetState = stringResource(contentTextRes),
+                                transitionSpec = {
+                                    fadeIn(animationSpec = tween(500)) with
+                                            fadeOut(animationSpec = tween(100))
+                                },
+                                label = "contentTextAnimation",
+                            ) { targetText ->
+                                Text(
+                                    text = targetText,
+                                    Modifier
+                                        .wrapContentHeight()
+                                        .fillMaxWidth()
+                                        .padding(bottom = 16.dp),
+                                    style = MaterialTheme.typography.titleSmall,
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
                         }
+                        SheetButtons(
+                            page = page,
+                            onSetDefaultLauncher = onSetDefaultLauncher,
+                            onGoToNextStep = onGoToNextStep,
+                            onSetFavorites = {
+                                // TODO: Don't sort favorites by name. Instead, allow the user to reorder them.
+                                onSetFavorites.invoke(selectedFavorites.value.sorted())
+                            },
+                        )
                     }
-                    SheetButtons(
-                        page = page,
-                        onSetDefaultLauncher = onSetDefaultLauncher,
-                        onGoToNextStep = onGoToNextStep,
-                        onSetFavorites = {
-                            // TODO: Don't sort favorites by name. Instead, allow the user to reorder them.
-                            onSetFavorites.invoke(selectedFavorites.value.sorted())
-                        },
-                    )
                 }
             }
         }
@@ -266,7 +271,7 @@ fun SheetButtons(
     onSetFavorites: () -> Unit,
 ) {
     Box(
-        modifier = Modifier.heightIn(min = 200.dp),
+        modifier = Modifier.heightIn(min = 100.dp),
         contentAlignment = Alignment.Center,
     ) {
         when (page) {
@@ -335,6 +340,13 @@ fun SheetButtons(
                     imageVector = null,
                 )
             }
+            OnboardingPage.SET_SCROLL_BEHAVIOR -> {
+                ExtendedFabComponent(
+                    onClick = onGoToNextStep,
+                    textRes = R.string.next_step,
+                    imageVector = Icons.Filled.ArrowForward,
+                )
+            }
             OnboardingPage.SETUP_FINISHED_3 -> {
                 ExtendedFabComponent(
                     onClick = onGoToNextStep,
@@ -358,6 +370,7 @@ fun ColumnScope.MainContent(
     uiState: UiState,
     onSetIconSize: (appIconSize: AppIconSize) -> Unit = {},
     onSetTextSize: (appTextSize: AppTextSize) -> Unit = {},
+    onSetUseScrollButtons: (useButtons: Boolean) -> Unit = {},
     selectedFavorites: MutableState<List<AppItemInfo>>,
 ) {
     val screenState = uiState.screenState as ScreenState.OnboardingState
@@ -403,6 +416,12 @@ fun ColumnScope.MainContent(
                 },
                 onAppMoved = { posA, posB ->
                 },
+            )
+        }
+        OnboardingPage.SET_SCROLL_BEHAVIOR -> {
+            ScrollBehaviorScreen(
+                uiState = uiState,
+                onSetScrollBehavior = onSetUseScrollButtons,
             )
         }
         else -> {
@@ -454,6 +473,8 @@ private fun getMainContentIconResFromPage(page: OnboardingPage): Int? {
         OnboardingPage.SETUP_FINISHED_2,
         OnboardingPage.SETUP_FINISHED_3,
         -> R.drawable.onboarding_image_9
+        OnboardingPage.SCROLL_BEHAVIOR_INTRO,
+        -> R.drawable.onboarding_image_10
         else -> null
     }
 }

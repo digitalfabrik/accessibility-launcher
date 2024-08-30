@@ -70,6 +70,7 @@ import org.tuerantuer.launcher.data.datastore.WallpaperType
 import org.tuerantuer.launcher.ui.components.BottomSheetComponent
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
+import org.tuerantuer.launcher.ui.components.ScrollBehaviorScreen
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
 import org.tuerantuer.launcher.ui.components.SetTextSizeComponent
@@ -104,6 +105,7 @@ fun SettingsScreen(
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
+    onSetScrollBehavior: (useButtons: Boolean) -> Unit = {},
 ) {
     Column(
         Modifier
@@ -154,6 +156,7 @@ fun SettingsScreen(
                     onGoBack = onGoBack,
                     onSetWallpaperType = onSetWallpaperType,
                     onSetWallpaper = onSetWallpaper,
+                    onSetScrollBehavior = onSetScrollBehavior,
                 )
             }
         }
@@ -179,6 +182,7 @@ fun Header(
         SettingsPage.DisplayTimeout -> R.string.display_timeout
         SettingsPage.Notifications -> R.string.notifications
         SettingsPage.InputDelay -> R.string.input_delay
+        SettingsPage.ScrollBehavior -> R.string.scroll_behavior
         SettingsPage.NotificationSounds -> R.string.notification_sounds
         SettingsPage.ScreenReader -> R.string.screen_reader
         SettingsPage.VoiceCommands -> R.string.voice_commands
@@ -215,6 +219,7 @@ fun ColumnScope.MainContent(
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
+    onSetScrollBehavior: (useButtons: Boolean) -> Unit = {},
 ) {
     val screenState = uiState.screenState
     require(screenState is ScreenState.SettingsState)
@@ -264,6 +269,10 @@ fun ColumnScope.MainContent(
         )
         SettingsPage.InputDelay -> InputDelayScreen(
         )
+        SettingsPage.ScrollBehavior -> ScrollBehaviorScreen(
+            uiState = uiState,
+            onSetScrollBehavior = onSetScrollBehavior,
+        )
         SettingsPage.NotificationSounds -> NotificationSoundsScreen(
             onOpenSoundSettings = onOpenSoundSettings,
         )
@@ -286,7 +295,6 @@ fun ColumnScope.MainContent(
         SettingsPage.VisualAssistant -> VisualAssistantScreen(
             onOpenSettingsPage = onOpenSettingsPage,
         )
-        SettingsPage.UninstallApps -> {}
         SettingsPage.Licenses -> LicensesScreen(
             onOpenSettingsPage = onOpenSettingsPage,
         )
@@ -372,6 +380,9 @@ fun ColumnScope.VisualAssistantScreen(
             },
             SettingsButtonData(R.string.input_delay) {
                 onOpenSettingsPage(SettingsPage.InputDelay)
+            },
+            SettingsButtonData(R.string.scroll_behavior) {
+                onOpenSettingsPage(SettingsPage.ScrollBehavior)
             },
         )
         SettingsButtonList(settingsButtons)
@@ -829,6 +840,7 @@ fun ColumnScope.SettingsBody(textRes: Int) {
     ScrollableColumn(
         modifier = Modifier
             .weight(1f, fill = false)
+            .wrapContentHeight()
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp),
     ) {

@@ -42,7 +42,7 @@ fun HeaderComponent(
                 .fillMaxWidth()
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.Start,
         ) {
             IconButton(onClick = onGoBack) {
                 Icon(

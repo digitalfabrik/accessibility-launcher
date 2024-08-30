@@ -24,4 +24,9 @@ data class Settings(
      * @see WallpaperType
      */
     val wallpaperType: WallpaperType = WallpaperType.SOLID_COLOR,
+
+    /**
+     * Whether the user wants to scroll with buttons instead of gestures on the HomeScreen and AllAppsScreen.
+     */
+    val useScrollButtons: Boolean = false,
 )
