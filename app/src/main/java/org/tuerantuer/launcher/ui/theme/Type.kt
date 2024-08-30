@@ -19,6 +19,7 @@ const val LINE_HEIGHT_MULTIPLIER = 1.1f
  * - title small for Onboarding screen text
  * - bodyLarge for HomescreenItemComponents & Buttons
  * - bodyMedium for Slider text in the settings screens
+ * - bodySmall for text in the onboarding screens
  * - labelLarge for button text and options on the settingsscreen (assistent / standard einstelllen / ...)
  */
 fun createTypography(scalingFactor: Float): Typography {
@@ -49,7 +50,10 @@ fun createTypography(scalingFactor: Float): Typography {
             unscaledFontSize = 20.sp,
             scalingFactor = scalingFactor,
         ),
-        bodySmall = defaultTypography.bodySmall.scaleSizeWithHyphens(scalingFactor),
+        bodySmall = defaultTypography.bodySmall.scaleSizeWithHyphens(
+            unscaledFontSize = 20.sp,
+            scalingFactor = scalingFactor,
+        ),
         labelLarge = defaultTypography.labelLarge.scaleSizeWithHyphens(scalingFactor),
         labelMedium = defaultTypography.labelMedium.scaleSizeWithHyphens(scalingFactor),
         labelSmall = defaultTypography.labelSmall.scaleSizeWithHyphens(scalingFactor),

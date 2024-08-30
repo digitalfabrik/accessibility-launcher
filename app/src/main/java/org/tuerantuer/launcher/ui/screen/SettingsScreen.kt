@@ -75,6 +75,7 @@ import org.tuerantuer.launcher.data.datastore.WallpaperType
 import org.tuerantuer.launcher.ui.components.BottomSheetComponent
 import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
+import org.tuerantuer.launcher.ui.components.ScrollBehaviorScreen
 import org.tuerantuer.launcher.ui.components.ScrollableColumn
 import org.tuerantuer.launcher.ui.components.SetIconSizeComponent
 import org.tuerantuer.launcher.ui.components.SetTextSizeComponent
@@ -161,7 +162,7 @@ fun SettingsScreen(
                     onGoBack = onGoBack,
                     onSetWallpaperType = onSetWallpaperType,
                     onSetWallpaper = onSetWallpaper,
-                    onSetUseScrollButtons = onSetUseScrollButtons,
+                    onSetScrollBehavior = onSetUseScrollButtons,
                 )
             }
         }
@@ -224,7 +225,7 @@ fun ColumnScope.MainContent(
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
-    onSetUseScrollButtons: (useButtons: Boolean) -> Unit = {},
+    onSetScrollBehavior: (useButtons: Boolean) -> Unit = {},
 ) {
     val screenState = uiState.screenState
     require(screenState is ScreenState.SettingsState)
@@ -276,7 +277,7 @@ fun ColumnScope.MainContent(
         )
         SettingsPage.ScrollBehavior -> ScrollBehaviorScreen(
             uiState = uiState,
-            onSetUseScrollButtons = onSetUseScrollButtons,
+            onSetScrollBehavior = onSetScrollBehavior,
         )
         SettingsPage.NotificationSounds -> NotificationSoundsScreen(
             onOpenSoundSettings = onOpenSoundSettings,
@@ -614,60 +615,6 @@ fun ColumnScope.InputDelayScreen(
 }
 
 @Composable
-fun ColumnScope.ScrollBehaviorScreen(
-    uiState: UiState,
-    onSetUseScrollButtons: (useButtons: Boolean) -> Unit = {},
-) {
-    val gestureIcon =
-        if (uiState.settings.useScrollButtons) Icons.Outlined.RadioButtonUnchecked else Icons.Outlined.RadioButtonChecked
-    val buttonIcon =
-        if (uiState.settings.useScrollButtons) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked
-
-    SettingsFrame() {
-        Column() {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp), // todo padding or no padding?
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text("Wischgeste")
-                ExtendedFabComponent(
-                    onClick = {
-                        onSetUseScrollButtons(false)
-                    },
-                    textRes = R.string.empty, // todo make textres optional or use different button component
-                    imageVector = gestureIcon,
-                    shape = RoundedCornerShape(32.dp),
-                    color = MaterialTheme.colorScheme.tertiaryContainer,
-                )
-            }
-            SettingsBody(R.string.scroll_gesture_description)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp), // todo padding or no padding?
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("Buttons")
-                ExtendedFabComponent(
-                    onClick = {
-                        onSetUseScrollButtons(true)
-                    },
-                    textRes = R.string.empty, // todo make textres optional or use different button component
-                    imageVector = buttonIcon,
-                    shape = RoundedCornerShape(32.dp),
-                    color = MaterialTheme.colorScheme.tertiaryContainer,
-                )
-            }
-            SettingsBody(R.string.scroll_buttons_description)
-        }
-    }
-}
-
-@Composable
 fun ColumnScope.NotificationSoundsScreen(
     onOpenSoundSettings: () -> Unit = {},
 ) {
@@ -900,6 +847,7 @@ fun ColumnScope.SettingsBody(textRes: Int) {
     ScrollableColumn(
         modifier = Modifier
             .weight(1f, fill = false)
+            .wrapContentHeight()
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp),
     ) {

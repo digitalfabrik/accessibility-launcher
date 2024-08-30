@@ -173,6 +173,9 @@ fun Screens(
             },
             onSetTextSize = { appTextSize -> coroutinesScope.launch { mainViewModel.onSetTextSize(appTextSize) } },
             onSetFavorites = { favorites -> coroutinesScope.launch { mainViewModel.onSetFavorites(favorites) } },
+            onSetUseScrollButtons = { useButtons ->
+                coroutinesScope.launch { mainViewModel.onSetUseScrollButtons(useButtons) }
+            },
         )
         is ScreenState.SettingsState -> SettingsScreen(
             uiState = uiState,
