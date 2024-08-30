@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,11 +51,11 @@ import org.tuerantuer.launcher.ui.components.ExtendedFabComponent
 import org.tuerantuer.launcher.ui.components.HeaderComponent
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
 import org.tuerantuer.launcher.ui.components.ScrollButtonComponent
-import org.tuerantuer.launcher.ui.components.ScrollableLazyVerticalGrid
 import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
+import org.tuerantuer.launcher.util.extension.setScrollingEnabled
 import java.util.Locale
 
 // Used to remove whitespaces from a string.
@@ -157,11 +158,11 @@ fun AllAppsScreen(
             }
             SearchToggleButton(isSearchBarVisible = isSearchBarVisible)
             val appIconSize = uiState.settings.appIconSize.sizeDp.dp
-            ScrollableLazyVerticalGrid(
+            LazyVerticalGrid(
+                modifier = Modifier.setScrollingEnabled(gestureScrollingEnabled),
                 columns = GridCells.Adaptive(minSize = appIconSize),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                 state = scrollState,
-                scrollEnabled = gestureScrollingEnabled,
             ) {
                 items(
                     items = filteredList.value.map { appItemInfo ->

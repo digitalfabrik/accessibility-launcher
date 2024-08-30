@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,13 +34,13 @@ import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.app.AppItemInfo
 import org.tuerantuer.launcher.ui.components.HomeScreenItemComponent
 import org.tuerantuer.launcher.ui.components.ScrollButtonComponent
-import org.tuerantuer.launcher.ui.components.ScrollableLazyVerticalGrid
 import org.tuerantuer.launcher.ui.data.AppHomeScreenItem
 import org.tuerantuer.launcher.ui.data.ButtonHomeScreenItem
 import org.tuerantuer.launcher.ui.data.HomeScreenItem
 import org.tuerantuer.launcher.ui.data.ScreenState
 import org.tuerantuer.launcher.ui.data.UiState
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
+import org.tuerantuer.launcher.util.extension.setScrollingEnabled
 import org.tuerantuer.launcher.util.extension.setShadow
 import java.util.Locale
 
@@ -105,12 +106,13 @@ fun HomeScreen(
         )
 
         val appIconSize = uiState.settings.appIconSize.sizeDp.dp
-        ScrollableLazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = appIconSize), // Defines the grid structure
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = appIconSize),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             state = scrollState,
-            modifier = Modifier.fillMaxSize(),
-            scrollEnabled = gestureScrollingEnabled,
+            modifier = Modifier
+                .fillMaxSize()
+                .setScrollingEnabled(gestureScrollingEnabled),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Clock()

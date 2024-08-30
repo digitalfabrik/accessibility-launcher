@@ -1,6 +1,6 @@
 package org.tuerantuer.launcher.ui.components
 
-import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Arrangement
@@ -42,12 +42,20 @@ fun ScrollButtonComponent(
         (LocalConfiguration.current.screenHeightDp.dp.toPx() / 2)
     }
 
+    fun scrollBy(scrollAmountInPx: Float) {
+        coroutineScope.launch {
+            scrollState.animateScrollBy(
+                scrollAmountInPx,
+                tween(durationMillis = 500, easing = FastOutSlowInEasing),
+            )
+        }
+    }
+
     Surface(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         shadowElevation = if (backgroundColor.alpha != 0f) 8.dp else 0.dp,
-        // make it a shade more grayer / darker  than the regular surface
         color = backgroundColor,
         // only round top corners
         shape = MaterialTheme.shapes.medium.copy(
@@ -68,28 +76,14 @@ fun ScrollButtonComponent(
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 ExtendedFabComponent(
-                    onClick = {
-                        coroutineScope.launch {
-                            scrollState.animateScrollBy(
-                                scrollAmountInPx,
-                                tween(durationMillis = 500, easing = LinearOutSlowInEasing),
-                            )
-                        }
-                    },
+                    onClick = { scrollBy(scrollAmountInPx) },
                     textRes = R.string.scroll_down,
                     imageVector = Icons.Outlined.KeyboardArrowDown,
                     color = MaterialTheme.colorScheme.tertiaryContainer,
                     shape = RoundedCornerShape(32.dp),
                 )
                 ExtendedFabComponent(
-                    onClick = {
-                        coroutineScope.launch {
-                            scrollState.animateScrollBy(
-                                -scrollAmountInPx,
-                                tween(durationMillis = 500, easing = LinearOutSlowInEasing),
-                            )
-                        }
-                    },
+                    onClick = { scrollBy(-scrollAmountInPx) },
                     textRes = R.string.scroll_up,
                     imageVector = Icons.Outlined.KeyboardArrowUp,
                     color = MaterialTheme.colorScheme.tertiaryContainer,

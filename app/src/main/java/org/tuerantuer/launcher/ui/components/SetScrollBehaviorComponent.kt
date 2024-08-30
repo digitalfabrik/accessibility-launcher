@@ -24,9 +24,9 @@ import org.tuerantuer.launcher.ui.data.UiState
 
 @Composable
 fun ScrollBehaviorScreen(
+    modifier: Modifier = Modifier,
     uiState: UiState,
     onSetScrollBehavior: (useButtons: Boolean) -> Unit = {},
-    modifier: Modifier = Modifier,
 ) {
     val gestureIcon = if (uiState.settings.useScrollButtons) {
         Icons.Outlined.RadioButtonUnchecked
@@ -46,7 +46,6 @@ fun ScrollBehaviorScreen(
     ) {
 
         ScrollTextTitle(R.string.scroll_behavior_title, modifier = Modifier.padding(16.dp))
-        // First Row for Gesture
         Row(
             modifier = Modifier
                 .fillMaxWidth()

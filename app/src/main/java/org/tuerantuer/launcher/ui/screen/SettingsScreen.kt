@@ -1,6 +1,5 @@
 package org.tuerantuer.launcher.ui.screen
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -38,11 +37,8 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Message
-import androidx.compose.material.icons.outlined.RadioButtonChecked
-import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.ToggleOn
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -65,7 +61,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.datastore.dataStore
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import org.tuerantuer.launcher.R
@@ -87,7 +82,6 @@ import org.tuerantuer.launcher.ui.motion.CustomMaterialMotion
 import org.tuerantuer.launcher.ui.motion.sharedXMotionSpec
 import org.tuerantuer.launcher.ui.motion.sharedXMotionSpecReverse
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
-import timber.log.Timber
 
 /**
  * The screen where the user can change the launcher settings.
@@ -111,7 +105,7 @@ fun SettingsScreen(
     onGoBack: () -> Unit = {},
     onSetWallpaperType: (wallpaperType: WallpaperType) -> Unit = {},
     onSetWallpaper: (wallpaperRes: Int) -> Unit = {},
-    onSetUseScrollButtons: (useButtons: Boolean) -> Unit = {},
+    onSetScrollBehavior: (useButtons: Boolean) -> Unit = {},
 ) {
     Column(
         Modifier
@@ -162,7 +156,7 @@ fun SettingsScreen(
                     onGoBack = onGoBack,
                     onSetWallpaperType = onSetWallpaperType,
                     onSetWallpaper = onSetWallpaper,
-                    onSetScrollBehavior = onSetUseScrollButtons,
+                    onSetScrollBehavior = onSetScrollBehavior,
                 )
             }
         }
@@ -301,7 +295,6 @@ fun ColumnScope.MainContent(
         SettingsPage.VisualAssistant -> VisualAssistantScreen(
             onOpenSettingsPage = onOpenSettingsPage,
         )
-        SettingsPage.UninstallApps -> {}
         SettingsPage.Licenses -> LicensesScreen(
             onOpenSettingsPage = onOpenSettingsPage,
         )
