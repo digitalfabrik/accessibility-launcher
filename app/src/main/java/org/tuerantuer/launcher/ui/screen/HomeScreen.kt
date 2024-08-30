@@ -4,6 +4,7 @@ import android.text.format.DateFormat
 import android.widget.TextClock
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +17,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -73,28 +74,28 @@ fun HomeScreen(
                     iconColor = Color.White,
                     backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                     borderColor = MaterialTheme.colorScheme.tertiaryContainer,
-                )
+                ),
             )
         }
         val additionalItems = listOf(
-            ButtonHomeScreenItem(
+            ButtonHomeScreenItem.createDefault(
                 nameRes = R.string.change_favorites,
                 innerIconRes = R.drawable.outline_interests_24,
                 context = LocalContext.current,
                 onClick = onEditFavorites,
             ),
-            ButtonHomeScreenItem(
+            ButtonHomeScreenItem.createDefault(
                 nameRes = R.string.setup_assistant,
                 innerIconRes = R.drawable.outline_help_outline_24,
                 context = LocalContext.current,
                 onClick = onShowOnboarding,
             ),
-            ButtonHomeScreenItem(
+            ButtonHomeScreenItem.createDefault(
                 nameRes = R.string.settings,
                 innerIconRes = R.drawable.outline_settings_24,
                 context = LocalContext.current,
                 onClick = onOpenSettings,
-            )
+            ),
         )
 
         val appIconSize = uiState.settings.appIconSize.sizeDp.dp
@@ -114,11 +115,17 @@ fun HomeScreen(
                     iconSize = appIconSize,
                 )
             }
+            // Divider between favorites and additional items
             item(span = { GridItemSpan(maxLineSpan) }) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    thickness = 2.dp,
-                    color = Color.Gray
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .height(3.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            shape = RoundedCornerShape(3.dp),
+                        ),
                 )
             }
             items(
