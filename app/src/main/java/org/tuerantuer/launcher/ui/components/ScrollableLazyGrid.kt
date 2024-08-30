@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -30,7 +29,7 @@ fun ScrollableLazyVerticalGrid(
             Modifier
                 .disableScrolling()
                 .nestedScroll(NoOpNestedScrollConnection) // Apply no-op nested scroll connection
-        }
+        },
     )
 
 

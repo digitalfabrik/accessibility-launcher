@@ -9,6 +9,7 @@ val purple = Color(0xFF6F37C3)
 val almostWhite = Color(0xFFF7F7F9)
 val almostBlack = Color(0xFF121213)
 val gray = Color(0xFF575759)
+
 // Darkmode Color variations
 val almostBlackDM = Color(0xFF1C1C1E)
 val almostWhiteDM = Color(0xFFE6E0E9)

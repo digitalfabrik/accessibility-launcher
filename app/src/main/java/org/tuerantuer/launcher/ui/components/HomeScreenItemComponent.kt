@@ -39,10 +39,14 @@ fun HomeScreenItemComponent(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(4.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(4.dp)
+                .fillMaxWidth(),
         ) {
             Image(
-                modifier = Modifier.size(iconSize).padding(top = 16.dp),
+                modifier = Modifier
+                    .size(iconSize)
+                    .padding(top = 16.dp),
                 painter = rememberDrawablePainter(homeScreenItem.icon),
                 contentDescription = null,
             )

@@ -62,7 +62,8 @@ class FrameworkActionsManagerImpl(
     override fun openSoundSettings() {
         launchIntentAndHandleFailure(Intent(Settings.ACTION_SOUND_SETTINGS))
     }
-    override fun openApplicationSettings(){
+
+    override fun openApplicationSettings() {
         launchIntentAndHandleFailure(Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS))
     }
 

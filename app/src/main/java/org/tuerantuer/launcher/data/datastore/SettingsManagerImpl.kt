@@ -45,7 +45,8 @@ class SettingsManagerImpl(
             val appIconSizeInt = preferences[APP_ICON_SIZE_DP_KEY] ?: DEFAULT_APP_ICON_SIZE.sizeDp
             val appIconSize = AppIconSize.values().firstOrNull { it.sizeDp == appIconSizeInt } ?: DEFAULT_APP_ICON_SIZE
             val appTextSizeFloat = preferences[APP_TEXT_SIZE_DP_KEY] ?: DEFAULT_APP_TEXT_SIZE.scalingFactor
-            val appTextSize = AppTextSize.values().firstOrNull { it.scalingFactor == appTextSizeFloat } ?: DEFAULT_APP_TEXT_SIZE
+            val appTextSize =
+                AppTextSize.values().firstOrNull { it.scalingFactor == appTextSizeFloat } ?: DEFAULT_APP_TEXT_SIZE
             val isUserOnboarded = preferences[IS_USER_ONBOARDED_KEY] ?: DEFAULT_IS_USER_ONBOARDED
             val wallpaperTypeKey = preferences[WALLPAPER_TYPE_KEY]
             val useScrollButtons = preferences[USE_SCROLL_BUTTONS] ?: DEFAULT_USE_SCROLL_BUTTONS

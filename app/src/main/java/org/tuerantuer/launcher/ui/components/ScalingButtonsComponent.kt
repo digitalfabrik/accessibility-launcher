@@ -36,7 +36,9 @@ inline fun <reified T : Enum<T>> ScalingButtonComponent(
         // Show button to decrease text size if a smaller size is available
         if (smallerSize != null) {
             ExtendedFabComponent(
-                modifier = Modifier.padding(start = 0.dp, bottom = 16.dp).weight(1f),
+                modifier = Modifier
+                    .padding(start = 0.dp, bottom = 16.dp)
+                    .weight(1f),
                 onClick = {
                     onSetSize.invoke(smallerSize)
                 },
@@ -47,7 +49,9 @@ inline fun <reified T : Enum<T>> ScalingButtonComponent(
         // Show button to increase text size if a larger size is available
         if (largerSize != null) {
             ExtendedFabComponent(
-                modifier = Modifier.padding(end = 0.dp, bottom = 16.dp).weight(1f),
+                modifier = Modifier
+                    .padding(end = 0.dp, bottom = 16.dp)
+                    .weight(1f),
                 onClick = {
                     onSetSize.invoke(largerSize)
                 },

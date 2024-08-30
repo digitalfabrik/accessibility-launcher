@@ -42,17 +42,17 @@ fun ExtendedFabComponent(
         },
         icon = {
             if (imageVector != null) {
-                if(textRes != null){
+                if (textRes != null) {
                     Icon(
                         imageVector = imageVector,
                         contentDescription = null,
                     )
                 } else {
-                Icon(
-                    modifier = Modifier.padding(start = 16.dp),
-                    imageVector = imageVector,
-                    contentDescription = null,
-                )
+                    Icon(
+                        modifier = Modifier.padding(start = 16.dp),
+                        imageVector = imageVector,
+                        contentDescription = null,
+                    )
                 }
             }
         },
