@@ -50,7 +50,6 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -116,7 +115,7 @@ fun OnboardingScreen(
         OnboardingPage.SET_FAVORITES_INTRO_1 -> R.string.setup_10
         OnboardingPage.SET_FAVORITES_INTRO_2 -> R.string.setup_11
         OnboardingPage.SET_FAVORITES_INTRO_3 -> R.string.setup_12
-        OnboardingPage.SCROLL_BEHAVIOR_INTRO -> R.string.scroll_behavior
+        OnboardingPage.SCROLL_BEHAVIOR_INTRO -> R.string.scroll_behavior_description
         OnboardingPage.SETUP_FINISHED_1 -> R.string.setup_13
         OnboardingPage.SETUP_FINISHED_2 -> R.string.setup_14
         OnboardingPage.SETUP_FINISHED_3 -> R.string.setup_15
@@ -272,7 +271,7 @@ fun SheetButtons(
     onSetFavorites: () -> Unit,
 ) {
     Box(
-        modifier = Modifier.heightIn(min = 200.dp),
+        modifier = Modifier.heightIn(min = 100.dp),
         contentAlignment = Alignment.Center,
     ) {
         when (page) {
@@ -345,7 +344,7 @@ fun SheetButtons(
                 ExtendedFabComponent(
                     onClick = onGoToNextStep,
                     textRes = R.string.next_step,
-                    imageVector = null,
+                    imageVector = Icons.Filled.ArrowForward,
                 )
             }
             OnboardingPage.SETUP_FINISHED_3 -> {

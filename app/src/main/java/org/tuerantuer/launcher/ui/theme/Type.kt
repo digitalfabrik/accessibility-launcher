@@ -50,10 +50,7 @@ fun createTypography(scalingFactor: Float): Typography {
             unscaledFontSize = 20.sp,
             scalingFactor = scalingFactor,
         ),
-        bodySmall = defaultTypography.bodySmall.scaleSizeWithHyphens(
-            unscaledFontSize = 20.sp,
-            scalingFactor = scalingFactor,
-        ),
+        bodySmall = defaultTypography.bodySmall.scaleSizeWithHyphens(scalingFactor),
         labelLarge = defaultTypography.labelLarge.scaleSizeWithHyphens(scalingFactor),
         labelMedium = defaultTypography.labelMedium.scaleSizeWithHyphens(scalingFactor),
         labelSmall = defaultTypography.labelSmall.scaleSizeWithHyphens(scalingFactor),

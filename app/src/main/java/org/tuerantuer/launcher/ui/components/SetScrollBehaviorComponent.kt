@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
@@ -27,19 +26,26 @@ import org.tuerantuer.launcher.ui.data.UiState
 fun ScrollBehaviorScreen(
     uiState: UiState,
     onSetScrollBehavior: (useButtons: Boolean) -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
-    val gestureIcon =
-        if (uiState.settings.useScrollButtons) Icons.Outlined.RadioButtonUnchecked else Icons.Outlined.RadioButtonChecked
-    val buttonIcon =
-        if (uiState.settings.useScrollButtons) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked
+    val gestureIcon = if (uiState.settings.useScrollButtons) {
+        Icons.Outlined.RadioButtonUnchecked
+    } else {
+        Icons.Outlined.RadioButtonChecked
+    }
+    val buttonIcon = if (uiState.settings.useScrollButtons) {
+        Icons.Outlined.RadioButtonChecked
+    } else {
+        Icons.Outlined.RadioButtonUnchecked
+    }
 
     ScrollableColumn(
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = 16.dp, horizontal = 8.dp)
             .fillMaxSize(),
     ) {
 
-        ScrollTextTitle(R.string.scroll_behavior_title)
+        ScrollTextTitle(R.string.scroll_behavior_title, modifier = Modifier.padding(16.dp))
         // First Row for Gesture
         Row(
             modifier = Modifier
@@ -85,9 +91,9 @@ fun ScrollBehaviorScreen(
 }
 
 @Composable
-fun ScrollTextBody(textRes: Int) {
+fun ScrollTextBody(textRes: Int, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp),
@@ -97,24 +103,23 @@ fun ScrollTextBody(textRes: Int) {
                 .fillMaxWidth(),
             text = stringResource(textRes),
             textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }
 
 @Composable
-fun ScrollTextTitle(textRes: Int) {
+fun ScrollTextTitle(textRes: Int, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
-            .wrapContentHeight()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+        modifier = modifier
+            .wrapContentHeight(),
     ) {
         Text(
             modifier = Modifier,
             text = stringResource(textRes),
             textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+            style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onBackground,
         )
     }

@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ScrollableLazyVerticalGrid(
-    // todo naming maybe?
     columns: GridCells,
     modifier: Modifier = Modifier,
     scrollEnabled: Boolean,

@@ -47,9 +47,6 @@ fun ScrollButtonComponent(
     scrollState: LazyGridState,
     coroutineScope: CoroutineScope,
 ) {
-// todo : background color could fuck things up again, take color of navbar? overlapping when transparent
-    // Color slightly more gray'ish then AlmostWhite(0xFFF7F7F9)
-//    val backgroundColor = Color(0xFFF0F0F2)
     val backgroundColor = LauncherTheme.all.onWallpaperBackground
 
     val scrollAmountInPx = with(LocalDensity.current) {
@@ -60,7 +57,7 @@ fun ScrollButtonComponent(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        shadowElevation = 8.dp,
+        shadowElevation = if (backgroundColor.alpha != 0f) 8.dp else 0.dp,
         // make it a shade more grayer / darker  than the regular surface
         color= backgroundColor,
         // only round top corners

@@ -100,7 +100,8 @@
     <string name="notifications_description">Du bekommst von verschiedenen Apps Push-Benachrichtigungen. Du kannst diese anpassen oder ganz auszustellen.</string>
     <string name="input_delay">Eingabe-Einstellungen</string>
     <string name="input_delay_description">Dein Bildschirm reagiert auf deine Berührung.\nReagiert der Bildschirm zu schnell?\nDann kannst du eine Verzögerung in den Geräte-Einstellungen einstellen.\nDann reagiert dein Bildschirm langsamer auf die Berührungen.</string>
-    <string name="scroll_behavior">Im nächsten Schritt kannst du einstellen, wie du in der App scrollen möchtest.</string>
+    <string name="scroll_behavior">Scrollverhalten</string>
+    <string name="scroll_behavior_description">Im nächsten Schritt kannst du einstellen, wie du in der App scrollen möchtest.</string>
     <string name="use_scroll_buttons">Buttons</string>
     <string name="use_scroll_gesture">Wischgeste</string>
     <string name="scroll_up">Hoch</string>
