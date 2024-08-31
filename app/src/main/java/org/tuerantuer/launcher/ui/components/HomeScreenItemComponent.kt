@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -35,7 +34,7 @@ fun HomeScreenItemComponent(
     Card(
         onClick = homeScreenItem.onClick,
         modifier = modifier.padding(4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        colors = CardDefaults.cardColors(containerColor = LauncherTheme.all.onWallpaperBackground),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
