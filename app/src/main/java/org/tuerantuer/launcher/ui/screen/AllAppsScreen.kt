@@ -74,6 +74,8 @@ fun AllAppsScreen(
     val filteredList = remember { mutableStateOf(uiState.allApps) }
     val searchBarFocusRequester = remember { FocusRequester() }
     val isSearchBarVisible = remember { mutableStateOf(true) }
+    val focusManager = LocalFocusManager.current
+    val interactionSource = remember { MutableInteractionSource() }
 
     val scrollState = rememberLazyGridState()
     val gestureScrollingEnabled = !uiState.settings.useScrollButtons
@@ -91,11 +93,10 @@ fun AllAppsScreen(
         if (isSearchBarVisible.value) {
             delay(300) // Small delay to ensure UI is ready and prevent flickering
             searchBarFocusRequester.requestFocus()
+        } else {
+            focusManager.clearFocus()
         }
     }
-
-    val focusManager = LocalFocusManager.current
-    val interactionSource = remember { MutableInteractionSource() }
 
     Box(
         modifier = Modifier
@@ -112,7 +113,7 @@ fun AllAppsScreen(
                 text = stringResource(R.string.all_apps),
                 onGoBack = onGoBack,
             )
-            AnimatedVisibility(visible = isSearchBarVisible.value) {
+            AnimatedVisibility(visible = isSearchBarVisible.value || searchQuery.value.isNotEmpty()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -247,7 +248,7 @@ fun SearchToggleButton(
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(32.dp),
-        imageVector = null,
+        imageVector = if (isSearchBarVisible.value) null else Icons.Default.Search,
         backgroundColor = color,
         foregroundColor = MaterialTheme.colorScheme.onTertiaryContainer,
         textRes = textRes,
