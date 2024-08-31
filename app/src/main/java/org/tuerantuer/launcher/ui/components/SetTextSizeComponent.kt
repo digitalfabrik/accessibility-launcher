@@ -1,6 +1,5 @@
 package org.tuerantuer.launcher.ui.components
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -19,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
@@ -34,8 +32,6 @@ fun SetTextSizeComponent(
     uiState: UiState,
     onSetTextSize: (appTextSize: AppTextSize) -> Unit = {},
 ) {
-    val textContent = stringResource(R.string.confirm_font_size)
-
     // transition
     val appTextSize = uiState.settings.appTextSize
     val transition = updateTransition(targetState = appTextSize, label = "TextSizeTransition")
@@ -46,8 +42,8 @@ fun SetTextSizeComponent(
         transitionSpec = {
             tween(durationMillis = 300)
         },
-    ) { appTextSize ->
-        appTextSize.scalingFactor
+    ) { animatedAppTextSize ->
+        animatedAppTextSize.scalingFactor
     }
 
     Column(
@@ -72,7 +68,7 @@ fun SetTextSizeComponent(
                 // Un-apply the scaling factor to the font size and apply the scale through graphicsLayer, so tha we can
                 // smoothly animate the scale of the text.
                 Text(
-                    text = textContent,
+                    text = stringResource(R.string.confirm_font_size),
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .wrapContentHeight()
@@ -86,6 +82,7 @@ fun SetTextSizeComponent(
                         fontSize = unscaledFontSize,
                         lineHeight = unscaledFontSize * (1f / LINE_HEIGHT_MULTIPLIER),
                     ),
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
                 )
             }
