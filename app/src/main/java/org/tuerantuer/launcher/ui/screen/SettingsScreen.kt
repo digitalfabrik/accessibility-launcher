@@ -438,7 +438,8 @@ fun ColumnScope.IconSizeScreen(
             onClick = onGoBack,
             textRes = R.string.button_set_font_size,
             imageVector = Icons.Outlined.Done,
-            color = MaterialTheme.colorScheme.primary,
+            foregroundColor = MaterialTheme.colorScheme.onPrimary,
+            backgroundColor = MaterialTheme.colorScheme.primary,
         )
     }
 }
@@ -461,7 +462,8 @@ fun ColumnScope.TextSizeScreen(
             onClick = onGoBack,
             textRes = R.string.button_set_font_size,
             imageVector = Icons.Outlined.Done,
-            color = MaterialTheme.colorScheme.primary,
+            foregroundColor = MaterialTheme.colorScheme.onPrimary,
+            backgroundColor = MaterialTheme.colorScheme.primary,
         )
     }
 }

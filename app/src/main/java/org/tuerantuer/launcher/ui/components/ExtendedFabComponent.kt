@@ -23,20 +23,20 @@ fun ExtendedFabComponent(
     shape: Shape = RoundedCornerShape(16.dp),
     textRes: Int? = null,
     imageVector: ImageVector?,
-    color: Color = MaterialTheme.colorScheme.primaryContainer,
-    textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    foregroundColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     onClick: () -> Unit,
 ) {
     ExtendedFloatingActionButton(
         modifier = modifier.padding(16.dp),
         shape = shape,
         onClick = onClick,
-        containerColor = color,
+        containerColor = backgroundColor,
         text = {
             textRes?.let {
                 Text(
                     text = stringResource(id = it),
-                    color = textColor,
+                    color = foregroundColor,
                 )
             }
         },
@@ -45,6 +45,7 @@ fun ExtendedFabComponent(
                 Icon(
                     modifier = if (textRes == null) Modifier.padding(start = 16.dp) else Modifier,
                     imageVector = imageVector,
+                    tint = foregroundColor,
                     contentDescription = null,
                 )
             }

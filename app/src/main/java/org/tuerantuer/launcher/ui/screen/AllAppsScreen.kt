@@ -248,8 +248,8 @@ fun SearchToggleButton(
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(32.dp),
         imageVector = null,
-        color = color,
-        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        backgroundColor = color,
+        foregroundColor = MaterialTheme.colorScheme.onTertiaryContainer,
         textRes = textRes,
         onClick = {
             isSearchBarVisible.value = !isSearchBarVisible.value

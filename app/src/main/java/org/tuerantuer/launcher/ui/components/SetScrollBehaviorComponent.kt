@@ -62,7 +62,8 @@ fun ScrollBehaviorScreen(
                 textRes = null,
                 imageVector = gestureIcon,
                 shape = RoundedCornerShape(32.dp),
-                color = MaterialTheme.colorScheme.primary,
+                foregroundColor = MaterialTheme.colorScheme.onPrimary,
+                backgroundColor = MaterialTheme.colorScheme.primary,
             )
         }
         ScrollTextBody(R.string.scroll_gesture_description)
@@ -82,7 +83,8 @@ fun ScrollBehaviorScreen(
                 textRes = null,
                 imageVector = buttonIcon,
                 shape = RoundedCornerShape(32.dp),
-                color = MaterialTheme.colorScheme.primary,
+                foregroundColor = MaterialTheme.colorScheme.onPrimary,
+                backgroundColor = MaterialTheme.colorScheme.primary,
             )
         }
         ScrollTextBody(R.string.scroll_buttons_description)

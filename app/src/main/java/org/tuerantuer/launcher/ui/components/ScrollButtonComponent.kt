@@ -79,14 +79,16 @@ fun ScrollButtonComponent(
                     onClick = { scrollBy(scrollAmountInPx) },
                     textRes = R.string.scroll_down,
                     imageVector = Icons.Outlined.KeyboardArrowDown,
-                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                    foregroundColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                     shape = RoundedCornerShape(32.dp),
                 )
                 ExtendedFabComponent(
                     onClick = { scrollBy(-scrollAmountInPx) },
                     textRes = R.string.scroll_up,
                     imageVector = Icons.Outlined.KeyboardArrowUp,
-                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                    foregroundColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                     shape = RoundedCornerShape(32.dp),
                 )
             }

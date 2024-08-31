@@ -326,7 +326,8 @@ fun SheetButtons(
                         },
                         textRes = R.string.button_set_font_size,
                         imageVector = null,
-                        color = MaterialTheme.colorScheme.primary,
+                        foregroundColor = MaterialTheme.colorScheme.onPrimary,
+                        backgroundColor = MaterialTheme.colorScheme.primary,
                     )
                 }
             }
