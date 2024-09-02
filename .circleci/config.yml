@@ -151,7 +151,7 @@ commands:
                     - 3-gems-{{ arch }}-{{ checksum "Gemfile.lock" }}
                     - 3-gems-{{ arch }}-
             - run:
-                command: export BUNDLE_PATH=vendor/bundle && bundle check || bundle install
+                command: bundle check || bundle install
                 name: Install Fastlane
             - save_cache:
                 key: 3-gems-{{ arch }}-{{ checksum "Gemfile.lock" }}
@@ -162,6 +162,7 @@ jobs:
         docker:
             - image: cimg/android:2024.08.1-node
         environment:
+            BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
             TOTAL_CPUS: 3
         resource_class: medium+
@@ -174,7 +175,7 @@ jobs:
             - restore_ruby_cache
             - prepare_workspace
             - run:
-                command: export BUNDLE_PATH=vendor/bundle && bundle exec fastlane keystore
+                command: bundle exec fastlane keystore
                 name: '[FL] Prepare Android Keystore'
             - run:
                 command: bundle exec fastlane build
@@ -193,6 +194,7 @@ jobs:
         docker:
             - image: cimg/android:2024.08.1-node
         environment:
+            BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
         parameters:
             production_delivery:
@@ -232,6 +234,7 @@ jobs:
         docker:
             - image: cimg/android:2024.08.1-node
         environment:
+            BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
         shell: /bin/bash -eo pipefail

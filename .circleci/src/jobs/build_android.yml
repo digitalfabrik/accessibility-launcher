@@ -4,6 +4,7 @@ resource_class: medium+
 environment:
   TOTAL_CPUS: 3
   FASTLANE_SKIP_UPDATE_CHECK: true
+  BUNDLE_PATH: vendor/bundle
 shell: /bin/bash -eo pipefail
 steps:
   - add_ssh_keys: # Needed for credentials repo
@@ -14,7 +15,7 @@ steps:
   - prepare_workspace
   - run:
       name: '[FL] Prepare Android Keystore'
-      command: export BUNDLE_PATH=vendor/bundle && bundle exec fastlane keystore
+      command: bundle exec fastlane keystore
   - run:
       name: '[FL] Build Android'
       command: bundle exec fastlane build
