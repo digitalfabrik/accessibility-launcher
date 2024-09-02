@@ -174,7 +174,7 @@ jobs:
             - restore_ruby_cache
             - prepare_workspace
             - run:
-                command: bundle exec fastlane keystore
+                command: export BUNDLE_PATH=vendor/bundle && bundle exec fastlane keystore
                 name: '[FL] Prepare Android Keystore'
             - run:
                 command: bundle exec fastlane build

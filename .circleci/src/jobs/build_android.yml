@@ -14,7 +14,7 @@ steps:
   - prepare_workspace
   - run:
       name: '[FL] Prepare Android Keystore'
-      command: bundle exec fastlane keystore
+      command: export BUNDLE_PATH=vendor/bundle && bundle exec fastlane keystore
   - run:
       name: '[FL] Build Android'
       command: bundle exec fastlane build
