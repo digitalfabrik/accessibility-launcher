@@ -160,7 +160,7 @@ commands:
 jobs:
     build_android:
         docker:
-            - image: cimg/android:2022.03.1-node
+            - image: cimg/android:2024.08.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
             TOTAL_CPUS: 3
@@ -191,7 +191,7 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: cimg/android:2022.03.1-node
+            - image: cimg/android:2024.08.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         parameters:
@@ -212,7 +212,7 @@ jobs:
             - notify
     notify_android:
         docker:
-            - image: cimg/node:14.19.0
+            - image: cimg/node:22.7.0
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store.
@@ -230,7 +230,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Launcher has been released successfully on Android!\n${ANDROID_ARTIFACT_URLS}
     promote_android:
         docker:
-            - image: cimg/android:2022.03.1-node
+            - image: cimg/android:2024.08.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small

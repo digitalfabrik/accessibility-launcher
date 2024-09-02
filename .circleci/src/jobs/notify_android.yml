@@ -4,7 +4,7 @@ parameters:
     description: Whether builds are delivered to the production store.
     type: boolean
 docker:
-  - image: cimg/node:14.19.0
+  - image: cimg/node:22.7.0
 resource_class: small
 steps:
   - checkout
