@@ -160,7 +160,7 @@ commands:
 jobs:
     build_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
             BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -192,7 +192,7 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
             BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -232,7 +232,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Launcher has been released successfully on Android!\n${ANDROID_ARTIFACT_URLS}
     promote_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
             BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
