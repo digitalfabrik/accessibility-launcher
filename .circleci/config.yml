@@ -34,7 +34,7 @@ commands:
         description: Send a notification (to Mattermost) at the end of a job, based on success or failure. Must be the last step in a job.
         parameters:
             channel:
-                default: launcher-accessibility
+                default: launcher-carikom
                 type: string
             failure_mentions:
                 default: '@peter.huber @stefanie.metzger'
@@ -160,8 +160,9 @@ commands:
 jobs:
     build_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
+            BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
             TOTAL_CPUS: 3
         resource_class: medium+
@@ -191,8 +192,9 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
+            BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
         parameters:
             production_delivery:
@@ -230,8 +232,9 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Launcher has been released successfully on Android!\n${ANDROID_ARTIFACT_URLS}
     promote_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
+            BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
         shell: /bin/bash -eo pipefail
