@@ -7,11 +7,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 /**
- * Determines the line height based on the font size.
- */
-const val LINE_HEIGHT_MULTIPLIER = 1.1f
-
-/**
  * Creates a [Typography] object with custom settings.
  *
  * Here are a few examples where the different text styles are used:
@@ -61,6 +56,6 @@ fun TextStyle.scaleSizeWithHyphens(scalingFactor: Float, unscaledFontSize: TextU
     return copy(
         hyphens = Hyphens.Auto,
         fontSize = scaledFontSize,
-        lineHeight = scaledFontSize * LINE_HEIGHT_MULTIPLIER,
+        lineHeight = TextUnit.Unspecified,
     )
 }

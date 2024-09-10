@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import org.tuerantuer.launcher.R
 import org.tuerantuer.launcher.data.datastore.AppTextSize
 import org.tuerantuer.launcher.ui.data.UiState
-import org.tuerantuer.launcher.ui.theme.LINE_HEIGHT_MULTIPLIER
 import org.tuerantuer.launcher.ui.theme.LauncherTheme
 
 @Composable
@@ -80,7 +80,7 @@ fun SetTextSizeComponent(
                         .align(Alignment.Center),
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontSize = unscaledFontSize,
-                        lineHeight = unscaledFontSize * (1f / LINE_HEIGHT_MULTIPLIER),
+                        lineHeight = TextUnit.Unspecified,
                     ),
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
