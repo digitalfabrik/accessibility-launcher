@@ -10,3 +10,4 @@ jobs:
         - mattermost
         - credentials-repo
         - credentials-launcher
+        - tuerantuer-google-play

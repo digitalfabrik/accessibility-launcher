@@ -269,6 +269,7 @@ workflows:
                     - mattermost
                     - credentials-repo
                     - credentials-launcher
+                    - tuerantuer-google-play
         when:
             or:
                 - equal:
