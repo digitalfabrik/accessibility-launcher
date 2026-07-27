@@ -1,5 +1,5 @@
 docker:
-  - image: cimg/android:2024.01.1-node
+  - image: cimg/android:2026.07.1-node
 resource_class: medium+
 environment:
   TOTAL_CPUS: 3
@@ -7,9 +7,6 @@ environment:
   BUNDLE_PATH: vendor/bundle
 shell: /bin/bash -eo pipefail
 steps:
-  - add_ssh_keys: # Needed for credentials repo
-      fingerprints:
-        - 24:1d:3b:b7:b3:49:69:d7:54:c3:93:a5:a2:d1:71:db
   - checkout
   - restore_ruby_cache
   - prepare_workspace

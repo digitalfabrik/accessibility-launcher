@@ -160,7 +160,7 @@ commands:
 jobs:
     build_android:
         docker:
-            - image: cimg/android:2024.01.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -168,9 +168,6 @@ jobs:
         resource_class: medium+
         shell: /bin/bash -eo pipefail
         steps:
-            - add_ssh_keys:
-                fingerprints:
-                    - 24:1d:3b:b7:b3:49:69:d7:54:c3:93:a5:a2:d1:71:db
             - checkout
             - restore_ruby_cache
             - prepare_workspace
@@ -192,7 +189,7 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: cimg/android:2024.01.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -232,7 +229,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Launcher has been released successfully on Android!\n${ANDROID_ARTIFACT_URLS}
     promote_android:
         docker:
-            - image: cimg/android:2024.01.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             BUNDLE_PATH: vendor/bundle
             FASTLANE_SKIP_UPDATE_CHECK: true
