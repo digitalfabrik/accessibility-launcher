@@ -1,0 +1,12 @@
+when:
+  or:
+    - equal: [<< pipeline.parameters.run_commit_main >>, "run"]
+    - and:
+      - equal: [<< pipeline.parameters.run_commit_main >>, "run_if_on_main"]
+      - equal: [main, << pipeline.git.branch >>]
+jobs:
+  - build_android:
+      context:
+        - mattermost
+        - credentials-repo
+        - credentials-launcher

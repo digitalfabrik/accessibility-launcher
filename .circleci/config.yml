@@ -246,6 +246,13 @@ jobs:
                 name: '[FL] Play Store Promotion'
             - notify
 parameters:
+    run_commit_main:
+        default: run_if_on_main
+        enum:
+            - run_if_on_main
+            - run
+            - skip
+        type: enum
     run_dev_delivery:
         default: false
         type: boolean
@@ -255,8 +262,28 @@ parameters:
     run_promote:
         default: false
         type: boolean
+shell: /bin/bash -eo pipefail
 version: 2.1
 workflows:
+    commit_main:
+        jobs:
+            - build_android:
+                context:
+                    - mattermost
+                    - credentials-repo
+                    - credentials-launcher
+        when:
+            or:
+                - equal:
+                    - << pipeline.parameters.run_commit_main >>
+                    - run
+                - and:
+                    - equal:
+                        - << pipeline.parameters.run_commit_main >>
+                        - run_if_on_main
+                    - equal:
+                        - main
+                        - << pipeline.git.branch >>
     dev_delivery:
         jobs:
             - build_android:
