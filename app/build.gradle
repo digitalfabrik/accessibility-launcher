@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace 'org.tuerantuer.launcher'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "org.tuerantuer.launcher"
         minSdk 26
-        targetSdk 35
+        targetSdk 36
         if (project.hasProperty('VERSION_CODE')) {
             versionCode project.VERSION_CODE.toInteger()
             versionName project.VERSION_NAME
@@ -65,9 +65,10 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.3'
+        kotlinCompilerExtensionVersion '1.5.15'
     }
     packagingOptions {
         resources {
